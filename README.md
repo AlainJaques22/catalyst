@@ -81,6 +81,17 @@ Access n8n's massive ecosystem:
 
 ---
 
+## 🔧 Connector Builder
+
+Build your own connectors without code. Seriously.
+
+1. Create a workflow in n8n using any of the thousands of integrations and templates.
+2. Export as JSON
+3. Drop it in the Connector Builder
+4. Done.
+
+![Connector Builder](docs/images/connector-builder.png)
+
 ## 🎯 Why Catalyst?
 
 ### The Problem
