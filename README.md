@@ -241,7 +241,7 @@ Catalyst is built with love (and Claude 🤖). If you want to see it succeed, co
     <img src="https://img.shields.io/badge/GitHub%20Sponsors-Support%20Catalyst-ea4aaa?style=for-the-badge&logo=github-sponsors" alt="GitHub Sponsors">
   </a>
   &nbsp;
-  <a href="https://ko-fi.com/YOUR-KOFI">
+  <a href="https://ko-fi.com/catalystconnector">
     <img src="https://img.shields.io/badge/Ko--fi-Buy%20me%20a%20coffee-ff5f5f?style=for-the-badge&logo=ko-fi" alt="Ko-fi">
   </a>
 </p>
