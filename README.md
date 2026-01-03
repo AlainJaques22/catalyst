@@ -159,18 +159,17 @@ All connectors included with your subscription. No extra fees.
 
 | Connector | Description |
 |-----------|-------------|
-| 🔌 **Ping** | Test connectivity |
 | 🌍 **IP Geolocation** | Look up geographic location from IP addresses |
 | 📧 **Send Email** | Send emails via SMTP through n8n |
 | 🌐 **HTTP Request** | Make HTTP requests to any API endpoint |
 | 🌤️ **Weather Forecast** | Get weather data for any location |
 | 🤖 **xAI Text Analysis** | Analyze text with xAI/Grok models |
+| 💬 **Slack** | Send messages to channels/users |
 
 ### Coming Soon
 
 | Connector | Use Case |
 |-----------|----------|
-| 💬 **Slack** | Send messages to channels/users |
 | 📊 **Google Sheets** | Read/write spreadsheet data |
 | 🤖 **OpenAI** | AI-powered automation |
 | 🏢 **Salesforce** | CRM integration |
@@ -228,7 +227,7 @@ We welcome contributions! The Connector Builder in the control panel makes it ea
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-<a href='https://ko-fi.com/Z8Z21RL1PI' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 
 ---
 
@@ -303,7 +302,7 @@ Same model as n8n, Elastic, and Grafana. Keeps it accessible while protecting th
 - [x] Connector gallery
 - [x] Live logs
 - [x] Connector builder
-- [ ] Slack connector
+- [x] Slack connector
 - [ ] Google Sheets connector
 - [ ] OpenAI connector
 - [ ] Usage tracking
