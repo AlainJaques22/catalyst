@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/catalyst-logo.png" alt="Catalyst" width="120"/>
+  <img src="docs/images/catalyst-logo.png" alt="Catalyst" width="240"/>
 </p>
 
 <h1 align="center">Catalyst</h1>
