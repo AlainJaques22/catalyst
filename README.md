@@ -5,7 +5,7 @@
 <h1 align="center">Catalyst</h1>
 
 <p align="center">
-  <strong>Bridge Camunda 7 to n8n's 400+ integrations.<br/>One command. Full control panel. 97% less than Camunda 8.</strong>
+  <strong>Bridge Camunda 7 to n8n's 400+ integrations.<br/>One command. Full control panel. 97% less $$$ than Camunda 8.</strong>
 </p>
 
 <p align="center">
@@ -26,7 +26,9 @@
 
 ## 🚀 Quick Start
 
-**Prerequisites:** Docker
+**Prerequisites:** All you need is Docker.The rest happens automagically, Camunda 7, n8n, nginx, PostgeSQL are pre-installed and pre-configured. Get Docker at https://www.docker.com/
+
+Then open up your Terminal/CMD/Powershell, clone this repository and run the docker compose. Prepare to be impressed.
 
 ```bash
 git clone https://github.com/AlainJaques22/catalyst.git
@@ -225,6 +227,8 @@ With n8n under the hood, you have access to **400+ integrations** out of the box
 We welcome contributions! The Connector Builder in the control panel makes it easy to create new connectors from n8n workflows.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+<a href='https://ko-fi.com/Z8Z21RL1PI' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 ---
 
