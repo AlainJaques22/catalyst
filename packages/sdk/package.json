@@ -1,9 +1,0 @@
-﻿{
-  "name": "@catalyst-connector/sdk",
-  "version": "1.0.0",
-  "description": "SDK for building Catalyst Connectors",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo 'Tests coming soon'"
-  }
-}
