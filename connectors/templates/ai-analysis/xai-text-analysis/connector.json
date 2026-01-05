@@ -1,0 +1,22 @@
+{
+  "id": "xai-text-analysis",
+  "name": "xAI Text Analysis",
+  "description": "Analyze text with xAI/Grok models",
+  "version": "1.0.0",
+  "type": "template",
+  "category": "ai-analysis",
+  "icon": "ph-brain",
+  "color": "#06b6d4",
+  "tags": ["ai", "ml", "grok", "xai", "text-analysis", "llm"],
+  "author": {
+    "name": "Catalyst Team"
+  },
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "xai-text-analysis-n8n.json",
+    "elementTemplate": "xai-text-analysis-element.json",
+    "exampleBpmn": "xai-text-analysis.bpmn"
+  },
+  "createdAt": "2025-01-03T00:00:00Z",
+  "updatedAt": "2025-01-03T00:00:00Z"
+}

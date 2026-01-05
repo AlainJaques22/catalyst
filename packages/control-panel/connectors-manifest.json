@@ -1,0 +1,227 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-01-03T19:46:43.992Z",
+  "stats": {
+    "totalConnectors": 7,
+    "integrations": 4,
+    "templates": 3
+  },
+  "connectors": {
+    "integrations": [
+      {
+        "id": "send-email",
+        "name": "Send Email",
+        "description": "Send emails via SMTP through n8n",
+        "version": "1.0.0",
+        "type": "integration",
+        "category": "communication",
+        "icon": "ph-paper-plane-tilt",
+        "color": "#3b82f6",
+        "tags": [
+          "email",
+          "smtp",
+          "communication",
+          "gmail",
+          "outlook"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "send-email.n8n.json",
+          "elementTemplate": "send-email.element.json",
+          "exampleBpmn": "send-email.bpmn"
+        },
+        "featured": true,
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/integrations/communication/send-email"
+      },
+      {
+        "id": "slack-send-message",
+        "name": "Slack - Send Message",
+        "description": "Send messages to Slack channels or users",
+        "version": "1.0.0",
+        "type": "integration",
+        "category": "communication",
+        "icon": "ph-chats-circle",
+        "color": "#4A154B",
+        "tags": [
+          "slack",
+          "chat",
+          "messaging",
+          "collaboration",
+          "team"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "slack-send-message.n8n.json",
+          "elementTemplate": "slack-send-message.element.json",
+          "exampleBpmn": "slack-send-message.bpmn"
+        },
+        "authentication": "oauth2",
+        "featured": true,
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/integrations/communication/slack"
+      },
+      {
+        "id": "google-sheets",
+        "name": "Google Sheets",
+        "description": "Read, append, and update rows in Google Sheets spreadsheets",
+        "version": "1.0.0",
+        "type": "integration",
+        "category": "data-storage",
+        "icon": "ph-table",
+        "color": "#0F9D58",
+        "tags": [
+          "google",
+          "sheets",
+          "spreadsheet",
+          "data",
+          "storage",
+          "read",
+          "write"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "google-sheets.n8n.json",
+          "elementTemplate": "google-sheets.element.json",
+          "exampleBpmn": "google-sheets.bpmn"
+        },
+        "authentication": "oauth2",
+        "featured": false,
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/integrations/data-storage/google-sheets"
+      },
+      {
+        "id": "http-request",
+        "name": "HTTP Request",
+        "description": "Make HTTP requests to any API endpoint",
+        "version": "1.0.0",
+        "type": "integration",
+        "category": "developer-tools",
+        "icon": "ph-plugs-connected",
+        "color": "#8b5cf6",
+        "tags": [
+          "http",
+          "api",
+          "rest",
+          "webhook",
+          "request"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "http-request.n8n.json",
+          "elementTemplate": "http-request.element.json",
+          "exampleBpmn": "http-request.bpmn"
+        },
+        "featured": true,
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/integrations/developer-tools/http-request"
+      }
+    ],
+    "templates": [
+      {
+        "id": "xai-text-analysis",
+        "name": "xAI Text Analysis",
+        "description": "Analyze text with xAI/Grok models",
+        "version": "1.0.0",
+        "type": "template",
+        "category": "ai-analysis",
+        "icon": "ph-brain",
+        "color": "#06b6d4",
+        "tags": [
+          "ai",
+          "ml",
+          "grok",
+          "xai",
+          "text-analysis",
+          "llm"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "xai-text-analysis-n8n.json",
+          "elementTemplate": "xai-text-analysis-element.json",
+          "exampleBpmn": "xai-text-analysis.bpmn"
+        },
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/templates/ai-analysis/xai-text-analysis"
+      },
+      {
+        "id": "ip-geolocation",
+        "name": "IP Geolocation",
+        "description": "Look up geographic location from IP addresses",
+        "version": "1.0.0",
+        "type": "template",
+        "category": "data-collection",
+        "icon": "ph-globe-hemisphere-west",
+        "color": "#10b981",
+        "tags": [
+          "ip",
+          "geolocation",
+          "location",
+          "api",
+          "data"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "ip-geolocation.n8n.json",
+          "elementTemplate": "ip-geolocation.element.json",
+          "exampleBpmn": "ip-geolocation.bpmn"
+        },
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/templates/data-collection/ip-geolocation"
+      },
+      {
+        "id": "weather-forecast",
+        "name": "Weather Forecast",
+        "description": "Get weather data for any location",
+        "version": "1.0.0",
+        "type": "template",
+        "category": "data-collection",
+        "icon": "ph-cloud-sun",
+        "color": "#f59e0b",
+        "tags": [
+          "weather",
+          "forecast",
+          "api",
+          "location",
+          "data"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "README.md",
+          "n8nWorkflow": "weather-forecast.n8n.json",
+          "elementTemplate": "weather-forecast.element.json",
+          "exampleBpmn": "weather-forecast.bpmn"
+        },
+        "createdAt": "2025-01-03T00:00:00Z",
+        "updatedAt": "2025-01-03T00:00:00Z",
+        "path": "connectors/templates/data-collection/weather-forecast"
+      }
+    ]
+  }
+}

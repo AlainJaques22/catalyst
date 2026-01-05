@@ -1,0 +1,23 @@
+{
+  "id": "send-email",
+  "name": "Send Email",
+  "description": "Send emails via SMTP through n8n",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "ph-paper-plane-tilt",
+  "color": "#3b82f6",
+  "tags": ["email", "smtp", "communication", "gmail", "outlook"],
+  "author": {
+    "name": "Catalyst Team"
+  },
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "send-email.n8n.json",
+    "elementTemplate": "send-email.element.json",
+    "exampleBpmn": "send-email.bpmn"
+  },
+  "featured": true,
+  "createdAt": "2025-01-03T00:00:00Z",
+  "updatedAt": "2025-01-03T00:00:00Z"
+}

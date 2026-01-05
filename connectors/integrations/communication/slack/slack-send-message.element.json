@@ -1,0 +1,103 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Catalyst - Slack Send Message",
+  "id": "io.catalyst.template.slack-send-message",
+  "description": "Sends a Slack message to a Slack Channel",
+  "version": 1,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "icon": {
+    "contents": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z'/%3E%3Cpath d='M2 17l10 5 10-5'/%3E%3Cpath d='M2 12l10 5 10-5'/%3E%3C/svg%3E"
+  },
+  "groups": [
+    {
+      "id": "connection",
+      "label": "Connection"
+    },
+    {
+      "id": "input",
+      "label": "Input"
+    },
+    {
+      "id": "output",
+      "label": "Output"
+    }
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "label": "n8n Webhook URL",
+      "type": "String",
+      "value": "http://catalyst-n8n:5678/webhook/catalyst-slack-send-message",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "webhookUrl"
+      },
+      "group": "connection",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Timeout (seconds)",
+      "type": "String",
+      "value": "30",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "timeout"
+      },
+      "group": "connection"
+    },
+    {
+      "label": "Slack message to post to the Channel",
+      "description": "",
+      "type": "String",
+      "value": "${slackMessage}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "slackMessage"
+      },
+      "group": "input"
+    },
+    {
+      "label": "Slack Channel",
+      "description": "",
+      "type": "String",
+      "value": "${slackChannel}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "slackChannel"
+      },
+      "group": "input"
+    },
+    {
+      "label": "Payload",
+      "type": "Text",
+      "value": "{\n  \"slackMessage\": \"${slackMessage}\",\n  \"slackChannel\": \"${slackChannel}\"\n}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "payload"
+      },
+      "group": "input"
+    },
+    {
+      "label": "Output Mapping",
+      "type": "Text",
+      "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "outputMapping"
+      },
+      "group": "output"
+    }
+  ]
+}

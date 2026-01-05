@@ -1,0 +1,83 @@
+{
+  "name": "IP Geolocation (Form)",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "IP Geolocation Lookup",
+        "formDescription": "Look up geographic location for any IP address.\n\nLeave the IP address field blank to automatically detect and show the location of your current IP address.",
+        "formFields": {
+          "values": [
+            {
+              "fieldName": "ipAddress",
+              "fieldLabel": "IP Address (optional)",
+              "placeholder": "e.g., 8.8.8.8 (leave blank for auto-detect)",
+              "requiredField": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [0, 0],
+      "id": "form-trigger-1",
+      "name": "IP Input Form",
+      "webhookId": "ip-geolocation-form"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.ipAddress ? 'http://ip-api.com/json/' + $json.ipAddress : 'http://ip-api.com/json/' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [220, 0],
+      "id": "http-request-1",
+      "name": "IP-API Request"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "=## Results for {{ $json.query }}\n\n**Location:** {{ $json.city }}, {{ $json.regionName }}, {{ $json.country }}\n\n**Coordinates:** {{ $json.lat }}, {{ $json.lon }}\n\n**Timezone:** {{ $json.timezone }}\n\n**ISP:** {{ $json.isp }}\n\n**Organization:** {{ $json.org }}"
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.4,
+      "position": [440, 0],
+      "id": "form-response-1",
+      "name": "Show Results",
+      "webhookId": "ip-geolocation-result"
+    }
+  ],
+  "connections": {
+    "IP Input Form": {
+      "main": [
+        [
+          {
+            "node": "IP-API Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IP-API Request": {
+      "main": [
+        [
+          {
+            "node": "Show Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "description": "Development/testing version with Form Trigger. IP address is optional - leave blank to auto-detect."
+  }
+}

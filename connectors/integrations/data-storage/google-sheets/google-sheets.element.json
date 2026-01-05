@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Catalyst - Google Sheets",
+  "id": "io.catalyst.template.google-sheets",
+  "description": "Read, append, and update rows in Google Sheets spreadsheets",
+  "version": 1,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    }
+  ]
+}

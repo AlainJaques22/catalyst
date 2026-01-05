@@ -1,0 +1,156 @@
+{
+  "name": "OpenAI Analysis",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ai-analysis",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "f6956c50-eb34-4878-92fa-08f01596c4c6",
+      "name": "Webhook",
+      "webhookId": "6183ab93-ce55-4bba-858a-34fac7071a7c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"model\": \"gpt-4o-mini\",\n    \"messages\": [\n        {\n            \"role\": \"system\",\n            \"content\": \"You are a helpful AI assistant that provides clear, structured analysis.\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": {{ $json.prompt.toJsonString() }}\n        }\n    ],\n    \"max_tokens\": {{ $json.maxTokens }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        320,
+        0
+      ],
+      "id": "8744a6b0-5e47-41c0-8483-e7f7068ec118",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Be4I2XeydjEytPpy",
+          "name": "Bearer Auth account"
+        },
+        "openAiApi": {
+          "id": "CgRf2lE4YozPobqo",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.result }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        688,
+        0
+      ],
+      "id": "a21b49f9-b6f2-458a-b411-3c16ab7b6daf",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract input from webhook - n8n automatically parses JSON\n// Data could be at root level or in body depending on webhook configuration\nconst data = $input.item.json.body || $input.item.json;\n\nconst content = data.content;\nconst analysisType = data.analysisType || \"sentiment\";\nconst maxTokens = data.maxTokens || 1024;\n\n// Validate required fields\nif (!content || content.trim() === \"\") {\n  throw new Error('Missing required field: content. Available fields: ' + Object.keys(data).join(', '));\n}\n\n// Parse maxTokens as integer\nlet maxTokensInt = maxTokens;\nif (typeof maxTokens === 'string') {\n  maxTokensInt = parseInt(maxTokens, 10);\n}\nif (isNaN(maxTokensInt)) {\n  maxTokensInt = 1024;\n}\n\n// Build prompts based on analysis type\nconst prompts = {\n  sentiment: `Analyze the sentiment of this text and respond ONLY with valid JSON (no explanation, no markdown):\n{\"sentiment\": \"positive/negative/neutral/mixed\", \"confidence\": 0-100, \"explanation\": \"...\"}\n\nText: ${content}`,\n  \n  summary: `Summarize this text concisely in 2-3 sentences:\n\n${content}`,\n  \n  key_points: `Extract the key points from this text. Respond ONLY with valid JSON (no explanation, no markdown):\n{\"points\": [\"point 1\", \"point 2\", \"point 3\"]}\n\nText: ${content}`,\n  \n  entities: `Extract named entities from this text. Respond ONLY with valid JSON (no explanation, no markdown):\n{\"people\": [\"name1\"], \"organizations\": [\"org1\"], \"locations\": [\"location1\"], \"dates\": [\"date1\"]}\n\nText: ${content}`,\n  \n  risk: `Assess potential risks in this text. Respond ONLY with valid JSON (no explanation, no markdown):\n{\"riskLevel\": \"low/medium/high\", \"risks\": [\"risk1\"], \"recommendations\": [\"rec1\"]}\n\nText: ${content}`\n};\n\nreturn {\n  json: {\n    prompt: prompts[analysisType] || prompts.sentiment,\n    maxTokens: maxTokensInt\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        0
+      ],
+      "id": "eb7e39ce-87c2-4cc7-80d5-18894f7ee017",
+      "name": "Format the Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract OpenAI response\nconst openaiResponse = $input.item.json;\nconst content = openaiResponse.choices[0].message.content;\n\n// Remove markdown code blocks if present\nlet cleanContent = content\n  .replace(/```json\\n/g, '')\n  .replace(/```\\n/g, '')\n  .replace(/```/g, '')\n  .trim();\n\n// Try to parse as JSON\nlet parsedContent;\ntry {\n  parsedContent = JSON.parse(cleanContent);\n} catch (e) {\n  // If parsing fails, return as text\n  parsedContent = { text: cleanContent };\n}\n\nreturn {\n  json: {\n    result: parsedContent,\n    model: openaiResponse.model,\n    usage: {\n      inputTokens: openaiResponse.usage.prompt_tokens,\n      outputTokens: openaiResponse.usage.completion_tokens,\n      totalTokens: openaiResponse.usage.total_tokens\n    }\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        0
+      ],
+      "id": "ab565f9a-662c-4cfb-b99b-306961b65537",
+      "name": "Format the Response"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Format the Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Format the Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Format the Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format the Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7c832927-4ab0-43a7-b50a-e174fca2e751",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d07cb5830d1c6e8b61c18357e4a7ad7de4f3f165ad8ffc7d47da8473d0e16ea4"
+  },
+  "id": "mxFi0yc9yVcXTxhK",
+  "tags": []
+}
