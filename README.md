@@ -5,7 +5,7 @@
 <h1 align="center">Catalyst</h1>
 
 <p align="center">
-  <strong>Bridge Camunda 7 to n8n's 400+ integrations.<br/>One command. Full control panel. Free Dev. Open Source. Prod usage at 2% of Camunda 8's price.</strong>
+  <strong>Bridge Camunda 7 to n8n's 400+ integrations.<br/>One command. Open Source. Full control panel. Free to Dev, cheap to run. Prod usage at 2% of Camunda 8's price.</strong>
 </p>
 
 <p align="center">
@@ -231,8 +231,6 @@ With n8n under the hood, you have access to **400+ integrations** out of the box
 We welcome contributions! The Connector Builder in the control panel makes it easy to create new connectors from n8n workflows.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
-
 
 ---
 
