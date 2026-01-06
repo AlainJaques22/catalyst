@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
         * {
             margin: 0;
@@ -70,14 +71,24 @@
         }
 
         /* Floating orbs */
-        .orb {
+        .parallax-wrapper {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .orb {
+            position: absolute;
             border-radius: 50%;
             filter: blur(60px);
             opacity: 0.3;
             animation: float 15s ease-in-out infinite;
-            z-index: 0;
-            pointer-events: none;
+            z-index: 0; /* redundant but safe */
         }
         
         .orb-1 {
@@ -362,12 +373,12 @@
         .stat-item h3 {
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--light-blue);
+            color: var(--primary-light);
             margin-bottom: 0.5rem;
         }
 
         .stat-item p {
-            color: var(--gray-400);
+            color: var(--text-secondary);
             font-size: 0.95rem;
         }
 
@@ -482,7 +493,7 @@
             padding-left: 2rem;
             position: relative;
             font-size: 1.05rem;
-            color: var(--gray-400);
+            color: var(--text-secondary);
         }
 
         .column-content li::before {
@@ -494,26 +505,79 @@
             font-size: 1.2rem;
         }
 
-        /* Code Block */
-        .code-block {
-            background: #02040a;
-            color: var(--gray-300);
-            padding: 2rem;
+        /* Code Window (Editor Style) */
+        .code-window {
+            background: #02040a; /* Deep black/blue background */
             border-radius: 12px;
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            overflow-x: auto;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            margin: 2rem 0;
+            width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
-        .code-block .comment {
-            color: var(--gray-600);
+        .code-header {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .code-block .command {
-            color: var(--light-blue);
+        .window-controls {
+            display: flex;
+            gap: 8px;
         }
+
+        .control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .control.red { background-color: #FF5F56; }
+        .control.yellow { background-color: #FFBD2E; }
+        .control.green { background-color: #27C93F; }
+
+        .filename {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            margin-left: 0.5rem;
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .line {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .line-num {
+            color: rgba(255, 255, 255, 0.15);
+            min-width: 25px;
+            text-align: right;
+            user-select: none;
+            font-size: 0.85rem;
+        }
+
+        .token.keyword { color: #60A5FA; } /* Bright Blue */
+        .token.type { color: #FACC15; } /* Bright Yellow */
+        .token.function { color: #60A5FA; } /* Bright Blue */
+        .token.string { color: #4ADE80; } /* Bright Green */
+        .token.comment { color: #D1D5DB; } /* Very Light Gray */
+        .token.number { color: #F472B6; } /* Pink */
+        .token.property { color: #22D3EE; } /* Bright Cyan */
 
         /* Callout Box */
         .callout {
@@ -526,7 +590,7 @@
         }
 
         .callout h3 {
-            color: var(--primary-blue);
+            color: var(--primary-color);
             margin-bottom: 1rem;
             font-size: 1.5rem;
         }
@@ -551,13 +615,13 @@
         }
 
         .pricing-card:hover {
-            border-color: var(--primary-blue);
+            border-color: var(--primary-color);
             transform: translateY(-4px);
             box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
         }
 
         .pricing-card.featured {
-            border-color: var(--primary-blue);
+            border-color: var(--primary-color);
             border-width: 3px;
             position: relative;
         }
@@ -568,8 +632,8 @@
             top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--primary-blue);
-            color: var(--white);
+            background: var(--primary-color);
+            color: var(--white-color);
             padding: 0.25rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -579,13 +643,13 @@
         .pricing-card h3 {
             font-size: 1.75rem;
             margin-bottom: 0.5rem;
-            color: var(--white);
+            color: var(--white-color);
         }
 
         .pricing-card .price {
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--primary-blue);
+            color: var(--primary-color);
             margin: 1rem 0;
         }
 
@@ -603,7 +667,7 @@
 
         .pricing-card li {
             padding: 0.5rem 0;
-            color: var(--gray-400);
+            color: var(--text-secondary);
             padding-left: 1.5rem;
             position: relative;
         }
@@ -612,7 +676,7 @@
             content: '✓';
             position: absolute;
             left: 0;
-            color: var(--primary-blue);
+            color: var(--primary-color);
             font-weight: bold;
         }
 
@@ -645,7 +709,7 @@
         }
 
         .footer-section a {
-            color: var(--gray-400);
+            color: var(--text-secondary);
             text-decoration: none;
             display: block;
             padding: 0.5rem 0;
@@ -653,7 +717,7 @@
         }
 
         .footer-section a:hover {
-            color: var(--light-blue);
+            color: var(--primary-light);
         }
 
         .footer-bottom {
@@ -674,11 +738,11 @@
         }
 
         .badge {
-            background: var(--gray-800);
+            background: rgba(255, 255, 255, 0.1);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.85rem;
-            color: var(--gray-300);
+            color: var(--text-secondary);
         }
 
         /* Responsive */
@@ -720,14 +784,21 @@
     </style>
 </head>
 <body>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <div class="parallax-wrapper" data-speed="0.2">
+        <div class="orb orb-1"></div>
+    </div>
+    <div class="parallax-wrapper" data-speed="0.4">
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="parallax-wrapper" data-speed="0.1">
+        <div class="orb orb-3"></div>
+    </div>
     <!-- Header -->
     <header class="header">
         <nav class="nav-container">
             <a href="/" class="logo">
-                <img src="icon-only-trans.png" alt="Catalyst Connector">
+                <img src="images/catalyst-connector-logo.png" alt="Catalyst Connector">
+                <span class="logo-text" style="margin-left: 0.75rem; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; color: var(--white-color);">Catalyst Connector</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
@@ -806,25 +877,44 @@
                     <p><strong>There had to be a better way.</strong></p>
                 </div>
                 <div class="column-content">
-                    <div class="code-block">
-<span class="comment">// The old way: Write Java for everything</span>
-<span class="command">public class</span> SlackDelegate <span class="command">implements</span> JavaDelegate {
-  <span class="command">public void</span> execute(DelegateExecution execution) {
-    <span class="comment">// 50+ lines of boilerplate...</span>
-    <span class="comment">// HTTP client setup</span>
-    <span class="comment">// Authentication</span>
-    <span class="comment">// Error handling</span>
-    <span class="comment">// Retry logic</span>
-    <span class="comment">// Logging</span>
-  }
-}
+                    <div class="code-window">
+                        <div class="code-header">
+                            <div class="window-controls">
+                                <span class="control red"></span>
+                                <span class="control yellow"></span>
+                                <span class="control green"></span>
+                            </div>
+                            <div class="filename">SlackDelegate.java</div>
+                        </div>
+                        <div class="code-content">
+                            <div class="line"><span class="line-num">1</span> <span class="code-text"><span class="token comment">// The old way: Write Java for everything</span></span></div>
+                            <div class="line"><span class="line-num">2</span> <span class="code-text"><span class="token keyword">public class</span> <span class="token type"></span>SlackDelegate</span> <span class="token keyword">implements</span> <span class="token type">JavaDelegate</span> {</span></div>
+                            <div class="line"><span class="line-num">3</span> <span class="code-text">  <span class="token keyword">public void</span> <span class="token function">execute</span>(<span class="token type">DelegateExecution</span> execution) {</span></div>
+                            <div class="line"><span class="line-num">4</span> <span class="code-text">    <span class="token comment">// 50+ lines of boilerplate...</span></span></div>
+                            <div class="line"><span class="line-num">5</span> <span class="code-text">    <span class="token comment">// HTTP client setup</span></span></div>
+                            <div class="line"><span class="line-num">6</span> <span class="code-text">    <span class="token comment">// Error handling & logging</span></span></div>
+                            <div class="line"><span class="line-num">7</span> <span class="code-text">  }</span></div>
+                            <div class="line"><span class="line-num">8</span> <span class="code-text">}</span></div>
+                        </div>
+                    </div>
 
-<span class="comment">// The Catalyst way: Configure, don't code</span>
-<span class="command">Service Task:</span> "Send Slack Message"
-<span class="command">Connector:</span> Slack Notification
-<span class="command">Channel:</span> #engineering
-<span class="command">Message:</span> "Deployment complete!"
-<span class="comment">// Done. Works in 5 minutes.</span>
+                    <div class="code-window">
+                        <div class="code-header">
+                            <div class="window-controls">
+                                <span class="control red"></span>
+                                <span class="control yellow"></span>
+                                <span class="control green"></span>
+                            </div>
+                            <div class="filename">catalyst_config.yaml</div>
+                        </div>
+                        <div class="code-content">
+                            <div class="line"><span class="line-num">1</span> <span class="code-text"><span class="token comment"># The Catalyst way: Configure, don't code</span></span></div>
+                            <div class="line"><span class="line-num">2</span> <span class="code-text"><span class="token property">Service Task:</span> <span class="token string">"Send Slack Message"</span></span></div>
+                            <div class="line"><span class="line-num">3</span> <span class="code-text"><span class="token property">Connector:</span> <span class="token string">Slack Notification</span></span></div>
+                            <div class="line"><span class="line-num">4</span> <span class="code-text"><span class="token property">Channel:</span> <span class="token string">#engineering</span></span></div>
+                            <div class="line"><span class="line-num">5</span> <span class="code-text"><span class="token property">Message:</span> <span class="token string">"Deployment complete!"</span></span></div>
+                            <div class="line"><span class="line-num">6</span> <span class="code-text"><span class="token comment"># Done. Works in 5 minutes.</span></span></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -870,20 +960,29 @@
             <div class="callout" style="margin-top: 3rem;">
                 <h3>One-Click Docker Install</h3>
                 <p style="margin-bottom: 1rem;">Get the complete stack running in under 5 minutes:</p>
-                <div class="code-block">
-<span class="comment"># Full stack with one command</span>
-<span class="command">docker-compose up -d</span>
-
-<span class="comment"># Includes:</span>
-<span class="comment"># - Camunda 7</span>
-<span class="comment"># - Catalyst Bridge (pre-configured)</span>
-<span class="comment"># - n8n</span>
-<span class="comment"># - PostgreSQL</span>
-<span class="comment"># - Example workflows</span>
-
-<span class="comment"># Access at:</span>
-http://localhost:8080  <span class="comment"># Camunda</span>
-http://localhost:5678  <span class="comment"># n8n</span>
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="window-controls">
+                            <span class="control red"></span>
+                            <span class="control yellow"></span>
+                            <span class="control green"></span>
+                        </div>
+                        <div class="filename">terminal</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="line"><span class="line-num">1</span> <span class="code-text"><span class="token comment"># Full stack with one command</span></span></div>
+                        <div class="line"><span class="line-num">2</span> <span class="code-text">$ <span class="token function">docker-compose</span> up -d</span></div>
+                        <div class="line"><span class="line-num">3</span> <span class="code-text"></span></div>
+                        <div class="line"><span class="line-num">4</span> <span class="code-text"><span class="token comment"># Includes:</span></span></div>
+                        <div class="line"><span class="line-num">5</span> <span class="code-text"><span class="token comment"># - Camunda 7</span></span></div>
+                        <div class="line"><span class="line-num">6</span> <span class="code-text"><span class="token comment"># - Catalyst Bridge (pre-configured)</span></span></div>
+                        <div class="line"><span class="line-num">7</span> <span class="code-text"><span class="token comment"># - n8n</span></span></div>
+                        <div class="line"><span class="line-num">8</span> <span class="code-text"><span class="token comment"># - PostgreSQL</span></span></div>
+                        <div class="line"><span class="line-num">9</span> <span class="code-text"></span></div>
+                        <div class="line"><span class="line-num">10</span> <span class="code-text"><span class="token comment"># Access at:</span></span></div>
+                        <div class="line"><span class="line-num">11</span> <span class="code-text">http://localhost:8080 <span class="token comment"># Camunda</span></span></div>
+                        <div class="line"><span class="line-num">12</span> <span class="code-text">http://localhost:5678 <span class="token comment"># n8n</span></span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1025,8 +1124,8 @@ http://localhost:5678  <span class="comment"># n8n</span>
 
                 <div class="pricing-card featured">
                     <h3>n8n Ecosystem</h3>
-                    <div class="price">$0-$50</div>
-                    <div class="price-note">Per month (optional)</div>
+                    <div class="price">$20-$50</div>
+                    <div class="price-note">Per month</div>
                     <ul>
                         <li>400+ integrations included</li>
                         <li>7,400+ workflow templates</li>
@@ -1135,5 +1234,20 @@ http://localhost:5678  <span class="comment"># n8n</span>
         </div>
     </footer>
     <script src="particles.js"></script>
+    <script>
+        // Parallax & Fade effect for background orbs
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            
+            document.querySelectorAll('.parallax-wrapper').forEach(wrapper => {
+                const speed = wrapper.getAttribute('data-speed');
+                wrapper.style.transform = `translateY(-${scrolled * speed}px)`;
+                
+                // Fade out as user scrolls down (completely gone by 800px)
+                const opacity = 1 - (scrolled / 800);
+                wrapper.style.opacity = Math.max(0, opacity);
+            });
+        });
+    </script>
 </body>
 </html>
