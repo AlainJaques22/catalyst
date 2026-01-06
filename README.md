@@ -238,7 +238,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## 💖 Support This Project
 
-Catalyst is built with love (and Claude 🤖). If you want to see it succeed, consider supporting development:
+Catalyst is built with love. If you want to see it succeed, consider supporting development:
 
 <p align="center">
   <a href="https://github.com/sponsors/AlainJaques22">
