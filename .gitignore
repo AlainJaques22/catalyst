@@ -1,5 +1,7 @@
 # Compiled class file
 *.class
+#Claude AI files
+*.claude
 
 # Log file
 *.log

@@ -5,7 +5,7 @@
 <h1 align="center">Catalyst</h1>
 
 <p align="center">
-  <strong>Bridge Camunda 7 to n8n's 400+ integrations.<br/>One command. Full control panel. 97% less $$$ than Camunda 8.</strong>
+  <strong>Bridge Camunda 7 to n8n's 400+ integrations.<br/>One command. Full control panel. Free Dev. Open Source. Prod usage at 2% of Camunda 8's price.</strong>
 </p>
 
 <p align="center">
@@ -26,13 +26,17 @@
 
 ## 🚀 Quick Start
 
-**Prerequisites:** All you need is Docker.The rest happens automagically, Camunda 7, n8n, nginx, PostgeSQL are pre-installed and pre-configured. Get Docker at https://www.docker.com/
+**Prerequisites:** All you need is Docker 🐳. Seriously.
 
-Then open up your Terminal/CMD/Powershell, clone this repository and run the docker compose. Prepare to be impressed.
+The rest happens automagically. Camunda 7, n8n, nginx, PostgeSQL, web Modeler are pre-installed and pre-configured in the Docker image.
+
+Get Docker at https://www.docker.com/
+
+Then open up your Terminal/CMD/Powershell, clone this repository and run the docker compose. Watch it build. Prepare to be impressed.
 
 ```bash
 git clone https://github.com/AlainJaques22/catalyst.git
-cd catalyst
+cd catalyst/docker
 docker-compose up -d
 ```
 
@@ -70,6 +74,7 @@ One `docker-compose up` gives you:
 - ✅ **PostgreSQL** - Database
 - ✅ **Nginx** - Reverse proxy
 - ✅ **Control Panel** - The beautiful UI you see above
+- ✅ **Web based BPMN Modeler** - BPMN editor in your browser
 
 No installation guides. No dependency hell. No configuration headaches.
 
