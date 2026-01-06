@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_ip_geolocation" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.42.0">
+  <bpmn:process id="ip-geolocation-example" name="IP Geolocation Example" isExecutable="true" camunda:historyTimeToLive="P1D">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_EnterIP" />
+    <bpmn:userTask id="Activity_EnterIP" name="Enter IP Address" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ipAddress" label="IP Address" type="string" defaultValue="">
+            <camunda:properties>
+              <camunda:property id="description" value="Enter an IP address to look up (e.g., 8.8.8.8). Leave blank to detect your current IP address automatically." />
+            </camunda:properties>
+            <camunda:validation>
+              <camunda:constraint name="maxlength" config="45" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_EnterIP" targetRef="Activity_IPGeolocation" />
+    <bpmn:serviceTask id="Activity_IPGeolocation" name="Lookup IP Location" camunda:modelerTemplate="io.catalyst.template.ip-geolocation" camunda:modelerTemplateVersion="1" camunda:class="io.catalyst.bridge.CatalystBridge">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="webhookUrl">http://catalyst-n8n:5678/webhook/catalyst-ip-geolocation</camunda:inputParameter>
+          <camunda:inputParameter name="timeout">30</camunda:inputParameter>
+          <camunda:inputParameter name="payload">{
+  "ipAddress": "${ipAddress}"
+}</camunda:inputParameter>
+          <camunda:inputParameter name="outputMapping">{
+  "success": "$.success",
+  "statusCode": "$.statusCode",
+  "country": "$.responseBody.country",
+  "countryCode": "$.responseBody.countryCode",
+  "region": "$.responseBody.regionName",
+  "city": "$.responseBody.city",
+  "zip": "$.responseBody.zip",
+  "lat": "$.responseBody.lat",
+  "lon": "$.responseBody.lon",
+  "timezone": "$.responseBody.timezone",
+  "isp": "$.responseBody.isp",
+  "org": "$.responseBody.org",
+  "query": "$.responseBody.query",
+  "error": "$.error"
+}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Activity_IPGeolocation" targetRef="Gateway_CheckSuccess" />
+    <bpmn:exclusiveGateway id="Gateway_CheckSuccess" name="Lookup successful?" default="Flow_Error">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Success</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Error</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_Success" name="Yes" sourceRef="Gateway_CheckSuccess" targetRef="Activity_ViewSuccess">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${success == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Error" name="No" sourceRef="Gateway_CheckSuccess" targetRef="Activity_ViewError" />
+    <bpmn:endEvent id="EndEvent_Success" name="Success">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_Error" name="Error">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_1" errorRef="Error_LookupFailed" />
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_ViewSuccess" name="View Location Result" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="resultDisplay" label="Geolocation Results" type="string" defaultValue="${query} is located in ${city}, ${region}, ${country}">
+            <camunda:properties>
+              <camunda:property id="readonly" value="true" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="coordinatesDisplay" label="Coordinates" type="string" defaultValue="Lat: ${lat}, Lon: ${lon}">
+            <camunda:properties>
+              <camunda:property id="readonly" value="true" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="timezoneDisplay" label="Timezone" type="string" defaultValue="${timezone}">
+            <camunda:properties>
+              <camunda:property id="readonly" value="true" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="ispDisplay" label="ISP / Organization" type="string" defaultValue="${isp} / ${org}">
+            <camunda:properties>
+              <camunda:property id="readonly" value="true" />
+            </camunda:properties>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Success</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Activity_ViewSuccess" targetRef="EndEvent_Success" />
+    <bpmn:userTask id="Activity_ViewError" name="View Error Result" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="errorDisplay" label="Error" type="string" defaultValue="${error}">
+            <camunda:properties>
+              <camunda:property id="readonly" value="true" />
+            </camunda:properties>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Error</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Activity_ViewError" targetRef="EndEvent_Error" />
+  </bpmn:process>
+  <bpmn:error id="Error_LookupFailed" name="IP Lookup Failed" errorCode="IP_LOOKUP_ERROR" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ip-geolocation-example">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="165" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_EnterIP_di" bpmnElement="Activity_EnterIP">
+        <dc:Bounds x="240" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_IPGeolocation_di" bpmnElement="Activity_IPGeolocation">
+        <dc:Bounds x="390" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CheckSuccess_di" bpmnElement="Gateway_CheckSuccess" isMarkerVisible="true">
+        <dc:Bounds x="545" y="115" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="541" y="85" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Success_di" bpmnElement="EndEvent_Success">
+        <dc:Bounds x="832" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="830" y="165" width="43" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Error_di" bpmnElement="EndEvent_Error">
+        <dc:Bounds x="832" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="838" y="285" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ViewSuccess_di" bpmnElement="Activity_ViewSuccess">
+        <dc:Bounds x="650" y="100" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ViewError_di" bpmnElement="Activity_ViewError">
+        <dc:Bounds x="650" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="140" />
+        <di:waypoint x="240" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="140" />
+        <di:waypoint x="390" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="490" y="140" />
+        <di:waypoint x="545" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Success_di" bpmnElement="Flow_Success">
+        <di:waypoint x="595" y="140" />
+        <di:waypoint x="650" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="614" y="122" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Error_di" bpmnElement="Flow_Error">
+        <di:waypoint x="570" y="165" />
+        <di:waypoint x="570" y="260" />
+        <di:waypoint x="650" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="210" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="750" y="140" />
+        <di:waypoint x="832" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="750" y="260" />
+        <di:waypoint x="832" y="260" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

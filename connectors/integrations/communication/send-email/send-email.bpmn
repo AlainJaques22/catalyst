@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_send-email" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.42.0">
+  <bpmn:process id="send-email-example" name="Send Email Example" isExecutable="true" camunda:historyTimeToLive="P1D">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_Input" />
+    <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="toEmail" label="To" type="string">
+            <camunda:properties>
+              <camunda:property id="description" value="recipient@example.com" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="subject" label="Subject" type="string">
+            <camunda:properties>
+              <camunda:property id="description" value="Email subject line" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="message" label="Message" type="string">
+            <camunda:properties>
+              <camunda:property id="description" value="Enter your message here..." />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="ccEmail" label="CC (optional)" type="string">
+            <camunda:properties>
+              <camunda:property id="description" value="cc@example.com" />
+            </camunda:properties>
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_Input" targetRef="Activity_Service" />
+    <bpmn:serviceTask id="Activity_Service" name="Send Email" camunda:modelerTemplate="io.catalyst.template.send-email" camunda:modelerTemplateVersion="1" camunda:class="io.catalyst.bridge.CatalystBridge">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="timeout">30</camunda:inputParameter>
+          <camunda:inputParameter name="toEmail">${toEmail}</camunda:inputParameter>
+          <camunda:inputParameter name="subject">${subject}</camunda:inputParameter>
+          <camunda:inputParameter name="message">${message}</camunda:inputParameter>
+          <camunda:inputParameter name="ccEmail">${ccEmail}</camunda:inputParameter>
+          <camunda:inputParameter name="payload">{
+  "toEmail": "${toEmail}",
+  "subject": "${subject}",
+  "message": "${message}",
+  "ccEmail": "${ccEmail}"
+}</camunda:inputParameter>
+          <camunda:inputParameter name="outputMapping">{
+  "success": "$.success",
+  "statusCode": "$.statusCode",
+  "error": "$.error"
+}</camunda:inputParameter>
+          <camunda:inputParameter name="webhookUrl">http://catalyst-n8n:5678/webhook/catalyst-send-email</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Activity_Service" targetRef="EndEvent_1" />
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="send-email-example">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="145" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_Input_di" bpmnElement="Activity_Input">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_Service_di" bpmnElement="Activity_Service">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="562" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="570" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="500" y="120" />
+        <di:waypoint x="562" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

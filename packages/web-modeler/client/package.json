@@ -1,0 +1,42 @@
+{
+  "name": "@catalyst/web-modeler-client",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@bpmn-io/properties-panel": "^3.35.1",
+    "@miragon/camunda-web-modeler": "^0.1.1",
+    "@phosphor-icons/react": "^2.0.0",
+    "axios": "^1.6.0",
+    "bpmn-js": "^14.0.0",
+    "bpmn-js-properties-panel": "^5.45.0",
+    "camunda-bpmn-moddle": "^7.0.1",
+    "min-dash": "4.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^5.0.0"
+  },
+  "resolutions": {
+    "min-dash": "4.1.1"
+  }
+}

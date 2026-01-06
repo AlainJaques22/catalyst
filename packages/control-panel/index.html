@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst Control Panel</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2306b6d4' d='M55 10 L30 50 L45 50 L40 90 L70 40 L55 40 Z'/%3E%3C/svg%3E">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2234;
+            --bg-card-hover: #1f2943;
+            --border-color: #2d3a52;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #2563eb;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f97316;
+            --status-green: #10b981;
+            --status-amber: #f59e0b;
+            --status-red: #ef4444;
+            --status-green-bg: rgba(16, 185, 129, 0.15);
+            --status-amber-bg: rgba(245, 158, 11, 0.15);
+            --status-red-bg: rgba(239, 68, 68, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #0a0e27;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating orbs background */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: #3B82F6;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: #60A5FA;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: #2563EB;
+            top: 20%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+        }
+
+        /* Particles canvas */
+        #reactive-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Ensure content is above orbs and particles */
+        .header, .hero, .container, main {
+            position: relative;
+            z-index: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-primary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.25);
+        }
+
+        .logo-icon-img {
+            height: 63px;
+            width: auto;
+        }
+
+        .logo-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .header-quick-launch {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .header-launch-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .header-launch-btn svg,
+        .header-launch-btn i {
+            width: 16px;
+            height: 16px;
+            font-size: 16px;
+        }
+
+        .header-launch-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .header-launch-btn.dashboard:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .header-launch-btn.n8n:hover {
+            border-color: #ff6d5a;
+            color: #ff6d5a;
+        }
+
+        .header-launch-btn.camunda:hover {
+            border-color: #eab308;
+            color: #eab308;
+        }
+
+        .header-launch-btn.modeler:hover {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .header-launch-btn.builder:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .header-launch-btn.connectors:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .header-launch-btn.github:hover {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+
+        .header-launch-btn.logs:hover {
+            border-color: var(--status-green);
+            color: var(--status-green);
+        }
+
+        /* Tooltip */
+        .header-launch-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 8px;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            white-space: pre-line;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 150px;
+        }
+
+        .header-launch-btn:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-status {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--status-green);
+            box-shadow: 0 0 8px var(--status-green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.warning {
+            background: var(--status-amber);
+            box-shadow: 0 0 8px var(--status-amber);
+        }
+
+        .status-dot.error {
+            background: var(--status-red);
+            box-shadow: 0 0 8px var(--status-red);
+        }
+
+        .status-dot.checking {
+            background: var(--text-muted);
+            box-shadow: none;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Logs Stats Row */
+        .logs-stats {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logs-stat-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 0.25rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .logs-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            line-height: 1.2;
+        }
+
+        .logs-stat-label {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Quick Launch */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-cyan);
+        }
+
+        .quick-launch {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .launch-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .launch-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.15);
+        }
+
+        .launch-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .launch-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .launch-icon.n8n {
+            background: linear-gradient(135deg, #ff6d5a, #ea4335);
+            color: white;
+        }
+
+        .launch-icon.camunda {
+            background: linear-gradient(135deg, #eab308, #facc15);
+            color: white;
+        }
+
+        .launch-icon.modeler {
+            background: linear-gradient(135deg, var(--accent-purple), #a855f7);
+            color: white;
+        }
+
+        .launch-icon.builder {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-primary));
+            color: white;
+        }
+
+        .launch-icon.docs {
+            background: linear-gradient(135deg, var(--accent-purple), #a855f7);
+            color: white;
+        }
+
+        .launch-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .launch-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .launch-arrow {
+            margin-left: auto;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .launch-card:hover .launch-arrow {
+            transform: translateX(4px);
+            color: var(--accent-cyan);
+        }
+
+        /* Two Column Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 480px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Connector Gallery */
+        .connector-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .connector-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .connector-card:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .connector-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .connector-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .connector-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .connector-desc {
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .connector-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .connector-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .connector-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* Connector Type Selector */
+        .connector-type-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.25rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .type-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .type-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .type-tab.active {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .category-tab {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .category-tab:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+
+        .category-tab.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .category-count {
+            margin-left: 0.5rem;
+            padding: 0.125rem 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        .category-tab:not(.active) .category-count {
+            background: var(--bg-secondary);
+        }
+
+        /* Connector Filters */
+        .connector-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #connectorSearch {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        #connectorSearch:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        /* Empty State */
+        .connector-empty {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .connector-empty i {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        /* Live Logs Panel */
+        .logs-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .logs-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logs-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .logs-live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--status-red);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        .logs-filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .logs-filter {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logs-filter.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .logs-sort {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.375rem 0.625rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 0.5rem;
+        }
+
+        .logs-sort:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .logs-sort svg {
+            transition: transform 0.2s;
+        }
+
+        .logs-sort.desc svg {
+            transform: rotate(180deg);
+        }
+
+        .logs-filter:hover:not(.active) {
+            border-color: var(--accent-primary);
+        }
+
+        .logs-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.625rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.813rem;
+            transition: background 0.15s;
+        }
+
+        .log-entry:hover {
+            background: var(--bg-secondary);
+        }
+
+        .log-time {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .log-icon {
+            flex-shrink: 0;
+            font-size: 0.875rem;
+        }
+
+        .log-message {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .log-entry.success .log-message { color: var(--status-green); }
+        .log-entry.error .log-message { color: var(--status-red); }
+        .log-entry.warning .log-message { color: var(--status-amber); }
+        .log-entry.info .log-message { color: var(--text-secondary); }
+
+        .log-source {
+            font-size: 0.688rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .log-source.n8n { background: rgba(255, 109, 90, 0.2); color: #ff6d5a; }
+        .log-source.camunda { background: rgba(234, 179, 8, 0.2); color: #eab308; }
+
+        .logs-footer {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logs-status {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .logs-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .logs-btn {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: all 0.2s;
+        }
+
+        .logs-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .logs-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .logs-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Documentation Section */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .doc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .doc-card:hover {
+            border-color: var(--accent-purple);
+            background: var(--bg-card-hover);
+        }
+
+        .doc-card h4 {
+            font-size: 0.938rem;
+            font-weight: 600;
+        }
+
+        .doc-card p {
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+        }
+
+        /* Empty state for logs */
+        .logs-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .logs-empty svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .logs-empty p {
+            font-size: 0.875rem;
+        }
+
+        /* Section spacing */
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        /* Config Modal */
+        .config-note {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+        }
+
+        .config-note code {
+            background: var(--bg-card);
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating orbs background -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Animated particles canvas -->
+    <canvas id="reactive-bg"></canvas>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="/images/catalyst-connector-logo.png" alt="Catalyst" class="logo-icon-img">
+                <div>
+                    <div class="logo-text">Catalyst Connector</div>
+                    <div class="logo-subtitle">CONTROL PANEL</div>
+                </div>
+            </div>
+            <div class="header-quick-launch">
+                <a href="/" class="header-launch-btn dashboard" data-tooltip="Control Panel&#10;Main dashboard">
+                    <i class="ph ph-house"></i>
+                </a>
+                <a href="#" class="header-launch-btn n8n" onclick="openN8n(); return false;" data-tooltip="n8n Workflows&#10;Build and manage automation workflows">
+                    <i class="ph ph-flow-arrow"></i>
+                    <span>n8n</span>
+                </a>
+                <a href="#" class="header-launch-btn camunda" onclick="openCamunda(); return false;" data-tooltip="Camunda Cockpit&#10;Monitor BPMN processes and tasks">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Camunda</span>
+                </a>
+                <a href="/modeler" class="header-launch-btn modeler" data-tooltip="Camunda Modeler&#10;Design and deploy process diagrams">
+                    <i class="ph ph-flow-arrow"></i>
+                    <span>Modeler</span>
+                </a>
+                <a href="/connectors.html" class="header-launch-btn connectors" data-tooltip="Connector Gallery&#10;Browse all available connectors">
+                    <i class="ph ph-grid-four"></i>
+                    <span>Connectors</span>
+                </a>                <a href="/connector-builder/" class="header-launch-btn builder" data-tooltip="Connector Builder&#10;Create connectors from n8n workflows">
+                    <i class="ph ph-stack"></i>
+                    <span>Builder</span>
+                </a>
+                <a href="https://github.com/AlainJaques22/catalyst-connector" target="_blank" class="header-launch-btn github" data-tooltip="GitHub Repository&#10;Source code and documentation">
+                    <i class="ph ph-github-logo"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="/logs.html" class="header-launch-btn logs" data-tooltip="Live Logs&#10;Full screen execution logs">
+                    <i class="ph ph-list-bullets"></i>
+                    <span>Logs</span>
+                </a>
+            </div>
+            <div class="header-status">
+                <div class="status-indicator">
+                    <span class="status-dot checking" id="n8nStatus"></span>
+                    <span>n8n</span>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot checking" id="camundaStatus"></span>
+                    <span>Camunda</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Quick Launch Section -->
+        <section class="section">
+            <h2 class="section-title">
+                <i class="ph ph-lightning"></i>
+                Quick Launch
+            </h2>
+            <div class="quick-launch">
+                <a href="#" class="launch-card" onclick="openN8n(); return false;">
+                    <div class="launch-icon n8n">
+                        <i class="ph ph-flow-arrow"></i>
+                    </div>
+                    <div class="launch-info">
+                        <h3>n8n Workflows</h3>
+                        <p>Build and manage automation workflows</p>
+                    </div>
+                    <i class="ph ph-arrow-right launch-arrow"></i>
+                </a>
+
+                <a href="#" class="launch-card" onclick="openCamunda(); return false;">
+                    <div class="launch-icon camunda">
+                        <i class="ph ph-squares-four"></i>
+                    </div>
+                    <div class="launch-info">
+                        <h3>Camunda Cockpit</h3>
+                        <p>Monitor BPMN processes and tasks</p>
+                    </div>
+                    <i class="ph ph-arrow-right launch-arrow"></i>
+                </a>
+
+                <a href="/modeler" class="launch-card">
+                    <div class="launch-icon modeler">
+                        <i class="ph ph-flow-arrow"></i>
+                    </div>
+                    <div class="launch-info">
+                        <h3>Camunda Modeler</h3>
+                        <p>Design and deploy process diagrams</p>
+                    </div>
+                    <i class="ph ph-arrow-right launch-arrow"></i>
+                </a>
+
+                <a href="/connector-builder/" class="launch-card">
+                    <div class="launch-icon builder">
+                        <i class="ph ph-stack"></i>
+                    </div>
+                    <div class="launch-info">
+                        <h3>Connector Builder</h3>
+                        <p>Create connectors from n8n workflows</p>
+                    </div>
+                    <i class="ph ph-arrow-right launch-arrow"></i>
+                </a>
+
+                <a href="https://github.com/AlainJaques22/catalyst-connector" target="_blank" class="launch-card">
+                    <div class="launch-icon docs">
+                        <i class="ph ph-github-logo"></i>
+                    </div>
+                    <div class="launch-info">
+                        <h3>GitHub Repository</h3>
+                        <p>Source code and documentation</p>
+                    </div>
+                    <i class="ph ph-arrow-right launch-arrow"></i>
+                </a>
+            </div>
+        </section>
+
+        <div class="main-grid">
+            <div>
+                <!-- Connector Gallery -->
+                <section class="section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2 class="section-title" style="margin-bottom: 0;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7" rx="1" />
+                                <rect x="14" y="3" width="7" height="7" rx="1" />
+                                <rect x="3" y="14" width="7" height="7" rx="1" />
+                                <rect x="14" y="14" width="7" height="7" rx="1" />
+                            </svg>
+                            Featured Connectors
+                        </h2>
+                        <a href="connectors.html" class="connector-btn" style="padding: 0.5rem 1rem; white-space: nowrap; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <i class="ph ph-grid-four"></i> View All Connectors
+                        </a>
+                    </div>
+
+                    <!-- Connector Gallery (Featured Only) -->
+                    <div class="connector-gallery" id="connectorGallery">
+                        <!-- Featured connectors loaded dynamically -->
+                    </div>
+                </section>
+
+                <!-- Documentation -->
+                <section class="section">
+                    <h2 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                        Documentation
+                    </h2>
+                    <div class="docs-grid">
+                        <a href="https://github.com/AlainJaques22/catalyst-connector#readme" target="_blank" class="doc-card">
+                            <h4>Getting Started</h4>
+                            <p>Installation and setup guide</p>
+                        </a>
+                        <a href="https://github.com/AlainJaques22/catalyst-connector/tree/main/connectors/official#readme" target="_blank" class="doc-card">
+                            <h4>Connector Guide</h4>
+                            <p>How to use and create connectors</p>
+                        </a>
+                        <a href="https://docs.n8n.io/" target="_blank" class="doc-card">
+                            <h4>n8n Documentation</h4>
+                            <p>Official n8n docs</p>
+                        </a>
+                        <a href="https://docs.camunda.org/manual/latest/" target="_blank" class="doc-card">
+                            <h4>Camunda Docs</h4>
+                            <p>Camunda Platform 7 manual</p>
+                        </a>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Live Logs Panel -->
+            <aside>
+                <div class="logs-panel">
+                    <div class="logs-stats">
+                        <div class="logs-stat-box">
+                            <span class="logs-stat-value" id="connectorCount">-</span>
+                            <span class="logs-stat-label">Connectors</span>
+                        </div>
+                        <div class="logs-stat-box">
+                            <span class="logs-stat-value" id="workflowCount">-</span>
+                            <span class="logs-stat-label">Workflows</span>
+                        </div>
+                        <div class="logs-stat-box">
+                            <span class="logs-stat-value" id="executionCount">-</span>
+                            <span class="logs-stat-label">Today</span>
+                        </div>
+                    </div>
+                    <div class="logs-header">
+                        <div class="logs-title">
+                            <span class="logs-live-dot"></span>
+                            Live Logs
+                        </div>
+                        <div class="logs-filters">
+                            <button class="logs-filter active" data-filter="all">All</button>
+                            <button class="logs-filter" data-filter="n8n">n8n</button>
+                            <button class="logs-filter" data-filter="camunda">Camunda</button>
+                            <button class="logs-sort" id="sortBtn" onclick="toggleSort()" title="Toggle sort order">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                                    <path d="M12 5v14M5 12l7-7 7 7" id="sortIcon"/>
+                                </svg>
+                                <span id="sortLabel">Newest</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="logs-container" id="logsContainer">
+                        <div class="logs-empty">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 005 0" />
+                            </svg>
+                            <p>Connecting to services...</p>
+                        </div>
+                    </div>
+                    <div class="logs-footer">
+                        <span class="logs-status" id="logsStatus">Connecting...</span>
+                        <div class="logs-actions">
+                            <button class="logs-btn" id="pauseBtn" onclick="togglePause()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="6" y="4" width="4" height="16" />
+                                    <rect x="14" y="4" width="4" height="16" />
+                                </svg>
+                                Pause
+                            </button>
+                            <button class="logs-btn" onclick="clearLogs()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6" />
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                </svg>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Update these URLs for your environment
+        const CONFIG = {
+            n8nUrl: '/n8n',  // Proxied through nginx to n8n:5678
+            n8nApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZDM5YTIwZi0zNDhhLTQ4MTktYjMxNi01ZjIwYjVjYjAwMGUiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzY3MzU2NjAyfQ.EdU1TWhvvxnvkTv5tQxYXLNmMACly1As7fRTcJ51q4E', // Set your n8n API key here (Settings > API > Create API Key)
+            camundaApiUrl: '/camunda-api',  // Proxied through nginx to camunda:8080/engine-rest
+            camundaAppUrl: '/camunda',  // Proxied through nginx to camunda:8080/camunda (web apps)
+            pollInterval: 5000, // 5 seconds
+        };
+
+        // State
+        let logs = [];
+        let isPaused = false;
+        let currentFilter = 'all';
+        let sortNewest = true; // true = newest first (descending), false = oldest first (ascending)
+        let lastN8nExecutionId = null;
+        let lastCamundaTimestamp = null;
+        let workflowCache = {}; // Cache workflow names by ID
+
+        // Connector state
+        let connectorsManifest = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadConnectorManifest();
+            checkServices();
+            // Wait for workflow cache to populate before fetching logs
+            await updateStats();
+            startLogPolling();
+
+            // Set up filter buttons
+            document.querySelectorAll('.logs-filter').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.logs-filter').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderLogs();
+                });
+            });
+        });
+
+        async function loadConnectorManifest() {
+            try {
+                const response = await fetch('./connectors-manifest.json');
+                connectorsManifest = await response.json();
+                renderConnectorGallery();
+            } catch (error) {
+                console.error('Failed to load connectors:', error);
+                const gallery = document.getElementById('connectorGallery');
+                gallery.innerHTML = `
+                    <div class="connector-empty">
+                        <i class="ph ph-warning-circle"></i>
+                        <p>Failed to load connectors</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderConnectorGallery() {
+            const gallery = document.getElementById('connectorGallery');
+
+            if (!connectorsManifest) {
+                gallery.innerHTML = `
+                    <div class="connector-empty">
+                        <i class="ph ph-package"></i>
+                        <p>Loading connectors...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Get all connectors (both integrations and templates) that are featured
+            const allConnectors = [
+                ...connectorsManifest.connectors.integrations,
+                ...connectorsManifest.connectors.templates
+            ];
+            const featuredConnectors = allConnectors.filter(c => c.featured === true);
+
+            if (featuredConnectors.length === 0) {
+                gallery.innerHTML = `
+                    <div class="connector-empty">
+                        <i class="ph ph-package"></i>
+                        <p>No featured connectors yet</p>
+                    </div>
+                `;
+                document.getElementById('connectorCount').textContent = '0';
+                return;
+            }
+
+            gallery.innerHTML = featuredConnectors.map(c => `
+                <div class="connector-card" data-category="${c.category}">
+                    <div class="connector-header">
+                        <div class="connector-icon" style="background: ${c.color}20; color: ${c.color}">
+                            <i class="ph ${c.icon}"></i>
+                        </div>
+                        <span class="connector-name">${c.name}</span>
+                    </div>
+                    <p class="connector-desc">${c.description}</p>
+                    <div class="connector-actions">
+                        <a href="${c.path}/README.md" target="_blank" class="connector-btn">
+                            <i class="ph ph-book-open"></i> Docs
+                        </a>
+                        <button class="connector-btn" onclick="viewConnector('${c.id}')">
+                            <i class="ph ph-eye"></i> View
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('connectorCount').textContent = featuredConnectors.length;
+        }
+
+        async function updateStats() {
+            // Fetch n8n workflow count and cache names
+            try {
+                const headers = {};
+                if (CONFIG.n8nApiKey) {
+                    headers['X-N8N-API-KEY'] = CONFIG.n8nApiKey;
+                }
+                const response = await fetch(`${CONFIG.n8nUrl}/api/v1/workflows`, { headers });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data) {
+                        document.getElementById('workflowCount').textContent = data.data.length;
+                        // Cache workflow names by ID for use in logs
+                        data.data.forEach(wf => {
+                            workflowCache[wf.id] = wf.name;
+                        });
+                    }
+                }
+            } catch (e) {
+                document.getElementById('workflowCount').textContent = '-';
+            }
+
+            // Execution count is updated in fetchN8nLogs
+        }
+
+        async function checkServices() {
+            // Check n8n
+            try {
+                const response = await fetch(`${CONFIG.n8nUrl}/healthz`, { mode: 'no-cors' });
+                document.getElementById('n8nStatus').className = 'status-dot';
+            } catch (e) {
+                document.getElementById('n8nStatus').className = 'status-dot error';
+            }
+
+            // Check Camunda
+            try {
+                const response = await fetch(`${CONFIG.camundaApiUrl}/version`, { mode: 'no-cors' });
+                document.getElementById('camundaStatus').className = 'status-dot';
+            } catch (e) {
+                document.getElementById('camundaStatus').className = 'status-dot error';
+            }
+        }
+
+        function startLogPolling() {
+            fetchLogs();
+            setInterval(() => {
+                if (!isPaused) {
+                    fetchLogs();
+                }
+            }, CONFIG.pollInterval);
+        }
+
+        async function fetchLogs() {
+            try {
+                // Fetch n8n executions
+                await fetchN8nLogs();
+            } catch (e) {
+                console.log('n8n not reachable');
+            }
+
+            try {
+                // Fetch Camunda history
+                await fetchCamundaLogs();
+            } catch (e) {
+                console.log('Camunda not reachable');
+            }
+
+            updateLogsStatus();
+        }
+
+        let n8nCorsError = false;
+
+        async function fetchN8nLogs() {
+            if (n8nCorsError) return; // Skip if we already know CORS fails
+
+            try {
+                const headers = {};
+                if (CONFIG.n8nApiKey) {
+                    headers['X-N8N-API-KEY'] = CONFIG.n8nApiKey;
+                }
+                const response = await fetch(`${CONFIG.n8nUrl}/api/v1/executions?limit=20`, { headers });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.data && data.data.length > 0) {
+                        // Count today's executions
+                        const today = new Date().toDateString();
+                        let todayCount = 0;
+
+                        data.data.forEach(exec => {
+                            if (new Date(exec.startedAt).toDateString() === today) {
+                                todayCount++;
+                            }
+                            if (!logs.find(l => l.id === `n8n-${exec.id}`)) {
+                                const status = exec.finished ? (exec.status === 'success' ? 'success' : 'error') : 'info';
+                                // Get workflow name from execution data or cache
+                                const workflowName = exec.workflowData?.name || workflowCache[exec.workflowId] || `Workflow #${exec.workflowId}`;
+                                const duration = exec.finished && exec.stoppedAt ? Math.round(new Date(exec.stoppedAt) - new Date(exec.startedAt)) : null;
+                                addLog({
+                                    id: `n8n-${exec.id}`,
+                                    time: new Date(exec.startedAt),
+                                    source: 'n8n',
+                                    status: status,
+                                    message: `${workflowName} - ${exec.status || 'running'}${duration ? ` (${duration}ms)` : ''}`
+                                });
+                            }
+                        });
+                        document.getElementById('executionCount').textContent = todayCount;
+                    }
+                } else if (response.status === 401) {
+                    console.log('n8n API key required. Set CONFIG.n8nApiKey');
+                }
+            } catch (e) {
+                if (e.name === 'TypeError' && e.message.includes('Failed to fetch')) {
+                    n8nCorsError = true;
+                    console.warn('n8n API blocked by CORS. Opening Control Panel from n8n or using a proxy would fix this.');
+                    addLog({
+                        id: 'n8n-cors-notice',
+                        time: new Date(),
+                        source: 'n8n',
+                        status: 'info',
+                        message: 'CORS blocked - open n8n directly to view executions'
+                    });
+                }
+            }
+        }
+
+        async function fetchCamundaLogs() {
+            try {
+                const response = await fetch(`${CONFIG.camundaApiUrl}/history/process-instance?sortBy=startTime&sortOrder=desc&maxResults=10`);
+                if (response.ok) {
+                    const data = await response.json();
+                    data.forEach(proc => {
+                        const status = proc.state === 'COMPLETED' ? 'success' : (proc.state === 'ACTIVE' ? 'info' : 'warning');
+                        const message = `${proc.processDefinitionName || proc.processDefinitionKey} - ${proc.state.toLowerCase()}`;
+                        const existingLog = logs.find(l => l.id === `camunda-${proc.id}`);
+
+                        if (existingLog) {
+                            // Update existing log if state changed
+                            if (existingLog.status !== status) {
+                                existingLog.status = status;
+                                existingLog.message = message;
+                                renderLogs();
+                            }
+                        } else {
+                            addLog({
+                                id: `camunda-${proc.id}`,
+                                time: new Date(proc.startTime),
+                                source: 'camunda',
+                                status: status,
+                                message: message
+                            });
+                        }
+                    });
+                }
+            } catch (e) {
+                // Silently fail
+            }
+        }
+
+        function addLog(log) {
+            logs.unshift(log);
+            if (logs.length > 100) logs.pop();
+            renderLogs();
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('logsContainer');
+            let filteredLogs = currentFilter === 'all'
+                ? [...logs]
+                : logs.filter(l => l.source === currentFilter);
+
+            // Sort logs by time
+            filteredLogs.sort((a, b) => {
+                const timeA = new Date(a.time).getTime();
+                const timeB = new Date(b.time).getTime();
+                return sortNewest ? (timeB - timeA) : (timeA - timeB);
+            });
+
+            if (filteredLogs.length === 0) {
+                container.innerHTML = `
+                    <div class="logs-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 005 0" />
+                        </svg>
+                        <p>${currentFilter === 'all' ? 'No logs yet. Activity will appear here.' : `No ${currentFilter} logs yet.`}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredLogs.map(log => `
+                <div class="log-entry ${log.status}">
+                    <span class="log-time">${formatTime(log.time)}</span>
+                    <span class="log-icon">${getStatusIcon(log.status)}</span>
+                    <span class="log-message">${log.message}</span>
+                    <span class="log-source ${log.source}">${log.source}</span>
+                </div>
+            `).join('');
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { hour12: false });
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                success: '<i class="ph ph-check-circle" style="color: var(--status-green);"></i>',
+                error: '<i class="ph ph-x-circle" style="color: var(--status-red);"></i>',
+                warning: '<i class="ph ph-warning" style="color: var(--status-amber);"></i>',
+                info: '<i class="ph ph-spinner" style="color: var(--text-muted);"></i>'
+            };
+            return icons[status] || '<i class="ph ph-push-pin" style="color: var(--text-muted);"></i>';
+        }
+
+        function updateLogsStatus() {
+            const status = document.getElementById('logsStatus');
+            status.textContent = isPaused
+                ? 'Paused'
+                : `Last updated: ${formatTime(new Date())}`;
+        }
+
+        function toggleSort() {
+            sortNewest = !sortNewest;
+            const btn = document.getElementById('sortBtn');
+            const label = document.getElementById('sortLabel');
+            btn.classList.toggle('desc', !sortNewest);
+            label.textContent = sortNewest ? 'Newest' : 'Oldest';
+            renderLogs();
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            const btn = document.getElementById('pauseBtn');
+            btn.classList.toggle('active', isPaused);
+            btn.innerHTML = isPaused
+                ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Resume`
+                : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Pause`;
+            updateLogsStatus();
+        }
+
+        function clearLogs() {
+            logs = [];
+            renderLogs();
+        }
+
+        function openN8n() {
+            // Open n8n directly - it doesn't work well behind a subpath proxy
+            window.open('http://localhost:5678', '_blank');
+        }
+
+        function openCamunda() {
+            window.open(`${CONFIG.camundaAppUrl}/app/cockpit/`, '_blank');
+        }
+
+        function viewConnector(id) {
+            alert(`Connector details for ${id} - Feature coming soon!`);
+        }
+
+        // Add demo logs for visual testing
+        function addDemoLogs() {
+            const demoLogs = [
+                { id: 'demo-1', time: new Date(), source: 'n8n', status: 'success', message: 'Send Email workflow completed (245ms)' },
+                { id: 'demo-2', time: new Date(Date.now() - 5000), source: 'n8n', status: 'info', message: 'Webhook received: catalyst-send-email' },
+                { id: 'demo-3', time: new Date(Date.now() - 10000), source: 'camunda', status: 'success', message: 'ip-geolocation-example - completed' },
+                { id: 'demo-4', time: new Date(Date.now() - 15000), source: 'camunda', status: 'info', message: 'send-email-example - active' },
+                { id: 'demo-5', time: new Date(Date.now() - 20000), source: 'n8n', status: 'error', message: 'Email failed: SMTP connection refused' },
+            ];
+            logs = demoLogs;
+            renderLogs();
+            document.getElementById('executionCount').textContent = '12';
+            document.getElementById('workflowCount').textContent = '5';
+        }
+
+        // Uncomment to show demo logs for testing
+        // setTimeout(addDemoLogs, 1000);
+
+        // ========================================
+        // Animated Particles (from get-catalyst.dev)
+        // ========================================
+        class Particle {
+            constructor(canvas, ctx) {
+                this.canvas = canvas;
+                this.ctx = ctx;
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+
+                // Two velocity components: drift (constant, tiny) and velocity (dynamic, decays)
+                this.drift = {
+                    x: (Math.random() - 0.5) * 0.2,
+                    y: (Math.random() - 0.5) * 0.2
+                };
+                this.velocity = {
+                    x: 0,
+                    y: 0
+                };
+
+                this.size = Math.random() * 3 + 1;
+                this.type = Math.random() > 0.5 ? 'triangle' : 'circle';
+                this.color = this.getRandomColor();
+                this.angle = Math.random() * 360;
+                this.spin = (Math.random() - 0.5) * 0.02;
+                this.friction = 0.98; // Decays velocity by 2% per frame
+            }
+
+            getRandomColor() {
+                const colors = [
+                    'rgba(59, 130, 246, 0.5)',
+                    'rgba(96, 165, 250, 0.5)',
+                    'rgba(147, 51, 234, 0.3)',
+                    'rgba(255, 255, 255, 0.1)'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update(mouse) {
+                // Apply interaction force
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const maxDistance = 150;
+
+                if (distance < maxDistance) {
+                    const force = (maxDistance - distance) / maxDistance;
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+
+                    // Push away strongly
+                    this.velocity.x -= forceDirectionX * force * 1.5;
+                    this.velocity.y -= forceDirectionY * force * 1.5;
+                }
+
+                // Apply friction to dynamic velocity
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+
+                // Update position (Drift + Dynamic Velocity)
+                this.x += this.drift.x + this.velocity.x;
+                this.y += this.drift.y + this.velocity.y;
+                this.angle += this.spin;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > this.canvas.width) {
+                    this.velocity.x *= -1; // Reflect dynamic velocity
+                    this.drift.x *= -1;    // Reflect drift
+                }
+                if (this.y < 0 || this.y > this.canvas.height) {
+                    this.velocity.y *= -1;
+                    this.drift.y *= -1;
+                }
+            }
+
+            draw() {
+                this.ctx.save();
+                this.ctx.translate(this.x, this.y);
+                this.ctx.rotate(this.angle);
+                this.ctx.fillStyle = this.color;
+
+                if (this.type === 'triangle') {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, -this.size * 2);
+                    this.ctx.lineTo(this.size, this.size);
+                    this.ctx.lineTo(-this.size, this.size);
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                } else {
+                    this.ctx.beginPath();
+                    this.ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+
+                this.ctx.restore();
+            }
+        }
+
+        class ParticleNetwork {
+            constructor() {
+                this.canvas = document.getElementById('reactive-bg');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.numberOfParticles = 100;
+                this.mouse = { x: -1000, y: -1000 }; // Initialize off-screen
+
+                this.init();
+                this.animate();
+
+                window.addEventListener('resize', () => this.resize());
+                window.addEventListener('mousemove', (e) => {
+                    this.mouse.x = e.clientX;
+                    this.mouse.y = e.clientY;
+                });
+
+                window.addEventListener('mouseout', () => {
+                    this.mouse.x = -1000;
+                    this.mouse.y = -1000;
+                });
+            }
+
+            init() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.createParticles();
+            }
+
+            createParticles() {
+                this.particles = [];
+                const density = (this.canvas.width * this.canvas.height) / 15000;
+                this.numberOfParticles = Math.min(density, 150);
+
+                for (let i = 0; i < this.numberOfParticles; i++) {
+                    this.particles.push(new Particle(this.canvas, this.ctx));
+                }
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+                this.createParticles();
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                this.particles.forEach(particle => {
+                    particle.update(this.mouse);
+                    particle.draw();
+                });
+
+                this.connectParticles();
+
+                requestAnimationFrame(this.animate.bind(this));
+            }
+
+            connectParticles() {
+                const maxDistance = 150;
+                for (let a = 0; a < this.particles.length; a++) {
+                    for (let b = a; b < this.particles.length; b++) {
+                        const dx = this.particles[a].x - this.particles[b].x;
+                        const dy = this.particles[a].y - this.particles[b].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < maxDistance) {
+                            const opacity = 1 - (distance / maxDistance);
+                            this.ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.2})`;
+                            this.ctx.lineWidth = 1;
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(this.particles[a].x, this.particles[a].y);
+                            this.ctx.lineTo(this.particles[b].x, this.particles[b].y);
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+            }
+        }
+
+        // Initialize particle network
+        new ParticleNetwork();
+    </script>
+<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('catalystconnector', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Support Us',
+    'floating-chat.donateButton.background-color': '#323842',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>
+</body>
+
+</html>

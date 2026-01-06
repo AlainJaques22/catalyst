@@ -1,0 +1,98 @@
+.modeler-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  position: relative;
+}
+
+.modeler-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.bpmn-canvas {
+  flex: 1;
+  background: white;
+  position: relative;
+}
+
+.properties-panel {
+  width: 350px;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-color);
+  overflow-y: auto;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modeler-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+}
+
+.modeler-loading p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/* Override bpmn-js styles to match Catalyst theme */
+.djs-palette {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.djs-palette .entry:hover {
+  background: var(--bg-secondary);
+}
+
+.djs-context-pad {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.djs-popup {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Properties panel styles */
+.properties-panel .bio-properties-panel-header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
+}
+
+.properties-panel .bio-properties-panel-group {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.properties-panel input[type="text"],
+.properties-panel textarea,
+.properties-panel select {
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-family: inherit;
+}
+
+.properties-panel input[type="text"]:focus,
+.properties-panel textarea:focus,
+.properties-panel select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
+}

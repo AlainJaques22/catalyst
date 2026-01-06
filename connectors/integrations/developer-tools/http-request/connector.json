@@ -1,0 +1,23 @@
+{
+  "id": "http-request",
+  "name": "HTTP Request",
+  "description": "Make HTTP requests to any API endpoint",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "developer-tools",
+  "icon": "ph-plugs-connected",
+  "color": "#8b5cf6",
+  "tags": ["http", "api", "rest", "webhook", "request"],
+  "author": {
+    "name": "Catalyst Team"
+  },
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "http-request.n8n.json",
+    "elementTemplate": "http-request.element.json",
+    "exampleBpmn": "http-request.bpmn"
+  },
+  "featured": true,
+  "createdAt": "2025-01-03T00:00:00Z",
+  "updatedAt": "2025-01-03T00:00:00Z"
+}

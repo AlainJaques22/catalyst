@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst - AI Content Analysis Pipeline</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23667eea' d='M55 10 L30 50 L45 50 L40 90 L70 40 L55 40 Z'/%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .header-info {
+            display: flex;
+            gap: 24px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 12px;
+        }
+
+        .status-running {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .controls {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls h3 {
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .card-content {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+            margin-bottom: 20px;
+        }
+
+        .content-preview {
+            background: #f7fafc;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .sentiment-gauge {
+            margin-top: 12px;
+        }
+
+        .gauge-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .gauge-fill {
+            height: 100%;
+            transition: width 1s ease, background 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .gauge-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .key-points-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-points-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .key-points-list li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .entities-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .entity-group {
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .entity-group-title {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .entity-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .entity-tag {
+            padding: 4px 10px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+
+        .risk-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .risk-low {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .timeline {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline h3 {
+            margin-bottom: 20px;
+            color: #1a202c;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .timeline-label {
+            min-width: 160px;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .timeline-bar {
+            flex: 1;
+            height: 32px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .timeline-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .timeline-total {
+            margin-top: 20px;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🚀 Catalyst - AI Content Analysis Pipeline</h1>
+            <div class="header-info">
+                <div>Status: <span id="statusBadge" class="status-badge">⏸️ Ready</span></div>
+                <div>Process ID: <span id="processId" style="font-family: monospace; color: #4a5568;">-</span></div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <h3>📝 Start New Analysis</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Keywords</label>
+                    <input type="text" id="keywords" value="space, positive, elon, mars" />
+                </div>
+                <div class="form-group">
+                    <label>Scenario</label>
+                    <select id="scenario">
+                        <option value="news_article">News Article</option>
+                        <option value="product_launch">Product Launch</option>
+                        <option value="customer_review_positive">Customer Review (Positive)</option>
+                        <option value="customer_review_negative">Customer Review (Negative)</option>
+                        <option value="meeting_notes">Meeting Notes</option>
+                        <option value="risk_report">Risk Report</option>
+                        <option value="sales_email">Sales Email</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Length</label>
+                    <select id="length">
+                        <option value="short">Short (100-150 words)</option>
+                        <option value="medium" selected>Medium (200-300 words)</option>
+                        <option value="long">Long (400-500 words)</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="runBtn" onclick="startAnalysis()">
+                ▶️ Run Analysis
+            </button>
+        </div>
+
+        <!-- Results Grid -->
+        <div id="results"></div>
+    </div>
+
+    <script>
+        let pollingInterval = null;
+        let currentProcessId = null;
+
+        const CAMUNDA_URL = 'http://localhost:8080/engine-rest';
+
+        async function startAnalysis() {
+            const btn = document.getElementById('runBtn');
+            const keywords = document.getElementById('keywords').value;
+            const scenario = document.getElementById('scenario').value;
+            const length = document.getElementById('length').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Starting...';
+
+            try {
+                console.log('🚀 Starting process with:', { keywords, scenario, length });
+
+                const response = await fetch(`${CAMUNDA_URL}/process-definition/key/xAi-content-analysis-pipeline/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        variables: {
+                            keywords: { value: keywords, type: 'String' },
+                            scenario: { value: scenario, type: 'String' },
+                            length: { value: length, type: 'String' }
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('✅ Process started:', data);
+
+                currentProcessId = data.id;
+                document.getElementById('processId').textContent = currentProcessId;
+                updateStatus('running', '⏳ Running');
+
+                if (pollingInterval) clearInterval(pollingInterval);
+                pollingInterval = setInterval(pollProcess, 3000);
+                pollProcess();
+
+            } catch (error) {
+                console.error('💥 Error starting process:', error);
+                updateStatus('error', `❌ Error: ${error.message}`);
+                showErrorDetails(error);
+                btn.disabled = false;
+                btn.innerHTML = '▶️ Run Analysis';
+            }
+        }
+
+        async function pollProcess() {
+            if (!currentProcessId) return;
+
+            try {
+                console.log('🔄 Polling process:', currentProcessId);
+
+                let variables = {};
+
+                // Try runtime first
+                let varsResponse = await fetch(`${CAMUNDA_URL}/process-instance/${currentProcessId}/variables`);
+
+                if (varsResponse.ok) {
+                    variables = await varsResponse.json();
+                } else {
+                    const errorText = await varsResponse.text();
+
+                    if (errorText.includes('execution is null')) {
+                        console.log('Process completed – loading variables from history');
+
+                        const historyResponse = await fetch(
+                            `${CAMUNDA_URL}/history/variable-instance?processInstanceId=${currentProcessId}&deserializeValues=false`
+                        );
+
+                        if (!historyResponse.ok) throw new Error('Failed to fetch historic variables');
+
+                        const historyVars = await historyResponse.json();
+
+                        historyVars.forEach(v => {
+                            if (v.value !== null) {
+                                variables[v.name] = { value: v.value };
+                            }
+                        });
+                    } else {
+                        throw new Error(`Failed to get variables: ${errorText}`);
+                    }
+                }
+
+                // Get status
+                const statusResponse = await fetch(`${CAMUNDA_URL}/history/process-instance/${currentProcessId}`);
+                if (!statusResponse.ok) throw new Error('Failed to get process status');
+                const status = await statusResponse.json();
+
+                updateDashboard(variables, status);
+
+                if (status.state === 'COMPLETED' || status.endTime) {
+                    console.log('✅ Process completed!');
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                    updateStatus('completed', '✅ Completed');
+                    document.getElementById('runBtn').disabled = false;
+                    document.getElementById('runBtn').innerHTML = '▶️ Run Analysis';
+                }
+
+            } catch (error) {
+                console.error('💥 Polling error:', error);
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+                updateStatus('error', `❌ ${error.message}`);
+                document.getElementById('runBtn').disabled = false;
+                document.getElementById('runBtn').innerHTML = '▶️ Run Analysis';
+            }
+        }
+
+        function updateStatus(type, text) {
+            const badge = document.getElementById('statusBadge');
+            badge.className = `status-badge status-${type}`;
+            badge.textContent = text;
+        }
+
+        // Helper to safely parse JSON array variables
+        function parseJsonArray(value) {
+            if (!value) return [];
+            if (Array.isArray(value)) return value;
+            if (typeof value === 'string') {
+                try {
+                    const parsed = JSON.parse(value);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (e) {
+                    console.warn('Failed to parse JSON array:', value);
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        function updateDashboard(variables, status) {
+            const resultsDiv = document.getElementById('results');
+            let html = '';
+
+            console.log('📊 Updating dashboard with variables:', variables);
+
+            // Show generated content first (full width)
+            if (variables.content) {
+                console.log('✅ Content found, length:', variables.content.value?.length);
+                html += createContentCard(variables.content.value);
+            } else {
+                console.log('❌ No content variable found');
+            }
+
+            // Show summary second (full width)
+            if (variables.summary) {
+                html += createSummaryCardFullWidth(variables.summary.value);
+            }
+
+            // Analysis results in grid (4 boxes: Key Points, Sentiment, Entities, Risk)
+            html += '<div class="grid">';
+            
+            if (variables.keyPoints) {
+                console.log('🎯 Key points:', variables.keyPoints.value);
+                const keyPointsValue = parseJsonArray(variables.keyPoints.value);
+                if (keyPointsValue.length > 0) {
+                    html += createKeyPointsCard(keyPointsValue);
+                }
+            }
+            if (variables.sentiment) html += createSentimentCard(variables.sentiment.value, variables.confidence?.value || 0, variables.explanation?.value || '');
+
+            // Parse entity arrays safely
+            const people = parseJsonArray(variables.people?.value);
+            const organizations = parseJsonArray(variables.organizations?.value);
+            const locations = parseJsonArray(variables.locations?.value);
+            const dates = parseJsonArray(variables.dates?.value);
+
+            if (people.length || organizations.length || locations.length || dates.length) {
+                html += createEntitiesCard(people, organizations, locations, dates);
+            }
+
+            if (variables.riskAssessment) html += createRiskCardSmall(variables.riskAssessment.value, variables.riskLevel?.value);
+
+            html += '</div>';
+
+            // Timeline
+            html += createTimeline(status);
+
+            console.log('📝 Final HTML length:', html.length);
+            resultsDiv.innerHTML = html;
+        }
+
+        function createContentCard(content) {
+            return `
+                <div class="card card-full">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #ddd6fe;">📝</div>
+                        <div class="card-title">Generated Content</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="content-preview">${escapeHtml(content)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createSentimentCard(sentiment, confidence, explanation) {
+            const emoji = sentiment === 'positive' ? '😊' : sentiment === 'negative' ? '😞' : '😐';
+            
+            // Set gauge color based on sentiment
+            let gaugeColor = '#10b981'; // green for positive
+            if (sentiment === 'negative') {
+                gaugeColor = '#ef4444'; // red for negative
+            } else if (sentiment === 'neutral' || sentiment === 'mixed') {
+                gaugeColor = '#f59e0b'; // amber for neutral/mixed
+            }
+            
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #d1fae5;">${emoji}</div>
+                        <div class="card-title">Sentiment Analysis</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="font-size: 24px; font-weight: 600; color: #1a202c; margin-bottom: 8px; text-transform: capitalize;">
+                            ${sentiment}
+                        </div>
+                        <div class="sentiment-gauge">
+                            <div class="gauge-bar">
+                                <div class="gauge-fill" style="width: ${confidence}%; background: ${gaugeColor};"></div>
+                            </div>
+                            <div class="gauge-label">
+                                <span>Confidence</span>
+                                <span>${confidence}%</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; font-size: 13px; color: #718096; line-height: 1.5;">
+                            ${escapeHtml(explanation)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createSummaryCard(summary) {
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #dbeafe;">📄</div>
+                        <div class="card-title">Summary</div>
+                    </div>
+                    <div class="card-content">
+                        ${escapeHtml(summary)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function createSummaryCardFullWidth(summary) {
+            return `
+                <div class="card card-full">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #dbeafe;">📄</div>
+                        <div class="card-title">Summary</div>
+                    </div>
+                    <div class="card-content" style="font-size: 15px; line-height: 1.7;">
+                        ${escapeHtml(summary)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function createKeyPointsCard(keyPoints) {
+            // Handle both array and string formats
+            let points = [];
+            if (Array.isArray(keyPoints)) {
+                points = keyPoints;
+            } else if (typeof keyPoints === 'string') {
+                points = keyPoints.split('\n').filter(p => p.trim());
+            }
+            
+            // Filter out empty points
+            points = points.filter(p => p && p.trim() && p.trim() !== '[]');
+            
+            if (points.length === 0) {
+                return ''; // Don't show card if no points
+            }
+            
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #fef3c7;">🎯</div>
+                        <div class="card-title">Key Points</div>
+                    </div>
+                    <div class="card-content">
+                        <ul class="key-points-list">
+                            ${points.slice(0, 5).map(p => `<li>${escapeHtml(String(p).replace(/^[•\-\*]\s*/, ''))}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createEntitiesCard(people, organizations, locations, dates) {
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e9d5ff;">👥</div>
+                        <div class="card-title">Entities</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="entities-grid">
+                            ${people.length ? `
+                                <div class="entity-group">
+                                    <div class="entity-group-title">People</div>
+                                    <div class="entity-tags">
+                                        ${people.slice(0, 8).map(p => `<span class="entity-tag">${escapeHtml(p)}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${organizations.length ? `
+                                <div class="entity-group">
+                                    <div class="entity-group-title">Organizations</div>
+                                    <div class="entity-tags">
+                                        ${organizations.slice(0, 8).map(o => `<span class="entity-tag">${escapeHtml(o)}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${locations.length ? `
+                                <div class="entity-group">
+                                    <div class="entity-group-title">Locations</div>
+                                    <div class="entity-tags">
+                                        ${locations.slice(0, 8).map(l => `<span class="entity-tag">${escapeHtml(l)}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            ${dates.length ? `
+                                <div class="entity-group">
+                                    <div class="entity-group-title">Dates</div>
+                                    <div class="entity-tags">
+                                        ${dates.slice(0, 8).map(d => `<span class="entity-tag">${escapeHtml(d)}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createRiskCard(riskText, riskLevel) {
+            const level = (riskLevel || 'medium').toLowerCase();
+            const emoji = level === 'high' ? '🔴' : level === 'low' ? '🟢' : '🟡';
+
+            return `
+                <div class="card card-full">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #fee2e2;">⚠️</div>
+                        <div class="card-title">Risk Assessment</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="risk-level risk-${level}">
+                            ${emoji} ${level.toUpperCase()} RISK
+                        </div>
+                        <div>${escapeHtml(riskText)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createRiskCardSmall(riskText, riskLevel) {
+            const level = (riskLevel || 'medium').toLowerCase();
+            const emoji = level === 'high' ? '🔴' : level === 'low' ? '🟢' : '🟡';
+
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #fee2e2;">⚠️</div>
+                        <div class="card-title">Risk Assessment</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="risk-level risk-${level}" style="margin-bottom: 12px;">
+                            ${emoji} ${level.toUpperCase()} RISK
+                        </div>
+                        <div style="font-size: 13px; line-height: 1.6;">${escapeHtml(riskText)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createTimeline(status) {
+            if (!status.startTime) return '';
+
+            const startTime = new Date(status.startTime);
+            const endTime = status.endTime ? new Date(status.endTime) : new Date();
+            const totalDuration = (endTime - startTime) / 1000;
+
+            // Estimated durations for each phase (in seconds)
+            const phases = [
+                { label: 'Generate Content', duration: 8, color: '#667eea' },
+                { label: 'Full Analysis (Combined)', duration: totalDuration - 8, color: '#764ba2' }
+            ];
+
+            // If we have more detailed timing, we can break it down further
+            // For now, we show generation + analysis as two main phases
+            const maxDuration = Math.max(...phases.map(p => p.duration));
+
+            return `
+                <div class="timeline">
+                    <h3>⏱️ Execution Timeline</h3>
+                    ${phases.map(phase => {
+                        const widthPercent = (phase.duration / maxDuration) * 100;
+                        return `
+                            <div class="timeline-item">
+                                <div class="timeline-label">${phase.label}</div>
+                                <div class="timeline-bar">
+                                    <div class="timeline-fill" style="width: ${widthPercent}%; background: ${phase.color}">
+                                        ${phase.duration.toFixed(1)}s
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                    <div class="timeline-total">
+                        Total Duration: ${totalDuration.toFixed(1)}s
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showErrorDetails(error) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="card card-full" style="background: #fee2e2; border: 2px solid #ef4444;">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #ef4444; color: white;">❌</div>
+                        <div class="card-title" style="color: #991b1b;">Error Starting Process</div>
+                    </div>
+                    <div class="card-content" style="color: #991b1b;">
+                        <p style="margin-bottom: 12px;"><strong>Error:</strong> ${escapeHtml(error.message)}</p>
+                        <p style="margin-bottom: 12px;"><strong>Check:</strong></p>
+                        <ul style="list-style: disc; margin-left: 20px; line-height: 1.8;">
+                            <li>Is Camunda running at <code>http://localhost:8080</code>?</li>
+                            <li>Is the process deployed with key <code>content-analysis-pipeline</code>?</li>
+                            <li>Check browser console (F12) for detailed errors</li>
+                            <li>Check Camunda logs for deployment/execution errors</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initial empty state
+        document.getElementById('results').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">🚀</div>
+                <h3>Ready to Analyze</h3>
+                <p>Click "Run Analysis" to start the AI content analysis pipeline</p>
+            </div>
+        `;
+    </script>
+</body>
+
+</html>

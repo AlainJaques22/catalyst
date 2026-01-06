@@ -1,0 +1,130 @@
+{
+  "name": "AI Content Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-generator",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d0f59fbb-7388-453b-8e1a-46744289c804",
+      "name": "Webhook",
+      "webhookId": "6c697122-7702-406b-b202-dccbb4b3368c"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract inputs from webhook\nconst keywords = $input.item.json.body.keywords || \"\";\nconst scenario = $input.item.json.body.scenario || \"news_article\";\nconst length = $input.item.json.body.length || \"medium\";\n\n// Word count targets\nconst lengthMap = {\n  short: \"100-150 words\",\n  medium: \"200-300 words\",\n  long: \"400-500 words\"\n};\n\n// Build keywords instruction if provided\nconst keywordsInstruction = keywords && keywords.trim() !== \"\" \n  ? `Incorporate these themes/keywords naturally into the content: ${keywords}\\n\\n`\n  : \"\";\n\n// Scenario templates\nconst scenarios = {\n  product_launch: `${keywordsInstruction}Generate a realistic product launch announcement that includes:\n- A CEO or executive name (realistic, e.g., \"Sarah Chen\", \"Mark Williams\")\n- Company name (make it realistic and relevant)\n- Product name and key features\n- Specific launch date (use a date within the next 3 months)\n- Location/venue (real city)\n- 1-2 competitor mentions (if relevant)\n- Price or market positioning\n- Professional, enthusiastic tone\n\nTarget length: ${lengthMap[length]}`,\n\n  customer_review_positive: `${keywordsInstruction}Generate a positive customer review that includes:\n- Customer name (realistic, e.g., \"John Smith\", \"Emily Rodriguez\")\n- Optional: Company they work for\n- Specific praise (3-4 things they liked)\n- Product/service features mentioned by name\n- Minor improvement suggestion (for authenticity)\n- Clear 5-star or \"highly recommend\" sentiment\n- Natural, conversational tone\n\nTarget length: ${lengthMap[length]}`,\n\n  customer_review_negative: `${keywordsInstruction}Generate a negative customer review that includes:\n- Customer name (realistic)\n- Optional: Company or context\n- 2-3 specific complaints or issues\n- Disappointed or frustrated tone\n- Expectations that were not met\n- Comparison to competitors (optional)\n- 1-2 star sentiment implied\n- Professional but critical tone\n\nTarget length: ${lengthMap[length]}`,\n\n  news_article: `${keywordsInstruction}Generate a business news article that includes:\n- Headline-worthy event or development\n- 2-3 executive or expert names with titles\n- 2-3 company/organization names\n- Specific location (city/country)\n- Concrete date or timeframe\n- Industry context and implications\n- Numbers/statistics (optional)\n- Neutral, journalistic tone\n\nTarget length: ${lengthMap[length]}`,\n\n  meeting_notes: `${keywordsInstruction}Generate business meeting notes that include:\n- Meeting date (recent past, specific)\n- 3-5 attendee names with roles/titles\n- Company/department context\n- 4-6 discussion points or decisions made\n- Action items with assigned owners\n- Next meeting date or follow-up timeline\n- Professional, structured format\n\nTarget length: ${lengthMap[length]}`,\n\n  risk_report: `${keywordsInstruction}Generate a business risk assessment that includes:\n- Business/project context and background\n- 3-5 identified risks with detailed descriptions\n- Risk level for each (high/medium/low)\n- Potential impact and consequences described\n- 2-3 specific recommendations per risk\n- Timeline concerns (dates or quarters)\n- Professional, analytical tone\n\nTarget length: ${lengthMap[length]}`,\n\n  sales_email: `${keywordsInstruction}Generate a sales/marketing email that includes:\n- Sender name and company\n- Product or service being promoted\n- 2-3 key benefits or compelling features\n- Social proof (customer name or brief testimonial)\n- Clear call to action\n- Optional: Limited time offer or specific date\n- Professional but enthusiastic tone\n\nTarget length: ${lengthMap[length]}`\n};\n\nreturn {\n  json: {\n    prompt: scenarios[scenario] || scenarios.news_article,\n    maxTokens: 1024\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "bcdc2101-7356-4b10-b72f-9c7b573cd1dd",
+      "name": "Format the Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=={{ $json.prompt }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "f4f55732-9d94-46cf-9152-5e0e544b71dd",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "CgRf2lE4YozPobqo",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        784,
+        0
+      ],
+      "id": "00918cbf-f206-473e-aecb-cb991bf8836e",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Format the Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format the Request": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b33133f8-498e-4df9-b94f-dc679123437d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d07cb5830d1c6e8b61c18357e4a7ad7de4f3f165ad8ffc7d47da8473d0e16ea4"
+  },
+  "id": "y7yrSZJSE9x82KMh",
+  "tags": []
+}

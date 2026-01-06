@@ -1,0 +1,32 @@
+# Docker files
+.dockerignore
+docker-compose.yml
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.iml
+
+# Build artifacts (except the catalyst-bridge JAR)
+target/
+!target/catalyst-bridge-*.jar
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation
+README.md
+docs/
+
+# Data volumes
+postgres_data/
+n8n_data/
+workflows/
