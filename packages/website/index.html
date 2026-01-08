@@ -3,71 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Catalyst to Unlock Camunda 7 - Catalyst Connector</title>
-    <meta name="description" content="Open source bridge connecting BPMN workflows to n8n's 400+ integrations and 7,400+ community workflows. Self-hosted, source-available, zero vendor lock-in.">
+    <title>Universal Integration Gateway for BPMN Engines - Catalyst</title>
+    <meta name="description" content="Open source integration gateway connecting BPMN workflows (Camunda 7, Operaton, CIBSeven) to n8n and other integration platforms. One Docker command. Zero vendor lock-in.">
     <link rel="icon" type="image/png" href="icon-only-trans.png">
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             scrollbar-width: thin;
-            scrollbar-color: #3B82F6 rgba(255, 255, 255, 0.05);
+            scrollbar-color: #6366f1 rgba(255, 255, 255, 0.05);
         }
 
         :root {
-            --primary-color: #3B82F6;
-            --primary-light: #60A5FA;
-            --primary-dark: #2563EB;
-            --primary-gradient: linear-gradient(135deg, #3B82F6 0%, #60A5FA 50%, #2563EB 100%);
-            --white-color: #ffffff;
-            --white-light: rgba(255, 255, 255, 0.9);
-            --gray-color: #A5A5A5;
-            --gray-light: #C5C5C5;
-            --gray-dark: #858585;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #A5A5A5;
-            --text-muted: #858585;
-            --bg-dark: #0a0e27;
+            /* Modern SaaS Dark-Mode Palette */
+            --midnight-slate: #0f172a;
+            --rich-navy: #020617;
+            --electric-indigo: #6366f1;
+            --deep-purple: #7c3aed;
+
+            --glass-bg: rgba(15, 23, 42, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-dark);
+            background: var(--rich-navy);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                        color 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Immersive Background with Radial Glows */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+            animation: breathe 20s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
         }
 
         /* Custom Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 10px;
         }
-        
+
         ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.3);
             border-radius: 10px;
         }
-        
+
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3B82F6 0%, #60A5FA 100%);
+            background: linear-gradient(180deg, var(--electric-indigo) 0%, var(--deep-purple) 100%);
             border-radius: 10px;
-            border: 2px solid rgba(0, 0, 0, 0);
+            border: 2px solid transparent;
             background-clip: padding-box;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #60A5FA 0%, #3B82F6 100%);
+            background: linear-gradient(180deg, var(--deep-purple) 0%, var(--electric-indigo) 100%);
         }
 
         /* Floating orbs */
@@ -92,51 +108,64 @@
         }
         
         .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary-color);
+            width: 500px;
+            height: 500px;
+            background: var(--electric-indigo);
             top: 10%;
             left: 10%;
             animation-delay: 0s;
+            filter: blur(100px);
+            opacity: 0.2;
         }
-        
+
         .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--primary-light);
+            width: 400px;
+            height: 400px;
+            background: var(--deep-purple);
             bottom: 10%;
             right: 10%;
             animation-delay: 5s;
+            filter: blur(100px);
+            opacity: 0.2;
         }
-        
+
         .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: var(--primary-dark);
+            width: 350px;
+            height: 350px;
+            background: var(--electric-indigo);
             top: 50%;
             right: 20%;
             animation-delay: 10s;
+            filter: blur(100px);
+            opacity: 0.15;
         }
-        
+
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(40px, -40px) scale(1.15); }
         }
 
-        @keyframes gradientFlow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        /* Breathing Gradients for Text */
+        @keyframes breathingGradient {
+            0%, 100% {
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                background-position: 100% 50%;
+                filter: hue-rotate(10deg);
+            }
         }
 
-        /* Header */
+        /* Header - Glassmorphism */
         .header {
-            background: rgba(10, 14, 39, 0.7);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             transition: all 0.3s ease;
         }
 
@@ -167,16 +196,17 @@
 
         .nav-links a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 500;
-            transition: color 0.3s ease;
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
         }
 
         .nav-links a:hover {
-            color: var(--white-color);
+            color: var(--text-primary);
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
         }
 
         .nav-cta {
@@ -184,46 +214,53 @@
             gap: 1rem;
         }
 
-        /* Buttons */
+        /* Glowing Buttons - Super Rounded */
         .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
+            padding: 0.875rem 2rem;
+            border-radius: 2rem;
+            font-weight: 700;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
             cursor: pointer;
             font-size: 1rem;
-            font-family: inherit;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+            position: relative;
         }
 
         .btn-primary {
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, var(--electric-indigo) 0%, var(--deep-purple) 100%);
             background-size: 200% 200%;
             color: white;
-            animation: gradientFlow 8s ease infinite;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            border: none;
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            animation: breathingGradient 8s ease infinite;
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6),
-                        0 0 0 1px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow:
+                0 0 30px rgba(99, 102, 241, 0.6),
+                0 0 60px rgba(99, 102, 241, 0.3),
+                0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: var(--glass-bg);
             color: var(--text-primary);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
         }
 
         .btn-secondary:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            border-color: var(--electric-indigo);
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow:
+                0 0 25px rgba(99, 102, 241, 0.4),
+                0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .btn-ghost {
@@ -233,8 +270,9 @@
         }
 
         .btn-ghost:hover {
-             border-color: var(--white-color);
-             color: var(--white-color);
+            border-color: var(--electric-indigo);
+            color: var(--text-primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
 
         /* Hero Section */
@@ -314,17 +352,27 @@
         }
 
         .hero h1 {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 3.5rem;
+            font-weight: 900;
             margin-bottom: 1.5rem;
-            line-height: 1.3;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 0%, var(--electric-indigo) 50%, #ffffff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: breathingGradient 12s ease infinite;
         }
 
         .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-            line-height: 1.5;
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-cta {
@@ -341,24 +389,27 @@
         }
 
         .banner-notice {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--glass-bg);
             padding: 1rem 2rem;
-            border-radius: 8px;
+            border-radius: 2rem;
             margin-top: 2rem;
-            font-size: 1.1rem;
-            font-weight: 500;
-            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
         }
 
-        /* Stats Bar */
-        /* Stats Bar */
+        /* Stats Bar - Glassmorphism */
         .stats-bar {
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
-            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(180%);
             color: var(--text-primary);
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 1;
         }
 
         .stats-container {
@@ -366,20 +417,28 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            gap: 3rem;
             text-align: center;
         }
 
         .stat-item h3 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-light);
+            font-size: 3.5rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--electric-indigo) 0%, var(--deep-purple) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
         }
 
         .stat-item p {
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         /* Content Sections */
@@ -402,17 +461,19 @@
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 900;
             margin-bottom: 1rem;
             color: var(--text-primary);
+            letter-spacing: -0.03em;
         }
 
         .section-header p {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             color: var(--text-muted);
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* Feature Grid */
@@ -425,41 +486,48 @@
 
         .feature-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            padding: 2rem;
-            border-radius: 40px;
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            padding: 2.5rem;
+            border-radius: 2rem;
             border: 1px solid var(--glass-border);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-            border-color: var(--primary-light);
+            transform: translateY(-8px);
+            box-shadow:
+                0 0 40px rgba(99, 102, 241, 0.3),
+                0 20px 60px rgba(0, 0, 0, 0.4);
+            border-color: var(--electric-indigo);
         }
 
         .feature-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 50%, #ffffff 100%);
+            background: linear-gradient(135deg, var(--electric-indigo) 0%, var(--deep-purple) 50%, #ffffff 100%);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientFlow 8s ease infinite;
+            animation: breathingGradient 10s ease infinite;
             display: inline-block;
         }
 
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: var(--white);
+            color: var(--text-primary);
+            font-weight: 800;
+            letter-spacing: -0.01em;
         }
 
         .feature-card p {
             color: var(--text-muted);
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 0.95rem;
         }
 
         /* Two Column Layout */
@@ -473,11 +541,13 @@
         .column-content h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            color: var(--white);
+            color: var(--text-primary);
+            font-weight: 900;
+            letter-spacing: -0.02em;
         }
 
         .column-content p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-muted);
             margin-bottom: 1rem;
             line-height: 1.8;
@@ -500,19 +570,21 @@
             content: '✓';
             position: absolute;
             left: 0;
-            color: var(--primary-blue);
+            color: var(--electric-indigo);
             font-weight: bold;
             font-size: 1.2rem;
         }
 
-        /* Code Window (Editor Style) */
+        /* Code Window (Editor Style) - JetBrains Mono */
         .code-window {
-            background: #02040a; /* Deep black/blue background */
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--midnight-slate);
+            border-radius: 1.5rem;
+            border: 1px solid var(--glass-border);
             overflow: hidden;
             font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow:
+                0 0 40px rgba(99, 102, 241, 0.15),
+                0 20px 50px rgba(0, 0, 0, 0.6);
             margin: 2rem 0;
             width: 100%;
             position: relative;
@@ -571,28 +643,32 @@
             font-size: 0.85rem;
         }
 
-        .token.keyword { color: #60A5FA; } /* Bright Blue */
-        .token.type { color: #FACC15; } /* Bright Yellow */
-        .token.function { color: #60A5FA; } /* Bright Blue */
-        .token.string { color: #4ADE80; } /* Bright Green */
-        .token.comment { color: #D1D5DB; } /* Very Light Gray */
-        .token.number { color: #F472B6; } /* Pink */
-        .token.property { color: #22D3EE; } /* Bright Cyan */
+        .token.keyword { color: var(--electric-indigo); }
+        .token.type { color: #FACC15; }
+        .token.function { color: var(--electric-indigo); }
+        .token.string { color: #4ADE80; }
+        .token.comment { color: var(--text-muted); }
+        .token.number { color: #F472B6; }
+        .token.property { color: #22D3EE; }
 
-        /* Callout Box */
+        /* Callout Box - Glassmorphism */
         .callout {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-left: 4px solid var(--primary-color);
-            padding: 2rem;
-            border-radius: 8px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--electric-indigo);
+            padding: 2.5rem;
+            border-radius: 2rem;
             margin: 2rem 0;
+            backdrop-filter: blur(16px) saturate(180%);
+            position: relative;
+            z-index: 1;
         }
 
         .callout h3 {
-            color: var(--primary-color);
+            color: var(--electric-indigo);
             margin-bottom: 1rem;
             font-size: 1.5rem;
+            font-weight: 800;
         }
 
         /* Pricing Cards */
@@ -605,58 +681,71 @@
 
         .pricing-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 2.5rem;
+            border-radius: 2rem;
+            padding: 3rem;
             text-align: center;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
         }
 
         .pricing-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+            border-color: var(--electric-indigo);
+            transform: translateY(-6px);
+            box-shadow:
+                0 0 40px rgba(99, 102, 241, 0.3),
+                0 20px 50px rgba(0, 0, 0, 0.3);
         }
 
         .pricing-card.featured {
-            border-color: var(--primary-color);
-            border-width: 3px;
+            border-color: var(--electric-indigo);
+            border-width: 2px;
             position: relative;
         }
 
         .pricing-card.featured::before {
             content: 'POPULAR';
             position: absolute;
-            top: -12px;
+            top: -14px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--primary-color);
-            color: var(--white-color);
-            padding: 0.25rem 1rem;
-            border-radius: 20px;
+            background: linear-gradient(135deg, var(--electric-indigo), var(--deep-purple));
+            color: white;
+            padding: 0.375rem 1.25rem;
+            border-radius: 2rem;
             font-size: 0.75rem;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.05em;
         }
 
         .pricing-card h3 {
             font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-            color: var(--white-color);
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 800;
+            letter-spacing: -0.01em;
         }
 
         .pricing-card .price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
+            font-size: 3rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--electric-indigo), var(--deep-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             margin: 1rem 0;
+            letter-spacing: -0.02em;
         }
 
         .pricing-card .price-note {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
         }
 
         .pricing-card ul {
@@ -676,17 +765,20 @@
             content: '✓';
             position: absolute;
             left: 0;
-            color: var(--primary-color);
+            color: var(--electric-indigo);
             font-weight: bold;
+            font-size: 1.1rem;
         }
 
-        /* Footer */
+        /* Footer - Glassmorphism */
         .footer {
-            background: rgba(10, 14, 39, 0.5);
-            backdrop-filter: blur(20px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(180%);
             color: var(--text-secondary);
             padding: 4rem 2rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 1;
         }
 
         .footer-content {
@@ -699,9 +791,11 @@
         }
 
         .footer-section h4 {
-            color: var(--white);
+            color: var(--text-primary);
             margin-bottom: 1rem;
             font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .footer-section ul {
@@ -717,14 +811,14 @@
         }
 
         .footer-section a:hover {
-            color: var(--primary-light);
+            color: var(--electric-indigo);
         }
 
         .footer-bottom {
             max-width: 1280px;
             margin: 0 auto;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--glass-border);
             text-align: center;
             font-size: 0.9rem;
         }
@@ -738,21 +832,29 @@
         }
 
         .badge {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--glass-bg);
             padding: 0.5rem 1rem;
-            border-radius: 20px;
+            border-radius: 2rem;
             font-size: 0.85rem;
             color: var(--text-secondary);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            body::before {
+                background:
+                    radial-gradient(ellipse at 30% 40%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+                    radial-gradient(ellipse at 70% 60%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+            }
+
             .hero-logo {
-                height: 64px;
+                height: 80px;
             }
 
             .hero-brand-text {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
                 text-align: center;
             }
 
@@ -761,23 +863,41 @@
             }
 
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.25rem;
+                letter-spacing: -0.02em;
             }
 
             .hero p {
-                font-size: 1.25rem;
+                font-size: 1.1rem;
             }
 
             .two-column {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 3rem;
             }
 
             .section-header h2 {
-                font-size: 2rem;
+                font-size: 2.25rem;
+            }
+
+            .section-header p {
+                font-size: 1rem;
             }
 
             .stats-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .stat-item h3 {
+                font-size: 2.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -822,22 +942,21 @@
                 <img src="images/catalyst-connector-logo.png" alt="Catalyst Connector" class="hero-logo">
                 <span class="hero-brand-text">Catalyst Connector</span>
             </div>
-            <h1>The Catalyst to Unlock Camunda 7</h1>
-            <p>Open source bridge connecting BPMN workflows to n8n's ecosystem of 400+ integrations and 7,400+ community workflows.<br>
-            Self-hosted. No vendor lock-in. Source-available.</p>
+            <h1>The Universal Gateway for BPMN Workflows</h1>
+            <p>Connect any BPMN engine to thousands of integrations. Start with n8n's 400+ connectors. Expand to other integration platforms. Build direct API integrations with our wizard. One environment. Infinite possibilities.</p>
             
             <div class="hero-cta">
                 <a href="#get-started" class="btn btn-primary">One-Click Docker Install</a>
-                <a href="#workflows" class="btn btn-secondary">Explore Workflows</a>
+                <a href="#workflows" class="btn btn-secondary">Explore Integrations</a>
                 <a href="#github" class="btn btn-secondary">View on GitHub</a>
             </div>
 
             <div class="banner-notice">
-                All premium connectors free in dev/test environments - Try before you buy!
+                Additional integration platforms coming soon - Vote on roadmap!
             </div>
 
             <div class="trust-badge">
-                Source-Available (Fair-Code) • Self-Hosted • Community-Driven
+                Fair-Code Licensed • Multi-Engine • One Command Setup
             </div>
         </div>
     </section>
@@ -846,16 +965,16 @@
     <section class="stats-bar">
         <div class="stats-container">
             <div class="stat-item">
-                <h3>7,473</h3>
-                <p>Community Workflows</p>
+                <h3>3</h3>
+                <p>BPMN Engines Supported</p>
             </div>
             <div class="stat-item">
                 <h3>400+</h3>
-                <p>Built-In Integrations</p>
+                <p>n8n Integrations Today</p>
             </div>
             <div class="stat-item">
-                <h3>100%</h3>
-                <p>Open Source</p>
+                <h3>1</h3>
+                <p>Docker Command</p>
             </div>
             <div class="stat-item">
                 <h3>0</h3>
@@ -869,12 +988,11 @@
         <div class="container">
             <div class="two-column">
                 <div class="column-content">
-                    <h2>Your BPMN Workflows Deserve Better</h2>
-                    <p>Camunda 7 excels at BPMN orchestration. It's stable, proven, and trusted worldwide.</p>
-                    <p><strong>But here's the challenge:</strong></p>
-                    <p>Camunda 7 can't talk to the outside world without custom Java code. Every integration requires writing, testing, and maintaining Java code.</p>
-                    <p>Meanwhile, Camunda 8 offers pre-built connectors at enterprise pricing that excludes most Camunda 7 users.</p>
-                    <p><strong>There had to be a better way.</strong></p>
+                    <h2>BPMN Engines Are Powerful. But Isolated.</h2>
+                    <p>BPMN engines like Camunda 7, Operaton, and CIBSeven excel at workflow orchestration. They're stable, proven, battle-tested.</p>
+                    <p><strong>The challenge?</strong> They don't talk to the outside world without custom code. Need to send a Slack message? Write code. Post to an API? More code. Connect to your CRM? Even more code.</p>
+                    <p>Integration platforms like n8n have thousands of pre-built connectors. But they're disconnected from your BPMN workflows.</p>
+                    <p><strong>What if you could have both?</strong></p>
                 </div>
                 <div class="column-content">
                     <div class="code-window">
@@ -925,41 +1043,42 @@
     <section class="section section-gray" id="how-it-works">
         <div class="container">
             <div class="section-header">
-                <h2>Open Source. Open Ecosystem. Open Possibilities.</h2>
-                <p>Three open source components working together</p>
+                <h2>One Gateway. Any Engine. Every Integration.</h2>
+                <p>Choose your BPMN engine. Access any integration platform. Deploy in minutes.</p>
             </div>
 
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-engine"></i></div>
-                    <h3>Camunda 7</h3>
-                    <p><strong>What it is:</strong> Open source BPMN engine</p>
-                    <p><strong>License:</strong> Apache 2.0</p>
-                    <p><strong>Cost:</strong> Free (self-hosted)</p>
+                    <h3>Choose Your Engine</h3>
+                    <p><strong>Camunda 7:</strong> Enterprise-proven BPMN platform</p>
+                    <p><strong>Operaton:</strong> Optimized fork with enhancements</p>
+                    <p><strong>CIBSeven:</strong> Cloud-native alternative</p>
+                    <p><strong>License:</strong> All Apache 2.0 (fully open source)</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-plugs-connected"></i></div>
-                    <h3>Catalyst Bridge</h3>
-                    <p><strong>What it is:</strong> Java delegate connector</p>
-                    <p><strong>License:</strong> Fair-Code (Sustainable Use)</p>
-                    <p><strong>Cost:</strong> Free (source-available)</p>
-                    <p><strong>Install:</strong> One JAR file, 5 minutes</p>
+                    <h3>Catalyst Gateway</h3>
+                    <p><strong>Universal connector:</strong> Links any BPMN engine to any platform</p>
+                    <p><strong>Direct integration:</strong> Wizard for custom APIs</p>
+                    <p><strong>License:</strong> Fair-Code (Elastic License v2)</p>
+                    <p><strong>Setup:</strong> Pre-configured Docker environment</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-share-network"></i></div>
-                    <h3>n8n Ecosystem</h3>
-                    <p><strong>What it is:</strong> Open source automation</p>
-                    <p><strong>License:</strong> Fair-code</p>
-                    <p><strong>Cost:</strong> Free (self-hosted)</p>
-                    <p><strong>Power:</strong> 400+ integrations, 7,400+ workflows</p>
+                    <h3>Integration Platforms</h3>
+                    <p><strong>Available now:</strong> n8n (400+ integrations)</p>
+                    <p><strong>Coming soon:</strong> Additional integration platforms</p>
+                    <p><strong>Direct APIs:</strong> Connect to anything via wizard</p>
+                    <p><strong>Flexibility:</strong> Use one or mix multiple platforms</p>
                 </div>
             </div>
 
             <div class="callout" style="margin-top: 3rem;">
-                <h3>One-Click Docker Install</h3>
-                <p style="margin-bottom: 1rem;">Get the complete stack running in under 5 minutes:</p>
+                <h3>Complete Environment. One Command.</h3>
+                <p style="margin-bottom: 1rem;">Get your chosen BPMN engine + Catalyst Gateway + n8n running instantly:</p>
                 <div class="code-window">
                     <div class="code-header">
                         <div class="window-controls">
@@ -992,45 +1111,45 @@
     <section class="section section-gray" id="features">
         <div class="container">
             <div class="section-header">
-                <h2>Why Open Source Matters</h2>
-                <p>Control your infrastructure. Control your future.</p>
+                <h2>Why Developers Choose Catalyst</h2>
+                <p>Open architecture. No lock-in. Total flexibility.</p>
             </div>
 
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-lock-open"></i></div>
                     <h3>No Vendor Lock-In</h3>
-                    <p>Fair-code licensed (like n8n and Camunda 8). View source, modify for your use, run forever. Free for production use. No resale restrictions protect the community.</p>
+                    <p>Fair-Code licensed. Switch BPMN engines anytime. Add or remove integration platforms freely. Your workflows, your choice, forever.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-hard-drives"></i></div>
-                    <h3>Self-Hosted by Default</h3>
-                    <p>Your data stays on your infrastructure. Your workflows run on your servers. No forced cloud dependencies.</p>
+                    <h3>Multi-Engine Support</h3>
+                    <p>Start with Camunda 7, Operaton, or CIBSeven. Evaluate all three in the same environment. Switch engines without rewriting integrations.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-eye"></i></div>
-                    <h3>Full Transparency</h3>
-                    <p>Read every line of code. Audit security yourself. Know exactly how your workflows execute. No black boxes.</p>
+                    <h3>Integration Freedom</h3>
+                    <p>Use n8n today. Add other integration platforms as they launch. Build direct API connections anytime. Mix platforms as needed.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-sliders"></i></div>
-                    <h3>Customize Everything</h3>
-                    <p>Don't like how something works? Change it. Need a special feature? Build it. The code is yours to modify.</p>
+                    <h3>Direct API Wizard</h3>
+                    <p>Don't wait for pre-built connectors. Use our wizard to connect to any REST API in minutes. No coding required.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-users"></i></div>
                     <h3>Community-Driven</h3>
-                    <p>Thousands of developers contributing workflows, fixing bugs, adding features. Not dependent on a single vendor's roadmap.</p>
+                    <p>Join thousands of developers sharing workflows, connectors, and best practices. Not dependent on a single vendor's roadmap.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon"><i class="ph-bold ph-coins"></i></div>
-                    <h3>Predictable Costs</h3>
-                    <p>Open source core is free forever. Optional premium connectors. No surprise price increases.</p>
+                    <h3>Self-Hosted Control</h3>
+                    <p>Your infrastructure. Your data. Your rules. Deploy anywhere Docker runs. No forced cloud dependencies.</p>
                 </div>
             </div>
         </div>
@@ -1040,14 +1159,15 @@
     <section class="section section-gray">
         <div class="container">
             <div class="section-header">
-                <h2>Tap Into the World's Largest Automation Library</h2>
-                <p>Through the n8n ecosystem</p>
+                <h2>Access Thousands of Integrations</h2>
+                <p>Start with n8n. Expand to other platforms as they become available.</p>
             </div>
 
             <div class="two-column">
                 <div class="column-content">
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem;"><strong>Available now through n8n (400+ integrations):</strong></p>
                     <h3 style="font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-                        <i class="ph-duotone ph-robot" style="color: var(--primary-light);"></i> 
+                        <i class="ph-duotone ph-robot" style="color: var(--primary-light);"></i>
                         AI & Machine Learning
                     </h3>
                     <p>OpenAI • Anthropic Claude • Google Gemini • Hugging Face • Cohere • Ollama • LangChain • Vector Databases • 25+ integrations</p>
@@ -1087,13 +1207,12 @@
             </div>
 
             <div class="callout" style="margin-top: 3rem;">
-                <h3>Community Workflows by Category</h3>
+                <h3>Integration Platform Roadmap</h3>
                 <ul style="list-style: none; margin-top: 1rem;">
-                    <li style="padding: 0.5rem 0;">Marketing: 2,272 workflows</li>
-                    <li style="padding: 0.5rem 0;">Document Ops: 800 workflows</li>
-                    <li style="padding: 0.5rem 0;">Customer Support: 591 workflows</li>
-                    <li style="padding: 0.5rem 0;">Security Operations: 144 workflows</li>
-                    <li style="padding: 0.5rem 0;">All community workflows are free to use and customize</li>
+                    <li style="padding: 0.5rem 0;"><strong>✅ n8n:</strong> 400+ integrations, 7,500+ workflows (available now)</li>
+                    <li style="padding: 0.5rem 0;"><strong>🔜 Additional platforms:</strong> More integration platforms coming soon</li>
+                    <li style="padding: 0.5rem 0;"><strong>💡 Direct API Wizard:</strong> Connect to any REST API (in development)</li>
+                    <li style="padding: 1rem 0 0.5rem 0;"><em>Vote on which integration platform we add next via GitHub</em></li>
                 </ul>
             </div>
         </div>
@@ -1103,51 +1222,51 @@
     <section class="section" id="pricing">
         <div class="container">
             <div class="section-header">
-                <h2>Free Core. Free Development. Fair Production Pricing.</h2>
-                <p>Start free, scale when ready</p>
+                <h2>Start Free. Grow at Your Pace.</h2>
+                <p>Core gateway free forever. Choose your integration platform.</p>
             </div>
 
             <div class="pricing-grid">
                 <div class="pricing-card">
-                    <h3>Catalyst Bridge</h3>
+                    <h3>Catalyst Gateway</h3>
                     <div class="price">Free</div>
-                    <div class="price-note">Forever</div>
+                    <div class="price-note">Core platform forever</div>
                     <ul>
-                        <li>Fair-code license (source-available)</li>
-                        <li>Self-hosted infrastructure</li>
-                        <li>Free for production use</li>
-                        <li>View & modify source code</li>
-                        <li>Community support</li>
+                        <li>Fair-Code licensed (source-available)</li>
+                        <li>Free for all environments</li>
+                        <li>All 3 BPMN engines included</li>
+                        <li>Direct API wizard included</li>
+                        <li>Community support via GitHub</li>
                     </ul>
                     <a href="#github" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">Download on GitHub</a>
                 </div>
 
                 <div class="pricing-card featured">
-                    <h3>n8n Ecosystem</h3>
-                    <div class="price">$20-$50</div>
-                    <div class="price-note">Per month</div>
+                    <h3>Integration Platforms</h3>
+                    <div class="price">Varies</div>
+                    <div class="price-note">Platform-dependent</div>
                     <ul>
-                        <li>400+ integrations included</li>
-                        <li>7,400+ workflow templates</li>
-                        <li>Self-host: Free forever</li>
-                        <li>n8n Cloud: $20-50/month</li>
-                        <li>Massive community support</li>
+                        <li><strong>n8n:</strong> Self-host free or Cloud $20-50/mo</li>
+                        <li><strong>Other platforms:</strong> Coming soon</li>
+                        <li>Mix platforms as they become available</li>
+                        <li>Pricing set by platform vendors</li>
+                        <li>Catalyst Gateway always free</li>
                     </ul>
                     <a href="#install" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">One-Click Install</a>
                 </div>
 
                 <div class="pricing-card">
-                    <h3>Premium Connectors</h3>
-                    <div class="price">$49-$199</div>
-                    <div class="price-note">Per connector or subscribe</div>
+                    <h3>Premium Support</h3>
+                    <div class="price">$99 - $499</div>
+                    <div class="price-note">Per month (optional)</div>
                     <ul>
-                        <li>Free in dev/test environments</li>
-                        <li>Production-tested templates</li>
-                        <li>One-time or subscription</li>
-                        <li>All-Access: $199/month</li>
-                        <li>Priority support included</li>
+                        <li>Priority bug fixes and feature requests</li>
+                        <li>Custom connector development</li>
+                        <li>Architecture consulting</li>
+                        <li>Training and onboarding</li>
+                        <li>SLA-backed response times</li>
                     </ul>
-                    <a href="#marketplace" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">Browse Connectors</a>
+                    <a href="#marketplace" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">Contact Us</a>
                 </div>
             </div>
 
@@ -1161,14 +1280,14 @@
     <!-- CTA Section -->
     <section class="section" style="background: linear-gradient(135deg, #0052CC 0%, #0066FF 50%, #00D4FF 100%); color: white; text-align: center;">
         <div class="container">
-            <h2 style="font-size: 3rem; margin-bottom: 1.5rem; color: white;">Ready to Extend Camunda 7?</h2>
-            <p style="font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.95;">Install in 5 minutes. Test everything free. Scale when ready.</p>
+            <h2 style="font-size: 3rem; margin-bottom: 1.5rem; color: white;">Ready to Connect Your BPMN Workflows?</h2>
+            <p style="font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.95;">Choose your engine. Add integrations. Deploy in one command.</p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <a href="#install" class="btn btn-primary" style="background: white; color: #0052CC; font-size: 1.1rem; padding: 1rem 2rem;">One-Click Docker Install</a>
                 <a href="#docs" class="btn btn-secondary" style="border-color: white; color: white; font-size: 1.1rem; padding: 1rem 2rem;">Read Documentation</a>
                 <a href="#discord" class="btn btn-secondary" style="border-color: white; color: white; font-size: 1.1rem; padding: 1rem 2rem;">Join Discord</a>
             </div>
-            <p style="margin-top: 2rem; font-size: 1rem; opacity: 0.9;">No credit card required • Source-Available (Fair-Code) • Self-Hosted</p>
+            <p style="margin-top: 2rem; font-size: 1rem; opacity: 0.9;">No credit card • Fair-Code Licensed • All 3 Engines Included</p>
         </div>
     </section>
 
