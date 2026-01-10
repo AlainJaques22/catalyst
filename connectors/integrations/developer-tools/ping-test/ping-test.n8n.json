@@ -1,0 +1,80 @@
+{
+  "name": "Catalyst Ping Test Form",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "catalyst-ping-test",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "webhook-1",
+      "name": "Webhook",
+      "webhookId": "catalyst-ping-test"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  item.json.n8nMessage = \"n8n received this message from Camunda -> \" + $input.first().json.camundaMessage};\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "a3ca4a3a-9604-425c-b028-bef028f3aebb",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { success: true, statusCode: 200, responseBody: $json, error: null } }}"
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "respond-1",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "description": "Production webhook version for Camunda integration."
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "name": "Catalyst Ping Test Form",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Ping Test",
+        "formDescription": "Start the Ping Test",
+        "formFields": {
+          "values": [
+            {
+              "fieldName": "camundaMessage",
+              "fieldLabel": "What is the message?",
+              "defaultValue": "Hello n8n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8a6c49f6-cdf6-47a2-9007-8be9affa7e67",
+      "name": "On form submission",
+      "webhookId": "32d63a57-efd0-4f84-9e9f-8c1913142c21"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Ping Test Successful",
+        "completionMessage": "=You have successfully executed the Ping Test n8n workflow. If you executed this via Camunda then your n8n/Camunda bridge is working.\n\n{{ $json.n8nMessage }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.4,
+      "position": [
+        336,
+        0
+      ],
+      "id": "f178893e-3553-4998-8d53-7eaf10f3433e",
+      "name": "Form",
+      "webhookId": "3ef7f0cf-7a5b-4996-8ea3-ccba878a9a73"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  item.json.n8nMessage = \"n8n received this message from Camunda -> \" + $input.first().json.camundaMessage};\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        0
+      ],
+      "id": "a3ca4a3a-9604-425c-b028-bef028f3aebb",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "ed716ea7-4cea-47d1-a29a-8f02911c00ab",
+  "meta": {
+    "instanceId": "2996722783b46b34e3584cd1f4eeb39ce17766b4d22f8c856f4084f3255e83fe"
+  },
+  "id": "pntoy1TiGe2_Jp3piu-WC",
+  "tags": []
+}
