@@ -198,9 +198,12 @@ When creating a new connector:
 - [ ] Create README in `connectors/official/{connector-name}/README.md`
 - [ ] Copy element template to `modeler/resources/element-templates/{connector-name}.element.json`
 - [ ] Use unique webhook URL (e.g., `http://catalyst-n8n:5678/webhook/catalyst-{connector-name}`)
+- [ ] Verify webhook URL matches default allowlist or document custom requirements
 - [ ] Verify NO FEEL syntax anywhere (no `scriptFormat: "feel"`)
 - [ ] Test with real API calls
-- [ ] Document authentication setup in README
+- [ ] Test webhook URL validation (valid and invalid URLs)
+- [ ] Document authentication setup in README (credentials in n8n, not Camunda)
+- [ ] Document any custom webhook URL allowlist requirements
 
 ## Variable Substitution
 
@@ -238,15 +241,44 @@ The CatalystBridge performs string substitution before sending to n8n.
 
 ## Security Guidelines
 
+### Webhook URL Allowlist
+
+The Catalyst Bridge validates all webhook URLs against an allowlist to prevent data exfiltration to unauthorized endpoints.
+
+**Default allowed URL prefixes:**
+- `http://localhost:5678/webhook/`
+- `http://catalyst-n8n:5678/webhook/`
+- `http://n8n:5678/webhook/`
+
+**Custom configuration:**
+
+Set the `CATALYST_WEBHOOK_ALLOWLIST` environment variable to customize allowed webhook URL prefixes:
+
+```bash
+CATALYST_WEBHOOK_ALLOWLIST=http://localhost:5678/webhook/,https://n8n.yourcompany.com/webhook/
+```
+
+**When creating connectors:**
+- ✅ Use webhook URLs that match the default prefixes during development
+- ✅ Document any custom URL requirements in your connector README
+- ✅ Test webhook URL validation with valid and invalid URLs
+- ❌ Don't hardcode webhook URLs that bypass the allowlist
+- ❌ Don't assume the allowlist can be disabled
+
+### Credential Security
+
 **In n8n workflows:**
 - ✅ Store API keys, tokens, passwords
 - ✅ Configure authentication headers
 - ✅ Handle sensitive credentials
+- ✅ Use n8n's credential management system
 
 **In Camunda processes:**
 - ✅ Store business data (user IDs, search terms, configuration)
+- ✅ Pass non-sensitive parameters to n8n
 - ❌ NEVER store API keys, passwords, tokens
 - ❌ NEVER include credentials in process variables
+- ❌ NEVER put secrets in BPMN payloads
 
 ## Examples
 

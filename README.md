@@ -203,6 +203,7 @@ With n8n under the hood, you have access to **400+ integrations** out of the box
 │  ┌─────────────────────────────────────────────────┐            │
 │  │              Catalyst Bridge                     │            │
 │  │         (Routes Camunda → n8n webhooks)         │            │
+│  │         + Webhook URL Validation Security       │            │
 │  └─────────────────────────────────────────────────┘            │
 │                          │                                       │
 │                          ▼                                       │
@@ -212,6 +213,14 @@ With n8n under the hood, you have access to **400+ integrations** out of the box
 └─────────────────────────────────────────────────────────────────┘
                     All inside Docker 🐳
 ```
+
+### Security Features
+
+Catalyst includes built-in security protections:
+
+- **Webhook URL Validation**: The bridge validates all webhook URLs against an allowlist to prevent data exfiltration to unauthorized endpoints
+- **Credential Isolation**: API keys and sensitive credentials are stored exclusively in n8n, never in Camunda process variables
+- **Default Secure Configuration**: Pre-configured allowlist for local and container-based n8n instances
 
 ---
 
@@ -336,7 +345,7 @@ No! That's the whole point. Catalyst works WITH your existing Camunda 7 installa
 <details>
 <summary><strong>Where are my API credentials stored?</strong></summary>
 
-In n8n, which runs on YOUR infrastructure. Credentials never leave your environment.
+In n8n, which runs on YOUR infrastructure. Credentials never leave your environment. The Catalyst Bridge includes webhook URL validation to ensure process data is only sent to authorized n8n instances.
 </details>
 
 <details>

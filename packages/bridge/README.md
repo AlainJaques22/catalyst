@@ -6,6 +6,7 @@ The core Java delegate that enables Camunda 7 to call webhooks.
 ## Features
 
 - Simple HTTP POST integration with N8N webhooks
+- Webhook URL validation security to prevent data exfiltration
 - Configurable timeout and custom headers
 - Flexible payload handling (JSON string or Map)
 - Comprehensive error handling and logging
@@ -105,7 +106,7 @@ Configure a Service Task in your BPMN process using the Java Class implementatio
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `webhookUrl` | String | Yes | - | The N8N webhook endpoint URL |
+| `webhookUrl` | String | Yes | - | The N8N webhook endpoint URL (must match allowlist) |
 | `payload` | String/Map | No | null | JSON payload to send. Can be a JSON string or a Map object |
 | `timeout` | Integer | No | 30 | Request timeout in seconds |
 | `headers` | Map/String | No | null | Additional HTTP headers as Map or JSON string |
@@ -263,6 +264,87 @@ When an error occurs:
 <sequenceFlow sourceRef="errorBoundary" targetRef="handleError" />
 ```
 
+## Security
+
+### Webhook URL Validation
+
+The Catalyst Bridge includes built-in security to prevent data exfiltration by validating all webhook URLs against an allowlist of approved URL prefixes.
+
+#### How It Works
+
+When a process attempts to call a webhook, the bridge checks if the URL starts with one of the allowed prefixes. If the URL doesn't match any allowed prefix, the request is rejected with a SecurityException.
+
+#### Default Allowlist
+
+By default, the bridge allows webhooks to these URL prefixes:
+
+- `http://localhost:5678/webhook/` - For local development
+- `http://catalyst-n8n:5678/webhook/` - For Docker container deployment
+- `http://n8n:5678/webhook/` - For alternative n8n container names
+
+#### Configuration
+
+To customize the allowlist, set the `CATALYST_WEBHOOK_ALLOWLIST` environment variable with comma-separated URL prefixes:
+
+```bash
+# Docker deployment
+environment:
+  - CATALYST_WEBHOOK_ALLOWLIST=http://localhost:5678/webhook/,https://n8n.yourcompany.com/webhook/,http://n8n-prod:5678/webhook/
+```
+
+```bash
+# Camunda Run standalone
+export CATALYST_WEBHOOK_ALLOWLIST="http://localhost:5678/webhook/,https://n8n.yourcompany.com/webhook/"
+```
+
+```bash
+# Spring Boot application.properties
+CATALYST_WEBHOOK_ALLOWLIST=http://localhost:5678/webhook/,https://n8n.yourcompany.com/webhook/
+```
+
+#### Error Messages
+
+If a webhook URL fails validation, you'll see a detailed error message:
+
+```
+Webhook URL validation failed: URL does not match any allowed prefix.
+  Attempted URL: https://evil.example.com/steal-data
+  Allowed prefixes: http://localhost:5678/webhook/, http://catalyst-n8n:5678/webhook/, http://n8n:5678/webhook/
+  To allow additional URLs, set the CATALYST_WEBHOOK_ALLOWLIST environment variable with comma-separated prefixes.
+```
+
+#### Security Best Practices
+
+1. **Use HTTPS in production**: Configure your allowlist with HTTPS URLs when deploying to production
+2. **Be specific**: Use complete URL prefixes including the `/webhook/` path to minimize the attack surface
+3. **Limit to internal networks**: Only allow webhooks to n8n instances you control
+4. **Regularly review**: Audit the allowlist periodically to remove unused entries
+5. **Never disable validation**: The allowlist cannot be disabled for security reasons
+
+#### Example Production Configuration
+
+```yaml
+# docker-compose.yml
+services:
+  camunda:
+    environment:
+      - CATALYST_WEBHOOK_ALLOWLIST=https://n8n.internal.company.com/webhook/,https://n8n-backup.internal.company.com/webhook/
+```
+
+### Credential Security
+
+API keys, passwords, and tokens should NEVER be stored in Camunda process variables. All sensitive credentials must be configured in n8n workflows.
+
+**Correct approach:**
+- Store credentials in n8n credential manager
+- Configure authentication headers in n8n HTTP Request nodes
+- Pass only non-sensitive business data from Camunda
+
+**Never do this:**
+- Don't put API keys in process variables
+- Don't include passwords in BPMN payloads
+- Don't store tokens in Camunda database
+
 ## N8N Webhook Setup
 
 In N8N, create a webhook node with these settings:
@@ -284,6 +366,13 @@ Example N8N webhook response:
 ```
 
 ## Troubleshooting
+
+### SecurityException: Webhook URL validation failed
+- The webhook URL doesn't match any allowed prefix in the allowlist
+- Check the error message for the list of allowed prefixes
+- Set the `CATALYST_WEBHOOK_ALLOWLIST` environment variable to include your webhook URL prefix
+- Ensure you're using the correct protocol (http vs https)
+- Verify the URL prefix includes the full path (e.g., `/webhook/` at the end)
 
 ### ClassNotFoundException
 - Ensure the JAR is in `configuration/userlib/` directory

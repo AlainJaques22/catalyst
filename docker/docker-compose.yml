@@ -38,6 +38,8 @@ services:
       - DB_PASSWORD=camunda
       - WAIT_FOR=postgres:5432
       - TZ=${TZ:-UTC}
+      # Webhook URL allowlist (defaults to localhost and catalyst-n8n if not set)
+      # - CATALYST_WEBHOOK_ALLOWLIST=http://localhost:5678/webhook/,http://catalyst-n8n:5678/webhook/,http://n8n:5678/webhook/
     ports:
       - "8080:8080"
     networks:
