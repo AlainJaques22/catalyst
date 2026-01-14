@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst {CONNECTOR_NAME} Test</title>
+    <script src="../test-lib/connector-test.js"></script>
+</head>
+<body>
+    <div id="catalyst-test"></div>
+    
+    <script>
+        /**
+         * CONNECTOR TEST CONFIGURATION
+         * 
+         * Instructions:
+         * 1. Replace {CONNECTOR_NAME} with your connector name (e.g., "Slack", "Google Sheets")
+         * 2. Replace {PROCESS_KEY} with your BPMN process definition key (e.g., "slack-example")
+         * 3. Update inputs array with your connector's input variables
+         * 4. Update outputs array with your connector's output variables
+         * 5. Save this file as {connector-name}.html in your connector directory
+         */
+        
+        const config = {
+            // Display name for the test page
+            name: "Catalyst {CONNECTOR_NAME} Test",
+            
+            // BPMN process definition key (must match your .bpmn file)
+            processKey: "{PROCESS_KEY}",
+            
+            // Camunda REST API endpoint
+            camundaUrl: "http://localhost/camunda-api",
+            
+            // Input fields that the user will fill in
+            // These become process variables passed to Camunda
+            inputs: [
+                {
+                    name: "variableName1",           // Variable name in BPMN
+                    label: "Variable Label",         // Display label for user
+                    default: "default value",        // Pre-filled value
+                    placeholder: "Enter value..."    // Placeholder text (optional)
+                },
+                // Add more inputs as needed:
+                // {
+                //     name: "variableName2",
+                //     label: "Another Variable",
+                //     default: "value"
+                // }
+            ],
+            
+            // Output fields to display after process completes
+            // These are extracted from process variables
+            outputs: [
+                { name: "success", label: "Success" },       // Standard output
+                { name: "statusCode", label: "Status Code" }, // Standard output
+                { name: "error", label: "Error" },           // Standard output
+                // Add connector-specific outputs:
+                // { name: "responseField", label: "Response Field Label" }
+            ]
+        };
+        
+        // Initialize the test UI (don't change this line)
+        new CatalystTest('catalyst-test', config);
+    </script>
+</body>
+</html>
