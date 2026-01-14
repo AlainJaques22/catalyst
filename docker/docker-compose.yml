@@ -38,6 +38,8 @@ services:
       - DB_PASSWORD=camunda
       - WAIT_FOR=postgres:5432
       - TZ=${TZ:-UTC}
+      # Webhook URL allowlist (defaults to localhost and catalyst-n8n if not set)
+      # - CATALYST_WEBHOOK_ALLOWLIST=http://localhost:5678/webhook/,http://catalyst-n8n:5678/webhook/,http://n8n:5678/webhook/
     ports:
       - "8080:8080"
     networks:
@@ -48,17 +50,15 @@ services:
     image: n8nio/n8n:latest
     container_name: catalyst-n8n
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=Catalyst2024!
+      - N8N_USER_MANAGEMENT_DISABLED=true
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
       - N8N_HOST=localhost
       - N8N_PORT=5678
       - N8N_PROTOCOL=http
       - WEBHOOK_URL=http://localhost:5678/
       - GENERIC_TIMEZONE=${TZ:-UTC}
       - TZ=${TZ:-UTC}
-      - N8N_CORS_ORIGIN=*
-      - N8N_CORS_ALLOW_CREDENTIALS=true
     ports:
       - "5678:5678"
     volumes:
@@ -100,6 +100,7 @@ services:
       - ../packages/dashboard:/usr/share/nginx/dashboard:ro
       - ../packages/connector-builder:/usr/share/nginx/connector-builder:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../connectors:/usr/share/nginx/connectors:ro  # Changed from /usr/share/nginx/html/connectors:ro
     depends_on:
       - n8n
       - camunda

@@ -23,14 +23,14 @@
         :root {
             /* Modern SaaS Dark-Mode Palette */
             --midnight-slate: #0f172a;
-            --rich-navy: #020617;
+            --rich-navy: #000000;
             --electric-indigo: #6366f1;
             --deep-purple: #7c3aed;
 
-            --glass-bg: rgba(15, 23, 42, 0.5);
+            --glass-bg: rgba(0, 0, 0, 0.5);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
+            --text-secondary: #64748b;
             --text-muted: #94a3b8;
         }
 
@@ -159,14 +159,12 @@
 
         /* Header - Glassmorphism */
         .header {
-            background: var(--glass-bg);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            transition: all 0.3s ease;
+            padding: 1.25rem 2rem;
         }
 
         .nav-container {
@@ -176,75 +174,97 @@
             align-items: center;
             justify-content: space-between;
             padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 32px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
         }
 
         .logo {
             display: flex;
             align-items: center;
             text-decoration: none;
+            gap: 0.75rem;
         }
 
         .logo img {
             height: 32px;
         }
 
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+            color: #f1f5f9;
+        }
+
         .nav-links {
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 600;
+            color: #94a3b8;
+            font-weight: 400;
             transition: all 0.3s ease;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
+            font-size: 0.8125rem;
+            letter-spacing: 0;
         }
 
         .nav-links a:hover {
-            color: var(--text-primary);
-            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            color: #f1f5f9;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
         }
 
         .nav-cta {
             display: flex;
-            gap: 1rem;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-cta .nav-link {
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            font-size: 0.8125rem;
+            letter-spacing: 0;
+        }
+
+        .nav-cta .nav-link:hover {
+            color: #f1f5f9;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
         }
 
         /* Glowing Buttons - Super Rounded */
         .btn {
-            padding: 0.875rem 2rem;
-            border-radius: 2rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 32px;
             font-weight: 700;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            border: none;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.8125rem;
             font-family: 'Inter', sans-serif;
-            letter-spacing: -0.01em;
+            letter-spacing: 0;
             position: relative;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--electric-indigo) 0%, var(--deep-purple) 100%);
-            background-size: 200% 200%;
+            background: var(--electric-indigo);
             color: white;
-            border: none;
-            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-            animation: breathingGradient 8s ease infinite;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 0 30px rgba(99, 102, 241, 0.6),
-                0 0 60px rgba(99, 102, 241, 0.3),
-                0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
         }
 
         .btn-secondary {
@@ -280,7 +300,7 @@
         .hero {
             background: transparent; /* Changed to transparrent so orbs show */
             color: var(--text-primary);
-            padding: 2rem 2rem 6rem;
+            padding: 8rem 2rem 6rem;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -305,74 +325,29 @@
             z-index: 1;
         }
 
-        .hero-branding {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .hero-logo {
-            height: 130px;
-            width: auto;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-            transition: transform 0.3s ease;
-        }
-
-        .hero-logo:hover {
-            transform: scale(1.05) rotate(-5deg);
-        }
-
-        .hero-brand-text {
-            font-size: 5rem;
-            font-weight: 900;
-            background: linear-gradient(
-                90deg, 
-                #ffffff 0%, 
-                #a5f3fc 25%, 
-                #ffffff 50%, 
-                #a5f3fc 75%, 
-                #ffffff 100%
-            );
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shine 5s linear infinite;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        @keyframes shine {
-            to {
-                background-position: 200% center;
-            }
-        }
-
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
+            font-size: 4rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
-            line-height: 1.1;
+            line-height: 1.15;
             letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #ffffff 0%, var(--electric-indigo) 50%, #ffffff 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: breathingGradient 12s ease infinite;
+            color: white;
+        }
+
+        .hero h1 .highlight {
+            color: #a78bfa;
+            font-weight: 700;
         }
 
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             margin-bottom: 2.5rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
+            color: #94a3b8;
+            line-height: 1.7;
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
+            font-weight: 400;
         }
 
         .hero-cta {
@@ -849,26 +824,17 @@
                     radial-gradient(ellipse at 70% 60%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
             }
 
-            .hero-logo {
-                height: 80px;
-            }
-
-            .hero-brand-text {
-                font-size: 2.5rem;
-                text-align: center;
-            }
-
             .nav-links {
                 display: none;
             }
 
             .hero h1 {
-                font-size: 2.25rem;
+                font-size: 2.5rem;
                 letter-spacing: -0.02em;
             }
 
             .hero p {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
 
             .two-column {
@@ -917,8 +883,8 @@
     <header class="header">
         <nav class="nav-container">
             <a href="/" class="logo">
-                <img src="images/catalyst-connector-logo.png" alt="Catalyst Connector">
-                <span class="logo-text" style="margin-left: 0.75rem; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; color: var(--white-color);">Catalyst Connector</span>
+                <img src="images/catalyst-connector-logo.png" alt="Catalyst">
+                <span class="logo-text">CATALYST</span>
             </a>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
@@ -928,7 +894,7 @@
                 <li><a href="#community">Community</a></li>
             </ul>
             <div class="nav-cta">
-                <a href="#github" class="btn btn-ghost">GitHub</a>
+                <a href="#github" class="nav-link">GitHub</a>
                 <a href="#get-started" class="btn btn-primary">Get Started</a>
             </div>
         </nav>
@@ -938,11 +904,7 @@
     <section class="hero">
         <canvas id="reactive-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;"></canvas>
         <div class="hero-content">
-            <div class="hero-branding">
-                <img src="images/catalyst-connector-logo.png" alt="Catalyst Connector" class="hero-logo">
-                <span class="hero-brand-text">Catalyst Connector</span>
-            </div>
-            <h1>The Universal Gateway for BPMN Workflows</h1>
+            <h1>The <span class="highlight">Universal Gateway</span> for BPMN Workflows</h1>
             <p>Connect any BPMN engine to thousands of integrations. Start with n8n's 400+ connectors. Expand to other integration platforms. Build direct API integrations with our wizard. One environment. Infinite possibilities.</p>
             
             <div class="hero-cta">

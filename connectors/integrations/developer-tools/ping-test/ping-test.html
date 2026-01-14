@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalyst Ping Test</title>
+    <script src="../../../test-lib/connector-test.js"></script>
+</head>
+<body>
+    <div id="catalyst-test"></div>
+    
+    <script>
+        // Connector configuration - this is the ONLY thing that changes per connector
+        const config = {
+            name: "Catalyst Ping Test",
+            processKey: "ping-test-example",
+            camundaUrl: "http://localhost/camunda-api",
+            
+            inputs: [
+                {
+                    name: "camundaMessage",
+                    label: "What is the message?",
+                    default: "Hello n8n",
+                    placeholder: "Enter your test message"
+                }
+            ],
+            
+            outputs: [
+                { name: "success", label: "Success" },
+                { name: "statusCode", label: "Status Code" },
+                { name: "n8nMessage", label: "n8n Response" },
+                { name: "error", label: "Error" }
+            ]
+        };
+        
+        // Initialize the test UI
+        new CatalystTest('catalyst-test', config);
+    </script>
+</body>
+</html>

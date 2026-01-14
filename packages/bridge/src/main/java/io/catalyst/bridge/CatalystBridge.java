@@ -58,6 +58,60 @@ public class CatalystBridge implements JavaDelegate {
     private static final int DEFAULT_TIMEOUT_SECONDS = 30;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    // Security: Webhook URL allowlist configuration
+    private static final String WEBHOOK_ALLOWLIST_ENV = "CATALYST_WEBHOOK_ALLOWLIST";
+    private static final String DEFAULT_WEBHOOK_ALLOWLIST =
+        "http://localhost:5678/webhook/,http://catalyst-n8n:5678/webhook/,http://n8n:5678/webhook/";
+    private static final String[] ALLOWED_WEBHOOK_PREFIXES = loadWebhookAllowlist();
+
+    /**
+     * Loads the webhook URL allowlist from environment variable or uses defaults.
+     * The allowlist is a comma-separated list of URL prefixes that webhooks must start with.
+     */
+    private static String[] loadWebhookAllowlist() {
+        String envValue = System.getenv(WEBHOOK_ALLOWLIST_ENV);
+        String allowlist = (envValue != null && !envValue.trim().isEmpty())
+            ? envValue
+            : DEFAULT_WEBHOOK_ALLOWLIST;
+
+        String[] prefixes = allowlist.split(",");
+        for (int i = 0; i < prefixes.length; i++) {
+            prefixes[i] = prefixes[i].trim();
+        }
+
+        LOGGER.info("Webhook URL allowlist configured with {} prefix(es)", prefixes.length);
+        return prefixes;
+    }
+
+    /**
+     * Validates that the webhook URL matches one of the allowed prefixes.
+     * This prevents data exfiltration to unauthorized endpoints.
+     *
+     * @param webhookUrl The webhook URL to validate
+     * @throws SecurityException if the URL doesn't match any allowed prefix
+     */
+    private void validateWebhookUrl(String webhookUrl) {
+        for (String prefix : ALLOWED_WEBHOOK_PREFIXES) {
+            if (webhookUrl.startsWith(prefix)) {
+                LOGGER.debug("Webhook URL validated against prefix: {}", prefix);
+                return;
+            }
+        }
+
+        // URL didn't match any allowed prefix - provide helpful error message
+        String allowedPrefixList = String.join(", ", ALLOWED_WEBHOOK_PREFIXES);
+        String errorMessage = String.format(
+            "Webhook URL validation failed: URL does not match any allowed prefix.%n" +
+            "  Attempted URL: %s%n" +
+            "  Allowed prefixes: %s%n" +
+            "  To allow additional URLs, set the %s environment variable with comma-separated prefixes.",
+            webhookUrl, allowedPrefixList, WEBHOOK_ALLOWLIST_ENV
+        );
+
+        LOGGER.error("Security: {}", errorMessage);
+        throw new SecurityException(errorMessage);
+    }
+
     /**
      * Result holder for webhook HTTP response.
      */
@@ -81,6 +135,7 @@ public class CatalystBridge implements JavaDelegate {
         try {
             // Get and validate webhook URL
             String webhookUrl = getRequiredParameter(execution, WEBHOOK_URL_PARAM);
+            validateWebhookUrl(webhookUrl);
             LOGGER.debug("Webhook URL: {}", webhookUrl);
 
             // Get payload (REQUIRED - no auto-build!)

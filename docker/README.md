@@ -11,6 +11,28 @@ This custom Docker image extends the official Camunda BPM Platform 7.21.0 with t
 - Docker and Docker Compose installed
 - Your `catalyst-bridge-*.jar` file in this directory
 
+## 🚨 Security Warning
+
+**This default configuration is for LOCAL DEVELOPMENT ONLY.**
+
+⚠️ **DO NOT expose to the internet without hardening!**
+
+The default setup:
+- Has authentication disabled on n8n
+- Uses default passwords
+- Has no SSL/TLS encryption
+- Is meant for localhost (127.0.0.1) access only
+
+**For production deployments:**
+1. Read the [Production Deployment Guide](docs/PRODUCTION.md)
+2. Use `docker-compose.production.yml`
+3. Enable authentication on all services
+4. Configure SSL/TLS certificates
+5. Change all default passwords
+6. Restrict network access with firewall rules
+
+**Never run the default configuration on a public server.**
+
 ## Quick Start
 
 ### 1. Configure Timezone
