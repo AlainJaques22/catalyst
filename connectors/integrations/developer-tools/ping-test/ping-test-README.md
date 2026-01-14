@@ -50,17 +50,12 @@ curl -X POST "http://localhost:8080/engine-rest/deployment/create" \
 
 ### 3. Run the Test
 
-**Using the Web Test Page** (Recommended):
+Open in your browser:
+```
+http://localhost/connectors/official/ping-test/ping-test.html
+```
 
-1. The connectors are already served by your Catalyst Nginx container
-2. Open in your browser:
-   ```
-   http://localhost/connectors/official/ping-test/ping-test.html
-   ```
-
-3. Enter your message (default: "Hello n8n")
-4. Click **Run Test**
-5. See the results in real-time!
+Enter your message (default: "Hello n8n"), click **Run Test**, and see the results!
 
 **Alternatively, using Camunda Cockpit**:
 1. Go to `http://localhost:8080/camunda/app/cockpit`
@@ -178,10 +173,6 @@ Solution: Deploy ping-test.bpmn to Camunda
 - ✅ Deploy BPMN to Camunda
 - ✅ Verify process key is `ping-test-example`
 - ✅ Check Camunda Cockpit for deployed processes
-
-### CORS errors in browser
-- ✅ Serve test page from a web server (not `file://`)
-- ✅ Or add CORS headers to Camunda (development only)
 
 ---
 

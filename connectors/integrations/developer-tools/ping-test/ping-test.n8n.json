@@ -20,7 +20,7 @@
     },
     {
       "parameters": {
-        "jsCode": "for (const item of $input.all()) {\n  item.json.n8nMessage = \"n8n received this message from Camunda -> \" + $input.first().json.camundaMessage};\nreturn $input.all();"
+        "jsCode": "for (const item of $input.all()) {\n  item.json.n8nMessage = \"n8n received this message from Camunda -> \" + $input.first().json.body.camundaMessage};\nreturn $input.all();"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
