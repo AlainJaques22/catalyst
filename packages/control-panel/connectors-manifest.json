@@ -1,9 +1,9 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-01-03T19:46:43.992Z",
+  "generatedAt": "2026-01-15T18:19:35.237Z",
   "stats": {
-    "totalConnectors": 7,
-    "integrations": 4,
+    "totalConnectors": 8,
+    "integrations": 5,
     "templates": 3
   },
   "connectors": {
@@ -131,6 +131,37 @@
         "createdAt": "2025-01-03T00:00:00Z",
         "updatedAt": "2025-01-03T00:00:00Z",
         "path": "connectors/integrations/developer-tools/http-request"
+      },
+      {
+        "id": "ping-test",
+        "name": "Ping Test",
+        "description": "Test Camunda to n8n connectivity through the Catalyst Bridge",
+        "version": "1.0.0",
+        "type": "integration",
+        "category": "developer-tools",
+        "icon": "ph-plugs-connected",
+        "color": "#06b6d4",
+        "tags": [
+          "ping",
+          "test",
+          "connectivity",
+          "debug",
+          "diagnostics"
+        ],
+        "author": {
+          "name": "Catalyst Team"
+        },
+        "files": {
+          "readme": "ping-test-README.md",
+          "n8nWorkflow": "ping-test.n8n.json",
+          "elementTemplate": "ping-test.element.json",
+          "exampleBpmn": "ping-test.bpmn",
+          "testPage": "ping-test.html"
+        },
+        "featured": true,
+        "createdAt": "2025-01-14T00:00:00Z",
+        "updatedAt": "2025-01-14T00:00:00Z",
+        "path": "connectors/integrations/developer-tools/ping-test"
       }
     ],
     "templates": [

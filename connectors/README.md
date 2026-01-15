@@ -1,4 +1,4 @@
-# Catalyst Connectors
+All # Catalyst Connectors
 
 This directory contains all Catalyst connectors organized by type and category.
 
@@ -91,7 +91,8 @@ Every connector must have a `connector.json` metadata file:
     "readme": "README.md",
     "n8nWorkflow": "microsoft-teams.n8n.json",
     "elementTemplate": "microsoft-teams.element.json",
-    "exampleBpmn": "microsoft-teams.bpmn"
+    "exampleBpmn": "microsoft-teams.bpmn",
+    "testPage": "microsoft-teams.html"
   },
   "authentication": "oauth2",
   "featured": false,
@@ -113,7 +114,8 @@ Every connector must have a `connector.json` metadata file:
 **Optional Fields:**
 - `tags`: Array of searchable keywords
 - `author`: Creator information
-- `files`: Paths to connector files
+- `files`: Paths to connector files (readme, n8nWorkflow, elementTemplate, exampleBpmn, testPage)
+- `files.testPage`: HTML test page for interactive testing (displays "Test" button in control panel)
 - `authentication`: Auth type (oauth2, api-key, basic, etc.)
 - `featured`: Boolean to highlight in gallery
 - `createdAt`, `updatedAt`: ISO timestamps
@@ -128,7 +130,8 @@ microsoft-teams/
 ├── README.md                   # Documentation
 ├── microsoft-teams.n8n.json    # n8n webhook workflow
 ├── microsoft-teams.element.json # Camunda element template
-└── microsoft-teams.bpmn        # Example BPMN process
+├── microsoft-teams.bpmn        # Example BPMN process
+└── microsoft-teams.html        # Test page (optional)
 ```
 
 See [CONNECTOR_SPEC.md](../CONNECTOR_SPEC.md) for detailed file format specifications.

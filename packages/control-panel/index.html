@@ -364,7 +364,7 @@
             display: flex;
             gap: 0.5rem;
             padding: 0.75rem;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .logs-stat-box {
@@ -374,8 +374,8 @@
             align-items: center;
             justify-content: center;
             padding: 0.5rem 0.25rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 8px;
             text-align: center;
         }
@@ -414,12 +414,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
         }
 
         .launch-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 1.5rem;
             display: flex;
@@ -432,7 +431,7 @@
         }
 
         .launch-card:hover {
-            background: var(--bg-card-hover);
+            background: rgba(255, 255, 255, 0.06);
             border-color: var(--accent-cyan);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(6, 182, 212, 0.15);
@@ -503,8 +502,9 @@
         /* Two Column Layout */
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr 480px;
-            gap: 2rem;
+            grid-template-columns: 1fr 400px;
+            gap: 1.5rem;
+            align-items: start;
         }
 
         @media (max-width: 1200px) {
@@ -513,78 +513,79 @@
             }
         }
 
-        /* Connector Gallery */
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+
+        .glass-panel-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .panel-section {
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .panel-section:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        /* Connector Gallery - uses launch-card style */
         .connector-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1rem;
         }
 
-        .connector-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            transition: all 0.2s;
+        .connector-launch-card {
+            cursor: default;
         }
 
-        .connector-card:hover {
-            border-color: var(--accent-primary);
-            background: var(--bg-card-hover);
+        .connector-launch-card:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .connector-header {
+        .connector-card-actions {
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            gap: 0.5rem;
+            margin-left: auto;
         }
 
-        .connector-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+        .connector-action-btn {
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-        }
-
-        .connector-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .connector-desc {
-            font-size: 0.813rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .connector-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .connector-btn {
-            flex: 1;
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
             text-decoration: none;
-            text-align: center;
+            transition: all 0.2s;
         }
 
-        .connector-btn:hover {
+        .connector-action-btn:hover {
             background: var(--accent-primary);
             border-color: var(--accent-primary);
             color: white;
+            transform: translateY(-2px);
+        }
+
+        .connector-action-btn i {
+            font-size: 1rem;
         }
 
         /* Connector Type Selector */
@@ -708,20 +709,22 @@
 
         /* Live Logs Panel */
         .logs-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
-            height: 600px;
+            height: 800px;
         }
 
         .logs-header {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .logs-title {
@@ -729,6 +732,13 @@
             align-items: center;
             gap: 0.5rem;
             font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .logs-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .logs-live-dot {
@@ -739,16 +749,11 @@
             animation: pulse 1s infinite;
         }
 
-        .logs-filters {
-            display: flex;
-            gap: 0.5rem;
-        }
-
         .logs-filter {
             padding: 0.375rem 0.75rem;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 6px;
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.03);
             color: var(--text-secondary);
             font-size: 0.75rem;
             cursor: pointer;
@@ -900,12 +905,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
-            margin-top: 2rem;
         }
 
         .doc-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             padding: 1.25rem;
             text-decoration: none;
@@ -918,7 +922,7 @@
 
         .doc-card:hover {
             border-color: var(--accent-purple);
-            background: var(--bg-card-hover);
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .doc-card h4 {
@@ -976,6 +980,189 @@
             border-radius: 4px;
             font-family: 'JetBrains Mono', monospace;
             color: var(--accent-cyan);
+        }
+
+        /* Settings Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 450px;
+            max-width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-body label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body input[type="password"],
+        .modal-body input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .modal-body input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+        }
+
+        .help-section {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            font-size: 0.813rem;
+        }
+
+        .help-section p {
+            margin: 0 0 0.75rem 0;
+            color: var(--text-primary);
+        }
+
+        .help-section ol {
+            margin: 0;
+            padding-left: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .help-section li {
+            margin-bottom: 0.375rem;
+        }
+
+        .help-section a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .help-section a:hover {
+            text-decoration: underline;
+        }
+
+        .key-status {
+            margin-top: 1rem;
+            font-size: 0.813rem;
+        }
+
+        .status-configured {
+            color: var(--accent-green);
+        }
+
+        .status-missing {
+            color: var(--accent-orange);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .modal-footer button {
+            padding: 0.625rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent-purple);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-purple-light);
+        }
+
+        .logs-settings-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.375rem 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .logs-settings-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .logs-settings-btn i {
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -1046,126 +1233,129 @@
     </header>
 
     <div class="container">
-        <!-- Quick Launch Section -->
-        <section class="section">
-            <h2 class="section-title">
-                <i class="ph ph-lightning"></i>
-                Quick Launch
-            </h2>
-            <div class="quick-launch">
-                <a href="#" class="launch-card" onclick="openN8n(); return false;">
-                    <div class="launch-icon n8n">
-                        <i class="ph ph-flow-arrow"></i>
-                    </div>
-                    <div class="launch-info">
-                        <h3>n8n Workflows</h3>
-                        <p>Build and manage automation workflows</p>
-                    </div>
-                    <i class="ph ph-arrow-right launch-arrow"></i>
-                </a>
-
-                <a href="#" class="launch-card" onclick="openCamunda(); return false;">
-                    <div class="launch-icon camunda">
-                        <i class="ph ph-squares-four"></i>
-                    </div>
-                    <div class="launch-info">
-                        <h3>Camunda Cockpit</h3>
-                        <p>Monitor BPMN processes and tasks</p>
-                    </div>
-                    <i class="ph ph-arrow-right launch-arrow"></i>
-                </a>
-
-                <a href="/modeler" class="launch-card">
-                    <div class="launch-icon modeler">
-                        <i class="ph ph-flow-arrow"></i>
-                    </div>
-                    <div class="launch-info">
-                        <h3>Camunda Modeler</h3>
-                        <p>Design and deploy process diagrams</p>
-                    </div>
-                    <i class="ph ph-arrow-right launch-arrow"></i>
-                </a>
-
-                <a href="/connector-builder/" class="launch-card">
-                    <div class="launch-icon builder">
-                        <i class="ph ph-stack"></i>
-                    </div>
-                    <div class="launch-info">
-                        <h3>Connector Builder</h3>
-                        <p>Create connectors from n8n workflows</p>
-                    </div>
-                    <i class="ph ph-arrow-right launch-arrow"></i>
-                </a>
-
-                <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="launch-card">
-                    <div class="launch-icon docs">
-                        <i class="ph ph-github-logo"></i>
-                    </div>
-                    <div class="launch-info">
-                        <h3>GitHub Repository</h3>
-                        <p>Source code and documentation</p>
-                    </div>
-                    <i class="ph ph-arrow-right launch-arrow"></i>
-                </a>
-            </div>
-        </section>
-
         <div class="main-grid">
-            <div>
-                <!-- Connector Gallery -->
-                <section class="section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                        <h2 class="section-title" style="margin-bottom: 0;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7" rx="1" />
-                                <rect x="14" y="3" width="7" height="7" rx="1" />
-                                <rect x="3" y="14" width="7" height="7" rx="1" />
-                                <rect x="14" y="14" width="7" height="7" rx="1" />
-                            </svg>
-                            Featured Connectors
+            <!-- Left Glass Panel -->
+            <div class="glass-panel">
+                <div class="glass-panel-inner">
+                    <!-- Quick Launch Section -->
+                    <section class="panel-section">
+                        <h2 class="section-title">
+                            <i class="ph ph-lightning"></i>
+                            Quick Launch
                         </h2>
-                        <a href="connectors.html" class="connector-btn" style="padding: 0.5rem 1rem; white-space: nowrap; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 0.5rem;">
-                            <i class="ph ph-grid-four"></i> View All Connectors
-                        </a>
-                    </div>
+                        <div class="quick-launch">
+                            <a href="#" class="launch-card" onclick="openN8n(); return false;">
+                                <div class="launch-icon n8n">
+                                    <i class="ph ph-flow-arrow"></i>
+                                </div>
+                                <div class="launch-info">
+                                    <h3>n8n Workflows</h3>
+                                    <p>Build and manage automation workflows</p>
+                                </div>
+                                <i class="ph ph-arrow-right launch-arrow"></i>
+                            </a>
 
-                    <!-- Connector Gallery (Featured Only) -->
-                    <div class="connector-gallery" id="connectorGallery">
-                        <!-- Featured connectors loaded dynamically -->
-                    </div>
-                </section>
+                            <a href="#" class="launch-card" onclick="openCamunda(); return false;">
+                                <div class="launch-icon camunda">
+                                    <i class="ph ph-squares-four"></i>
+                                </div>
+                                <div class="launch-info">
+                                    <h3>Camunda Cockpit</h3>
+                                    <p>Monitor BPMN processes and tasks</p>
+                                </div>
+                                <i class="ph ph-arrow-right launch-arrow"></i>
+                            </a>
 
-                <!-- Documentation -->
-                <section class="section">
-                    <h2 class="section-title">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <line x1="16" y1="13" x2="8" y2="13" />
-                            <line x1="16" y1="17" x2="8" y2="17" />
-                            <polyline points="10 9 9 9 8 9" />
-                        </svg>
-                        Documentation
-                    </h2>
-                    <div class="docs-grid">
-                        <a href="https://github.com/AlainJaques22/catalyst#readme" target="_blank" class="doc-card">
-                            <h4>Getting Started</h4>
-                            <p>Installation and setup guide</p>
-                        </a>
-                        <a href="https://github.com/AlainJaques22/catalyst/tree/main/connectors/official#readme" target="_blank" class="doc-card">
-                            <h4>Connector Guide</h4>
-                            <p>How to use and create connectors</p>
-                        </a>
-                        <a href="https://docs.n8n.io/" target="_blank" class="doc-card">
-                            <h4>n8n Documentation</h4>
-                            <p>Official n8n docs</p>
-                        </a>
-                        <a href="https://docs.camunda.org/manual/latest/" target="_blank" class="doc-card">
-                            <h4>Camunda Docs</h4>
-                            <p>Camunda Platform 7 manual</p>
-                        </a>
-                    </div>
-                </section>
+                            <a href="/modeler" class="launch-card">
+                                <div class="launch-icon modeler">
+                                    <i class="ph ph-flow-arrow"></i>
+                                </div>
+                                <div class="launch-info">
+                                    <h3>Camunda Modeler</h3>
+                                    <p>Design and deploy process diagrams</p>
+                                </div>
+                                <i class="ph ph-arrow-right launch-arrow"></i>
+                            </a>
+
+                            <a href="/connector-builder/" class="launch-card">
+                                <div class="launch-icon builder">
+                                    <i class="ph ph-stack"></i>
+                                </div>
+                                <div class="launch-info">
+                                    <h3>Connector Builder</h3>
+                                    <p>Create connectors from n8n workflows</p>
+                                </div>
+                                <i class="ph ph-arrow-right launch-arrow"></i>
+                            </a>
+
+                            <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="launch-card">
+                                <div class="launch-icon docs">
+                                    <i class="ph ph-github-logo"></i>
+                                </div>
+                                <div class="launch-info">
+                                    <h3>GitHub Repository</h3>
+                                    <p>Source code and documentation</p>
+                                </div>
+                                <i class="ph ph-arrow-right launch-arrow"></i>
+                            </a>
+                        </div>
+                    </section>
+
+                    <!-- Connector Gallery -->
+                    <section class="panel-section">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h2 class="section-title" style="margin-bottom: 0;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                                </svg>
+                                Featured Connectors
+                            </h2>
+                            <a href="connectors.html" class="connector-btn" style="padding: 0.5rem 1rem; white-space: nowrap; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 0.5rem;">
+                                <i class="ph ph-grid-four"></i> View All Connectors
+                            </a>
+                        </div>
+
+                        <!-- Connector Gallery (Featured Only) -->
+                        <div class="connector-gallery" id="connectorGallery">
+                            <!-- Featured connectors loaded dynamically -->
+                        </div>
+                    </section>
+
+                    <!-- Documentation -->
+                    <section class="panel-section">
+                        <h2 class="section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" y1="13" x2="8" y2="13" />
+                                <line x1="16" y1="17" x2="8" y2="17" />
+                                <polyline points="10 9 9 9 8 9" />
+                            </svg>
+                            Documentation
+                        </h2>
+                        <div class="docs-grid">
+                            <a href="https://github.com/AlainJaques22/catalyst#readme" target="_blank" class="doc-card">
+                                <h4>Getting Started</h4>
+                                <p>Installation and setup guide</p>
+                            </a>
+                            <a href="https://github.com/AlainJaques22/catalyst/tree/main/connectors/official#readme" target="_blank" class="doc-card">
+                                <h4>Connector Guide</h4>
+                                <p>How to use and create connectors</p>
+                            </a>
+                            <a href="https://docs.n8n.io/" target="_blank" class="doc-card">
+                                <h4>n8n Documentation</h4>
+                                <p>Official n8n docs</p>
+                            </a>
+                            <a href="https://docs.camunda.org/manual/latest/" target="_blank" class="doc-card">
+                                <h4>Camunda Docs</h4>
+                                <p>Camunda Platform 7 manual</p>
+                            </a>
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <!-- Live Logs Panel -->
@@ -1199,6 +1389,9 @@
                                     <path d="M12 5v14M5 12l7-7 7 7" id="sortIcon"/>
                                 </svg>
                                 <span id="sortLabel">Newest</span>
+                            </button>
+                            <button class="logs-settings-btn" onclick="openSettings()" title="Configure n8n API Key">
+                                <i class="ph ph-gear"></i>
                             </button>
                         </div>
                     </div>
@@ -1239,7 +1432,7 @@
         // Configuration - Update these URLs for your environment
         const CONFIG = {
             n8nUrl: '/n8n',  // Proxied through nginx to n8n:5678
-            n8nApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZDM5YTIwZi0zNDhhLTQ4MTktYjMxNi01ZjIwYjVjYjAwMGUiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzY3MzU2NjAyfQ.EdU1TWhvvxnvkTv5tQxYXLNmMACly1As7fRTcJ51q4E', // Set your n8n API key here (Settings > API > Create API Key)
+            n8nApiKey: localStorage.getItem('catalyst_n8n_api_key') || '',  // Loaded from localStorage (configure via Settings)
             camundaApiUrl: '/camunda-api',  // Proxied through nginx to camunda:8080/engine-rest
             camundaAppUrl: '/camunda',  // Proxied through nginx to camunda:8080/camunda (web apps)
             pollInterval: 5000, // 5 seconds
@@ -1325,21 +1518,23 @@
             }
 
             gallery.innerHTML = featuredConnectors.map(c => `
-                <div class="connector-card" data-category="${c.category}">
-                    <div class="connector-header">
-                        <div class="connector-icon" style="background: ${c.color}20; color: ${c.color}">
-                            <i class="ph ${c.icon}"></i>
-                        </div>
-                        <span class="connector-name">${c.name}</span>
+                <div class="launch-card connector-launch-card" data-category="${c.category}">
+                    <div class="launch-icon" style="background: linear-gradient(135deg, ${c.color}, ${c.color}dd);">
+                        <i class="ph ${c.icon}"></i>
                     </div>
-                    <p class="connector-desc">${c.description}</p>
-                    <div class="connector-actions">
-                        <a href="${c.path}/README.md" target="_blank" class="connector-btn">
-                            <i class="ph ph-book-open"></i> Docs
+                    <div class="launch-info">
+                        <h3>${c.name}</h3>
+                        <p>${c.description}</p>
+                    </div>
+                    <div class="connector-card-actions">
+                        <a href="docs-viewer.html?file=${c.path}/${c.files?.readme || 'README.md'}&title=${encodeURIComponent(c.name)}" target="_blank" class="connector-action-btn" title="Documentation">
+                            <i class="ph ph-book-open"></i>
                         </a>
-                        <button class="connector-btn" onclick="viewConnector('${c.id}')">
-                            <i class="ph ph-eye"></i> View
-                        </button>
+                        ${c.files?.testPage ? `
+                        <a href="${c.path}/${c.files.testPage}" target="_blank" class="connector-action-btn" title="Test">
+                            <i class="ph ph-play"></i>
+                        </a>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
@@ -1602,9 +1797,44 @@
             window.open(`${CONFIG.camundaAppUrl}/app/cockpit/`, '_blank');
         }
 
-        function viewConnector(id) {
-            alert(`Connector details for ${id} - Feature coming soon!`);
+        // Settings modal functions
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+            document.getElementById('n8nApiKeyInput').value = CONFIG.n8nApiKey;
+            updateKeyStatus();
         }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function updateKeyStatus() {
+            const status = document.getElementById('keyStatus');
+            if (CONFIG.n8nApiKey) {
+                status.innerHTML = '<span class="status-configured">✓ API Key configured</span>';
+            } else {
+                status.innerHTML = '<span class="status-missing">⚠ API Key not configured - n8n workflow stats will not appear</span>';
+            }
+        }
+
+        function saveSettings() {
+            const apiKey = document.getElementById('n8nApiKeyInput').value.trim();
+            localStorage.setItem('catalyst_n8n_api_key', apiKey);
+            CONFIG.n8nApiKey = apiKey;
+            closeSettings();
+            // Refresh data with new key
+            updateStats();
+            checkServices();
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('settingsModal');
+            if (e.target === modal) {
+                closeSettings();
+            }
+        });
+
 
         // Add demo logs for visual testing
         function addDemoLogs() {
@@ -1814,6 +2044,40 @@
     'floating-chat.donateButton.text-color': '#fff'
   });
 </script>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="ph ph-gear"></i> Settings</h3>
+            <button class="modal-close" onclick="closeSettings()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <label for="n8nApiKeyInput">n8n API Key</label>
+            <input type="password" id="n8nApiKeyInput" placeholder="Paste your n8n API key here">
+
+            <div class="help-section">
+                <p><strong>How to get your API key:</strong></p>
+                <ol>
+                    <li>Open <a href="#" onclick="openN8n(); return false;">n8n</a></li>
+                    <li>Click the <strong>cog icon</strong> (⚙) in the left pane</li>
+                    <li>Click <strong>n8n API</strong> in the Settings sidebar</li>
+                    <li>Click <strong>Create API Key</strong></li>
+                    <li>Enter <strong>Catalyst</strong> in the Label field</li>
+                    <li>Set Expiration to <strong>No Expiration</strong></li>
+                    <li>Leave Scope as default, then click <strong>Create</strong></li>
+                    <li>Copy the key and paste it here</li>
+                </ol>
+            </div>
+
+            <div class="key-status" id="keyStatus"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+            <button class="btn-primary" onclick="saveSettings()">Save</button>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

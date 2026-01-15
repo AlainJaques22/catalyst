@@ -905,19 +905,17 @@
                         ${c.authentication ? `<span class="connector-badge">${c.authentication}</span>` : ''}
                     </div>
                     <div class="connector-actions">
-                        <a href="${c.path}/README.md" target="_blank" class="connector-btn">
+                        <a href="docs-viewer.html?file=${c.path}/${c.files?.readme || 'README.md'}&title=${encodeURIComponent(c.name)}" target="_blank" class="connector-btn">
                             <i class="ph ph-book-open"></i> Docs
                         </a>
-                        <button class="connector-btn" onclick="viewConnector('${c.id}')">
-                            <i class="ph ph-eye"></i> View
-                        </button>
+                        ${c.files?.testPage ? `
+                        <a href="${c.path}/${c.files.testPage}" target="_blank" class="connector-btn">
+                            <i class="ph ph-play"></i> Test
+                        </a>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
-        }
-
-        function viewConnector(id) {
-            alert(`Connector details for ${id} - Feature coming soon!`);
         }
 
         function openN8n() {
