@@ -358,9 +358,9 @@
             gap: 0.5rem;
             margin-bottom: 1.5rem;
             padding: 0.25rem;
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 8px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .type-tab {
@@ -382,12 +382,12 @@
 
         .type-tab:hover {
             color: var(--text-primary);
-            background: var(--bg-card);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .type-tab.active {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
         }
 
@@ -406,8 +406,8 @@
 
         .category-tab {
             padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 8px;
             color: var(--text-secondary);
             font-size: 0.875rem;
@@ -437,7 +437,7 @@
         }
 
         .category-tab:not(.active) .category-count {
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Connector Filters */
@@ -450,8 +450,8 @@
         #connectorSearch {
             flex: 1;
             padding: 0.75rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 0.875rem;
@@ -463,15 +463,25 @@
             border-color: var(--accent-cyan);
         }
 
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 1.5rem;
+        }
+
         /* Stats Bar */
         .stats-bar {
             display: flex;
             gap: 1rem;
             padding: 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .stat-item {
@@ -500,8 +510,8 @@
         }
 
         .connector-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             padding: 1.25rem;
             transition: all 0.2s;
@@ -509,7 +519,7 @@
 
         .connector-card:hover {
             border-color: var(--accent-primary);
-            background: var(--bg-card-hover);
+            background: rgba(255, 255, 255, 0.06);
             transform: translateY(-2px);
         }
 
@@ -551,7 +561,7 @@
 
         .connector-badge {
             padding: 0.25rem 0.5rem;
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 4px;
             font-size: 0.688rem;
             color: var(--text-muted);
@@ -570,9 +580,9 @@
         .connector-btn {
             flex: 1;
             padding: 0.5rem;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 6px;
-            background: var(--bg-secondary);
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-secondary);
             font-size: 0.75rem;
             cursor: pointer;
@@ -666,56 +676,58 @@
     </header>
 
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Connector Gallery</h1>
-            <p class="page-subtitle">Browse and discover all available connectors for Catalyst</p>
-        </div>
-
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value" id="totalCount">-</div>
-                <div class="stat-label">Total Connectors</div>
+        <div class="glass-panel">
+            <div class="page-header">
+                <h1 class="page-title">Connector Gallery</h1>
+                <p class="page-subtitle">Browse and discover all available connectors for Catalyst</p>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="integrationCount">-</div>
-                <div class="stat-label">Integrations</div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalCount">-</div>
+                    <div class="stat-label">Total Connectors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="integrationCount">-</div>
+                    <div class="stat-label">Integrations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="templateCount">-</div>
+                    <div class="stat-label">Templates</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="categoryCount">-</div>
+                    <div class="stat-label">Categories</div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="templateCount">-</div>
-                <div class="stat-label">Templates</div>
+
+            <!-- Type Selector -->
+            <div class="connector-type-selector">
+                <button class="type-tab active" data-type="integrations">
+                    <i class="ph ph-plugs-connected"></i>
+                    Integrations
+                </button>
+                <button class="type-tab" data-type="templates">
+                    <i class="ph ph-stack"></i>
+                    Templates
+                </button>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="categoryCount">-</div>
-                <div class="stat-label">Categories</div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs" id="categoryTabs">
+                <!-- Dynamically populated -->
             </div>
-        </div>
 
-        <!-- Type Selector -->
-        <div class="connector-type-selector">
-            <button class="type-tab active" data-type="integrations">
-                <i class="ph ph-plugs-connected"></i>
-                Integrations
-            </button>
-            <button class="type-tab" data-type="templates">
-                <i class="ph ph-stack"></i>
-                Templates
-            </button>
-        </div>
+            <!-- Search and Filters -->
+            <div class="connector-filters">
+                <input type="text" id="connectorSearch" placeholder="Search connectors by name, description, or tags...">
+            </div>
 
-        <!-- Category Tabs -->
-        <div class="category-tabs" id="categoryTabs">
-            <!-- Dynamically populated -->
-        </div>
-
-        <!-- Search and Filters -->
-        <div class="connector-filters">
-            <input type="text" id="connectorSearch" placeholder="Search connectors by name, description, or tags...">
-        </div>
-
-        <!-- Connector Gallery -->
-        <div class="connector-gallery" id="connectorGallery">
-            <!-- Connectors loaded dynamically -->
+            <!-- Connector Gallery -->
+            <div class="connector-gallery" id="connectorGallery">
+                <!-- Connectors loaded dynamically -->
+            </div>
         </div>
     </div>
 
