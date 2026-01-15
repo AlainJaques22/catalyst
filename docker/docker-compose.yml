@@ -100,11 +100,24 @@ services:
       - ../packages/dashboard:/usr/share/nginx/dashboard:ro
       - ../packages/connector-builder:/usr/share/nginx/connector-builder:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../connectors:/usr/share/nginx/connectors:ro  # Changed from /usr/share/nginx/html/connectors:ro
+      - ../connectors:/usr/share/nginx/connectors:ro
     depends_on:
       - n8n
       - camunda
       - modeler
+      - dozzle
+    networks:
+      - catalyst-network
+    restart: unless-stopped
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: catalyst-dozzle
+    environment:
+      - DOZZLE_NO_ANALYTICS=true
+      - DOZZLE_BASE=/logs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - catalyst-network
     restart: unless-stopped
