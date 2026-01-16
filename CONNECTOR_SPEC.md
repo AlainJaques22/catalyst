@@ -20,12 +20,16 @@ Connectors are configuration templates that make it easy to integrate specific A
 
 ## Connector Structure
 
-Each connector consists of four files in `connectors/official/{connector-name}/`:
+Each connector consists of files in `connectors/official/{connector-name}/`:
 
+**Required files:**
 1. `{connector-name}.element.json` - Camunda Modeler element template
 2. `{connector-name}.bpmn` - Example BPMN process demonstrating usage
 3. `{connector-name}.n8n.json` - n8n workflow configuration
 4. `README.md` - Documentation with examples and use cases
+
+**Optional files:**
+5. `{connector-name}.html` - Interactive test page for the Control Panel
 
 ## Element Template Requirements
 
@@ -187,6 +191,35 @@ The n8n workflow handles:
 - Request execution
 - Error handling
 - Response formatting
+
+## Test Page (Optional)
+
+Connectors can optionally include an HTML test page for interactive testing directly from the Control Panel.
+
+### File Naming
+- `{connector-name}.html` in the connector directory
+
+### Reference in connector.json
+
+```json
+{
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "connector.n8n.json",
+    "elementTemplate": "connector.element.json",
+    "exampleBpmn": "connector.bpmn",
+    "testPage": "connector.html"
+  }
+}
+```
+
+### Behavior
+- When `testPage` is present, a "Test" button appears in the Control Panel connector gallery
+- Clicking opens the test page for interactive connector testing
+- Useful for connectors requiring user input or demonstrating functionality
+
+### Example
+See `connectors/integrations/developer-tools/ping-test/ping-test.html` for a reference implementation using the shared test library.
 
 ## Deployment Checklist
 
