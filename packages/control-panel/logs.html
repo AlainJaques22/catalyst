@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Docker Logs - Catalyst Control Panel</title>
     <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2306b6d4' d='M55 10 L30 50 L45 50 L40 90 L70 40 L55 40 Z'/%3E%3C/svg%3E">
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v2'/%3E%3Cpath d='M14 2v2'/%3E%3Cpath d='M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1'/%3E%3Cpath d='M6 2v2'/%3E%3C/svg%3E">
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
@@ -43,110 +43,324 @@
             flex-direction: column;
         }
 
+        /* ============================================
+           FLOATING GLASSMORPHIC ISLAND HEADER
+           ============================================ */
+
         .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.75rem 2rem;
-            flex-shrink: 0;
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 1340px;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
-            max-width: 1600px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
         }
 
+        /* Logo / Branding */
         .logo {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             text-decoration: none;
+            cursor: pointer;
         }
 
-        .logo-icon-img {
-            height: 48px;
-            width: auto;
+        .logo-icon-svg {
+            width: 28px;
+            height: 28px;
+            color: #ffffff;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo:hover .logo-icon-svg {
+            color: #38bdf8;
+        }
+
+        .logo-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
         .logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.125rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: #ffffff;
+            line-height: 1;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo:hover .logo-text {
+            color: #38bdf8;
         }
 
         .logo-subtitle {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.625rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.15em;
+            font-weight: 500;
+            color: #64748b;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
-        .header-quick-launch {
+        /* Navigation Links */
+        .nav-links {
             display: flex;
-            gap: 0.5rem;
             align-items: center;
+            gap: 0.25rem;
         }
 
-        .header-launch-btn {
+        .nav-link {
+            position: relative;
             display: flex;
             align-items: center;
             gap: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            color: var(--text-secondary);
+            padding: 0.5rem 0.875rem;
+            color: #94a3b8;
             text-decoration: none;
-            font-size: 0.813rem;
+            font-size: 0.875rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .header-launch-btn:hover {
-            background: var(--bg-card);
-            color: var(--text-primary);
+        .nav-link i {
+            font-size: 16px;
         }
 
-        .header-launch-btn i {
-            font-size: 1rem;
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #6366f1;
+            transform: translateX(-50%);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .header-launch-btn.logs {
-            background: var(--bg-card);
-            color: var(--accent-cyan);
+        .nav-link:hover {
+            color: #ffffff;
         }
 
-        .header-status {
+        .nav-link:hover::after {
+            width: calc(100% - 1rem);
+        }
+
+        /* Status Indicators in Nav */
+        .nav-status {
             display: flex;
+            align-items: center;
             gap: 1rem;
+            margin-left: 0.5rem;
+            padding-left: 1rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .status-indicator {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.375rem;
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: #64748b;
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: #10b981;
+            box-shadow: 0 0 6px #10b981;
         }
 
         .status-dot.checking {
             background: #f59e0b;
+            box-shadow: 0 0 6px #f59e0b;
             animation: pulse 1.5s infinite;
         }
 
         .status-dot.error {
             background: #ef4444;
+            box-shadow: 0 0 6px #ef4444;
+        }
+
+        /* CTA Button */
+        .nav-cta {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-cta:hover {
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
+        }
+
+        .nav-cta i {
+            font-size: 16px;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            gap: 5px;
+            padding: 0;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #94a3b8;
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            z-index: 999;
+            padding: 100px 2rem 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu .nav-link {
+            display: block;
+            padding: 1rem 0;
+            font-size: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-menu.active .nav-link {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .mobile-menu.active .nav-link:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active .nav-link:nth-child(2) { transition-delay: 0.2s; }
+        .mobile-menu.active .nav-link:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-menu.active .nav-link:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-menu.active .nav-link:nth-child(5) { transition-delay: 0.5s; }
+        .mobile-menu.active .nav-link:nth-child(6) { transition-delay: 0.6s; }
+
+        .mobile-menu .nav-link::after {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                top: 12px;
+                width: calc(100% - 24px);
+                padding: 0.625rem 1rem;
+                border-radius: 24px;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
         }
 
         @keyframes pulse {
@@ -157,6 +371,7 @@
         .dozzle-container {
             flex: 1;
             position: relative;
+            margin-top: 90px; /* Account for fixed floating header */
         }
 
         .dozzle-iframe {
@@ -201,46 +416,60 @@
             font-size: 0.875rem;
         }
 
-        @media (max-width: 768px) {
-            .header-quick-launch span {
-                display: none;
-            }
-            .header {
-                padding: 0.75rem 1rem;
-            }
-        }
     </style>
 </head>
 
 <body>
+    <!-- Mobile Menu Overlay -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <a href="/" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-house"></i> Dashboard
+        </a>
+        <a href="#" class="nav-link" onclick="window.open('http://localhost:5678', '_blank'); closeMobileMenu(); return false;">
+            <i class="ph ph-flow-arrow"></i> n8n
+        </a>
+        <a href="#" class="nav-link" onclick="window.open('/camunda/app/cockpit/', '_blank'); closeMobileMenu(); return false;">
+            <i class="ph ph-squares-four"></i> Camunda
+        </a>
+        <a href="/connectors.html" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-grid-four"></i> Connectors
+        </a>
+        <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-github-logo"></i> GitHub
+        </a>
+    </nav>
+
     <header class="header">
         <div class="header-content">
+            <!-- Logo / Branding -->
             <a href="/" class="logo">
-                <img src="/images/catalyst-connector-logo.png" alt="Catalyst" class="logo-icon-img">
-                <div>
-                    <div class="logo-text">Catalyst Connector</div>
-                    <div class="logo-subtitle">DOCKER LOGS</div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon-svg">
+                    <path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/>
+                </svg>
+                <div class="logo-brand">
+                    <span class="logo-text">CATALYST</span>
+                    <span class="logo-subtitle">studio</span>
                 </div>
             </a>
-            <div class="header-quick-launch">
-                <a href="/" class="header-launch-btn dashboard" title="Control Panel">
-                    <i class="ph ph-house"></i>
-                    <span>Dashboard</span>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="ph ph-house"></i> Dashboard
                 </a>
-                <a href="#" class="header-launch-btn n8n" onclick="window.open('http://localhost:5678', '_blank'); return false;" title="n8n Workflows">
-                    <i class="ph ph-flow-arrow"></i>
-                    <span>n8n</span>
+                <a href="#" class="nav-link" onclick="window.open('http://localhost:5678', '_blank'); return false;">
+                    <i class="ph ph-flow-arrow"></i> n8n
                 </a>
-                <a href="#" class="header-launch-btn camunda" onclick="window.open('/camunda/app/cockpit/', '_blank'); return false;" title="Camunda Cockpit">
-                    <i class="ph ph-squares-four"></i>
-                    <span>Camunda</span>
+                <a href="#" class="nav-link" onclick="window.open('/camunda/app/cockpit/', '_blank'); return false;">
+                    <i class="ph ph-squares-four"></i> Camunda
                 </a>
-                <a href="/logs.html" class="header-launch-btn logs" title="Docker Logs">
-                    <i class="ph ph-list-bullets"></i>
-                    <span>Logs</span>
+                <a href="/connectors.html" class="nav-link">
+                    <i class="ph ph-grid-four"></i> Connectors
                 </a>
-            </div>
-            <div class="header-status">
+            </nav>
+
+            <!-- Status Indicators -->
+            <div class="nav-status">
                 <div class="status-indicator">
                     <span class="status-dot" id="n8nStatus"></span>
                     <span>n8n</span>
@@ -250,6 +479,19 @@
                     <span>Camunda</span>
                 </div>
             </div>
+
+            <!-- CTA Button -->
+            <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="nav-cta">
+                <i class="ph ph-github-logo"></i>
+                GitHub
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
@@ -267,6 +509,23 @@
     </div>
 
     <script>
+        // Mobile Menu Functions
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.getElementById('mobileToggle');
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.getElementById('mobileToggle');
+            menu.classList.remove('active');
+            toggle.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         // Check service status
         async function checkServices() {
             // Check n8n
