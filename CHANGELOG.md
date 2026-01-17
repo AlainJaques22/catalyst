@@ -8,12 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Ping-test connector with interactive test page for verifying Camunda-to-n8n connectivity
+- `testPage` field in connector.json for linking to interactive HTML test pages
+- Docs-viewer component for rendering connector README files with styled markdown
+- Glass-morphism styling to control panel and connector gallery
+- Horizontal launch-card layout for Featured Connectors section
+- Dozzle integration for real-time Docker container log viewing
+- Connector test library (`connectors/test-lib/connector-test.js`) for building test UIs
 - Webhook URL validation security feature in CatalystBridge to prevent data exfiltration
 - Environment variable `CATALYST_WEBHOOK_ALLOWLIST` for configuring allowed webhook URL prefixes
 - Default allowlist includes `http://localhost:5678/webhook/`, `http://catalyst-n8n:5678/webhook/`, and `http://n8n:5678/webhook/`
 - Comprehensive security documentation in bridge README
 - Security guidelines in CONNECTOR_SPEC.md
 - Detailed contributor security practices in CONTRIBUTING.md
+
+### Changed
+- Control panel redesigned with translucent glass panels and backdrop blur effect
+- Live Logs panel title repositioned above filter buttons
+- Renamed "View" button to "Test" button (appears only when testPage field exists)
+- Connector cards now use consistent horizontal layout matching Quick Launch section
 
 ### Security
 - Webhook URLs are now validated against an allowlist before making HTTP requests

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connector Gallery - Catalyst Control Panel</title>
     <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2306b6d4' d='M55 10 L30 50 L45 50 L40 90 L70 40 L55 40 Z'/%3E%3C/svg%3E">
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v2'/%3E%3Cpath d='M14 2v2'/%3E%3Cpath d='M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1'/%3E%3Cpath d='M6 2v2'/%3E%3C/svg%3E">
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
@@ -125,47 +125,330 @@
             background: var(--text-muted);
         }
 
+        /* ============================================
+           FLOATING GLASSMORPHIC ISLAND HEADER
+           ============================================ */
+
         .header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 1340px;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 2rem;
         }
 
+        /* Logo / Branding */
         .logo {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        .logo-icon-img {
-            height: 63px;
-            width: auto;
+        .logo-icon-svg {
+            width: 28px;
+            height: 28px;
+            color: #ffffff;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo:hover .logo-icon-svg {
+            color: #38bdf8;
+        }
+
+        .logo-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
         .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.125rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: #ffffff;
+            line-height: 1;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo:hover .logo-text {
+            color: #38bdf8;
         }
 
         .logo-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.625rem;
+            font-weight: 500;
+            color: #64748b;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .nav-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link i {
+            font-size: 16px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #6366f1;
+            transform: translateX(-50%);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-link:hover::after {
+            width: calc(100% - 1rem);
+        }
+
+        /* Status Indicators in Nav */
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 0.5rem;
+            padding-left: 1rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
             font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--status-green);
+            box-shadow: 0 0 6px var(--status-green);
+        }
+
+        .status-dot.warning {
+            background: var(--status-amber);
+            box-shadow: 0 0 6px var(--status-amber);
+        }
+
+        .status-dot.error {
+            background: var(--status-red);
+            box-shadow: 0 0 6px var(--status-red);
+        }
+
+        .status-dot.checking {
+            background: var(--text-muted);
+            box-shadow: none;
+            animation: blink 1s infinite;
+        }
+
+        /* CTA Button */
+        .nav-cta {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-cta:hover {
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-cta:hover::before {
+            left: 100%;
+        }
+
+        .nav-cta i {
+            font-size: 16px;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            gap: 5px;
+            padding: 0;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #94a3b8;
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            z-index: 999;
+            padding: 100px 2rem 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu .nav-link {
+            display: block;
+            padding: 1rem 0;
+            font-size: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transform: translateX(-20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-menu.active .nav-link {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .mobile-menu.active .nav-link:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active .nav-link:nth-child(2) { transition-delay: 0.2s; }
+        .mobile-menu.active .nav-link:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-menu.active .nav-link:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-menu.active .nav-link:nth-child(5) { transition-delay: 0.5s; }
+        .mobile-menu.active .nav-link:nth-child(6) { transition-delay: 0.6s; }
+        .mobile-menu.active .nav-link:nth-child(7) { transition-delay: 0.7s; }
+
+        .mobile-menu .nav-link::after {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-status {
+                display: none;
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                top: 12px;
+                width: calc(100% - 24px);
+                padding: 0.625rem 1rem;
+                border-radius: 24px;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
         }
 
         /* Particles canvas */
@@ -176,145 +459,6 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-        }
-
-        .header-quick-launch {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .header-launch-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .header-launch-btn svg,
-        .header-launch-btn i {
-            width: 16px;
-            height: 16px;
-            font-size: 16px;
-        }
-
-        .header-launch-btn:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--accent-cyan);
-            color: var(--text-primary);
-            transform: translateY(-1px);
-        }
-
-        .header-launch-btn.dashboard:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        .header-launch-btn.n8n:hover {
-            border-color: #ff6d5a;
-            color: #ff6d5a;
-        }
-
-        .header-launch-btn.camunda:hover {
-            border-color: #eab308;
-            color: #eab308;
-        }
-
-        .header-launch-btn.builder:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        .header-launch-btn.connectors:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        .header-launch-btn.github:hover {
-            border-color: #8b5cf6;
-            color: #8b5cf6;
-        }
-
-        .header-launch-btn.logs:hover {
-            border-color: var(--status-green);
-            color: var(--status-green);
-        }
-
-        /* Tooltip */
-        .header-launch-btn::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 8px;
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.75rem;
-            white-space: pre-line;
-            text-align: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.2s;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            min-width: 150px;
-        }
-
-        .header-launch-btn:hover::after {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .header-status {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--status-green);
-            box-shadow: 0 0 8px var(--status-green);
-            animation: pulse 2s infinite;
-        }
-
-        .status-dot.warning {
-            background: var(--status-amber);
-            box-shadow: 0 0 8px var(--status-amber);
-        }
-
-        .status-dot.error {
-            background: var(--status-red);
-            box-shadow: 0 0 8px var(--status-red);
-        }
-
-        .status-dot.checking {
-            background: var(--text-muted);
-            box-shadow: none;
-            animation: blink 1s infinite;
         }
 
         @keyframes pulse {
@@ -331,36 +475,34 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
+            padding-top: 100px; /* Account for fixed floating header */
         }
 
         .page-header {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            color: #B6C2CF;
         }
 
         .page-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
+            font-size: 0.875rem;
+            color: #8C9BAB;
         }
 
         /* Connector Type Selector */
         .connector-type-selector {
             display: inline-flex;
-            gap: 0.5rem;
+            gap: 0.25rem;
             margin-bottom: 1.5rem;
             padding: 0.25rem;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+            background: #22272B;
+            border-radius: 6px;
+            border: 1px solid #38414A;
         }
 
         .type-tab {
@@ -371,24 +513,23 @@
             padding: 0.5rem 1rem;
             background: transparent;
             border: none;
-            border-radius: 6px;
-            color: var(--text-secondary);
+            border-radius: 4px;
+            color: #8C9BAB;
             font-weight: 500;
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
             font-family: 'DM Sans', sans-serif;
         }
 
         .type-tab:hover {
-            color: var(--text-primary);
-            background: var(--bg-card);
+            color: #B6C2CF;
+            background: #282E33;
         }
 
         .type-tab.active {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
+            background: #579DFF;
+            color: #1D2125;
         }
 
         .type-tab i {
@@ -398,46 +539,46 @@
         /* Category Tabs */
         .category-tabs {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.375rem;
             margin-bottom: 1.5rem;
             overflow-x: auto;
             padding-bottom: 0.5rem;
         }
 
         .category-tab {
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
+            padding: 0.375rem 0.75rem;
+            background: #22272B;
+            border: 1px solid #38414A;
+            border-radius: 4px;
+            color: #8C9BAB;
+            font-size: 0.8125rem;
             font-weight: 500;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
         }
 
         .category-tab:hover {
-            border-color: var(--accent-cyan);
-            color: var(--text-primary);
+            border-color: #579DFF;
+            color: #B6C2CF;
         }
 
         .category-tab.active {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: white;
+            background: #579DFF;
+            border-color: #579DFF;
+            color: #1D2125;
         }
 
         .category-count {
-            margin-left: 0.5rem;
-            padding: 0.125rem 0.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            margin-left: 0.375rem;
+            padding: 0.0625rem 0.375rem;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 8px;
             font-size: 0.75rem;
         }
 
         .category-tab:not(.active) .category-count {
-            background: var(--bg-secondary);
+            background: #1D2125;
         }
 
         /* Connector Filters */
@@ -449,141 +590,160 @@
 
         #connectorSearch {
             flex: 1;
-            padding: 0.75rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.875rem;
+            padding: 0.625rem 0.875rem;
+            background: #22272B;
+            border: 1px solid #38414A;
+            border-radius: 4px;
+            color: #B6C2CF;
+            font-size: 0.8125rem;
             font-family: 'DM Sans', sans-serif;
         }
 
         #connectorSearch:focus {
             outline: none;
-            border-color: var(--accent-cyan);
+            border-color: #579DFF;
+        }
+
+        #connectorSearch::placeholder {
+            color: #626F86;
+        }
+
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: #1D2125;
+            border: 1px solid #38414A;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
         }
 
         /* Stats Bar */
         .stats-bar {
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: #22272B;
+            border: 1px solid #38414A;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
         }
 
         .stat-item {
             flex: 1;
             text-align: center;
+            padding: 0.5rem;
+            background: #1D2125;
+            border-radius: 4px;
         }
 
         .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #579DFF;
         }
 
         .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-size: 0.625rem;
+            color: #626F86;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
         }
 
         /* Connector Gallery */
         .connector-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .connector-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            transition: all 0.2s;
+            background: #22272B;
+            border: 1px solid #38414A;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
         }
 
         .connector-card:hover {
-            border-color: var(--accent-primary);
-            background: var(--bg-card-hover);
-            transform: translateY(-2px);
+            border-color: #579DFF;
+            background: #282E33;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.32);
         }
 
         .connector-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.625rem;
         }
 
         .connector-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.125rem;
         }
 
         .connector-name {
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 500;
+            font-size: 0.9375rem;
+            color: #B6C2CF;
         }
 
         .connector-desc {
-            font-size: 0.813rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: #8C9BAB;
+            margin-bottom: 0.75rem;
             line-height: 1.5;
         }
 
         .connector-meta {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            gap: 0.375rem;
+            margin-bottom: 0.75rem;
             flex-wrap: wrap;
         }
 
         .connector-badge {
-            padding: 0.25rem 0.5rem;
-            background: var(--bg-secondary);
-            border-radius: 4px;
-            font-size: 0.688rem;
-            color: var(--text-muted);
+            padding: 0.1875rem 0.375rem;
+            background: #1D2125;
+            border-radius: 3px;
+            font-size: 0.625rem;
+            color: #626F86;
         }
 
         .connector-badge.featured {
-            background: rgba(6, 182, 212, 0.2);
-            color: var(--accent-cyan);
+            background: rgba(87, 157, 255, 0.15);
+            color: #579DFF;
         }
 
         .connector-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.375rem;
         }
 
         .connector-btn {
             flex: 1;
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
+            padding: 0.375rem 0.5rem;
+            border: 1px solid #38414A;
+            border-radius: 4px;
+            background: #282E33;
+            color: #8C9BAB;
             font-size: 0.75rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
             text-decoration: none;
             text-align: center;
         }
 
         .connector-btn:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
+            background: #579DFF;
+            border-color: #579DFF;
             color: white;
         }
 
@@ -591,7 +751,7 @@
         .connector-empty {
             text-align: center;
             padding: 3rem 2rem;
-            color: var(--text-muted);
+            color: #626F86;
             grid-column: 1 / -1;
         }
 
@@ -599,6 +759,7 @@
             font-size: 3rem;
             opacity: 0.3;
             margin-bottom: 1rem;
+            color: #8C9BAB;
         }
     </style>
 </head>
@@ -614,45 +775,65 @@
     <!-- Animated particles canvas -->
     <canvas id="reactive-bg"></canvas>
 
+    <!-- Mobile Menu Overlay -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <a href="/" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-house"></i> Dashboard
+        </a>
+        <a href="#" class="nav-link" onclick="openN8n(); closeMobileMenu(); return false;">
+            <i class="ph ph-flow-arrow"></i> n8n
+        </a>
+        <a href="#" class="nav-link" onclick="openCamunda(); closeMobileMenu(); return false;">
+            <i class="ph ph-squares-four"></i> Camunda
+        </a>
+        <a href="/connectors.html" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-grid-four"></i> Connectors
+        </a>
+        <a href="/connector-builder/" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-stack"></i> Builder
+        </a>
+        <a href="/logs/" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-list-bullets"></i> Logs
+        </a>
+        <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="nav-link" onclick="closeMobileMenu();">
+            <i class="ph ph-github-logo"></i> GitHub
+        </a>
+    </nav>
+
     <header class="header">
         <div class="header-content">
-            <div class="logo">
-                <img src="/images/catalyst-connector-logo.png" alt="Catalyst" class="logo-icon-img">
-                <div>
-                    <div class="logo-text">Catalyst Connector</div>
-                    <div class="logo-subtitle">CONNECTORS</div>
+            <!-- Logo / Branding -->
+            <a href="/" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon-svg">
+                    <path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/>
+                </svg>
+                <div class="logo-brand">
+                    <span class="logo-text">CATALYST</span>
+                    <span class="logo-subtitle">studio</span>
                 </div>
-            </div>
-            <div class="header-quick-launch">
-                <a href="/" class="header-launch-btn dashboard" data-tooltip="Control Panel&#10;Main dashboard">
-                    <i class="ph ph-house"></i>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="ph ph-house"></i> Dashboard
                 </a>
-                <a href="#" class="header-launch-btn n8n" onclick="openN8n(); return false;" data-tooltip="n8n Workflows&#10;Build and manage automation workflows">
-                    <i class="ph ph-flow-arrow"></i>
-                    <span>n8n</span>
+                <a href="#" class="nav-link" onclick="openN8n(); return false;">
+                    <i class="ph ph-flow-arrow"></i> n8n
                 </a>
-                <a href="#" class="header-launch-btn camunda" onclick="openCamunda(); return false;" data-tooltip="Camunda Cockpit&#10;Monitor BPMN processes and tasks">
-                    <i class="ph ph-squares-four"></i>
-                    <span>Camunda</span>
+                <a href="#" class="nav-link" onclick="openCamunda(); return false;">
+                    <i class="ph ph-squares-four"></i> Camunda
                 </a>
-                <a href="/connectors.html" class="header-launch-btn connectors" data-tooltip="Connector Gallery&#10;Browse all available connectors">
-                    <i class="ph ph-grid-four"></i>
-                    <span>Connectors</span>
+                <a href="/connector-builder/" class="nav-link">
+                    <i class="ph ph-stack"></i> Builder
                 </a>
-                <a href="/connector-builder/" class="header-launch-btn builder" data-tooltip="Connector Builder&#10;Create connectors from n8n workflows">
-                    <i class="ph ph-stack"></i>
-                    <span>Builder</span>
+                <a href="/logs/" class="nav-link">
+                    <i class="ph ph-list-bullets"></i> Logs
                 </a>
-                <a href="https://github.com/AlainJaques22/catalyst-connector" target="_blank" class="header-launch-btn github" data-tooltip="GitHub Repository&#10;Source code and documentation">
-                    <i class="ph ph-github-logo"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="/logs.html" class="header-launch-btn logs" data-tooltip="Live Logs&#10;Full screen execution logs">
-                    <i class="ph ph-list-bullets"></i>
-                    <span>Logs</span>
-                </a>
-            </div>
-            <div class="header-status">
+            </nav>
+
+            <!-- Status Indicators -->
+            <div class="nav-status">
                 <div class="status-indicator">
                     <span class="status-dot checking" id="n8nStatus"></span>
                     <span>n8n</span>
@@ -662,64 +843,96 @@
                     <span>Camunda</span>
                 </div>
             </div>
+
+            <!-- CTA Button -->
+            <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="nav-cta">
+                <i class="ph ph-github-logo"></i>
+                GitHub
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
     <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">Connector Gallery</h1>
-            <p class="page-subtitle">Browse and discover all available connectors for Catalyst</p>
-        </div>
-
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value" id="totalCount">-</div>
-                <div class="stat-label">Total Connectors</div>
+        <div class="glass-panel">
+            <div class="page-header">
+                <h1 class="page-title">Connector Gallery</h1>
+                <p class="page-subtitle">Browse and discover all available connectors for Catalyst</p>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="integrationCount">-</div>
-                <div class="stat-label">Integrations</div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalCount">-</div>
+                    <div class="stat-label">Total Connectors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="integrationCount">-</div>
+                    <div class="stat-label">Integrations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="templateCount">-</div>
+                    <div class="stat-label">Templates</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="categoryCount">-</div>
+                    <div class="stat-label">Categories</div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="templateCount">-</div>
-                <div class="stat-label">Templates</div>
+
+            <!-- Type Selector -->
+            <div class="connector-type-selector">
+                <button class="type-tab active" data-type="integrations">
+                    <i class="ph ph-plugs-connected"></i>
+                    Integrations
+                </button>
+                <button class="type-tab" data-type="templates">
+                    <i class="ph ph-stack"></i>
+                    Templates
+                </button>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="categoryCount">-</div>
-                <div class="stat-label">Categories</div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs" id="categoryTabs">
+                <!-- Dynamically populated -->
             </div>
-        </div>
 
-        <!-- Type Selector -->
-        <div class="connector-type-selector">
-            <button class="type-tab active" data-type="integrations">
-                <i class="ph ph-plugs-connected"></i>
-                Integrations
-            </button>
-            <button class="type-tab" data-type="templates">
-                <i class="ph ph-stack"></i>
-                Templates
-            </button>
-        </div>
+            <!-- Search and Filters -->
+            <div class="connector-filters">
+                <input type="text" id="connectorSearch" placeholder="Search connectors by name, description, or tags...">
+            </div>
 
-        <!-- Category Tabs -->
-        <div class="category-tabs" id="categoryTabs">
-            <!-- Dynamically populated -->
-        </div>
-
-        <!-- Search and Filters -->
-        <div class="connector-filters">
-            <input type="text" id="connectorSearch" placeholder="Search connectors by name, description, or tags...">
-        </div>
-
-        <!-- Connector Gallery -->
-        <div class="connector-gallery" id="connectorGallery">
-            <!-- Connectors loaded dynamically -->
+            <!-- Connector Gallery -->
+            <div class="connector-gallery" id="connectorGallery">
+                <!-- Connectors loaded dynamically -->
+            </div>
         </div>
     </div>
 
     <script>
+        // Mobile Menu Functions
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.getElementById('mobileToggle');
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.getElementById('mobileToggle');
+            menu.classList.remove('active');
+            toggle.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         // Connector state
         let connectorsManifest = null;
         let currentType = 'integrations';
@@ -905,19 +1118,17 @@
                         ${c.authentication ? `<span class="connector-badge">${c.authentication}</span>` : ''}
                     </div>
                     <div class="connector-actions">
-                        <a href="${c.path}/README.md" target="_blank" class="connector-btn">
+                        <a href="docs-viewer.html?file=${c.path}/${c.files?.readme || 'README.md'}&title=${encodeURIComponent(c.name)}" target="_blank" class="connector-btn">
                             <i class="ph ph-book-open"></i> Docs
                         </a>
-                        <button class="connector-btn" onclick="viewConnector('${c.id}')">
-                            <i class="ph ph-eye"></i> View
-                        </button>
+                        ${c.files?.testPage ? `
+                        <a href="${c.path}/${c.files.testPage}" target="_blank" class="connector-btn">
+                            <i class="ph ph-play"></i> Test
+                        </a>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
-        }
-
-        function viewConnector(id) {
-            alert(`Connector details for ${id} - Feature coming soon!`);
         }
 
         function openN8n() {

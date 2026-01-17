@@ -1,0 +1,349 @@
+<!--
+  Catalyst Docs Viewer
+
+  Renders markdown documentation files in a styled viewer matching the control panel theme.
+
+  Usage:
+    docs-viewer.html?file=PATH&title=TITLE
+
+  Parameters:
+    - file: Relative path to markdown file (required)
+    - title: Display title for the documentation (optional, defaults to "Documentation")
+
+  Example:
+    docs-viewer.html?file=connectors/integrations/developer-tools/ping-test/ping-test-README.md&title=Ping%20Test
+
+  Features:
+    - Dark theme matching control panel
+    - Marked.js markdown parsing with syntax highlighting for code blocks
+    - Responsive layout
+    - File path breadcrumb display
+    - Back button navigation
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Catalyst</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v2'/%3E%3Cpath d='M14 2v2'/%3E%3Cpath d='M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1'/%3E%3Cpath d='M6 2v2'/%3E%3C/svg%3E">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a24;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: #27272a;
+            --accent-primary: #06b6d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .header-title {
+            font-size: 1.125rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-title i {
+            color: var(--accent-primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .loading i {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .error {
+            background: #2d1f1f;
+            border: 1px solid #5c2828;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            color: #f87171;
+        }
+
+        .error i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        .markdown-content h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .markdown-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .markdown-content h3 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .markdown-content h4 {
+            font-size: 1.1rem;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .markdown-content p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .markdown-content a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-content ul, .markdown-content ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .markdown-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-content code {
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.875rem;
+            color: var(--accent-primary);
+        }
+
+        .markdown-content pre {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-secondary);
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid var(--accent-primary);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content th, .markdown-content td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .markdown-content td {
+            color: var(--text-secondary);
+        }
+
+        .markdown-content hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .file-path {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="javascript:history.back()" class="back-btn">
+            <i class="ph ph-arrow-left"></i> Back
+        </a>
+        <span class="header-title">
+            <i class="ph ph-book-open"></i>
+            <span id="docTitle">Documentation</span>
+        </span>
+    </header>
+
+    <main class="container">
+        <div id="content">
+            <div class="loading">
+                <i class="ph ph-circle-notch"></i>
+                <p>Loading documentation...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function loadDocument() {
+            const params = new URLSearchParams(window.location.search);
+            const filePath = params.get('file');
+            const title = params.get('title') || 'Documentation';
+
+            document.getElementById('docTitle').textContent = title;
+            document.title = `${title} - Catalyst`;
+
+            const contentEl = document.getElementById('content');
+
+            if (!filePath) {
+                contentEl.innerHTML = `
+                    <div class="error">
+                        <i class="ph ph-warning"></i>
+                        <p>No document specified.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch(filePath);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load document (${response.status})`);
+                }
+
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+
+                contentEl.innerHTML = `
+                    <div class="file-path">${filePath}</div>
+                    <article class="markdown-content">
+                        ${html}
+                    </article>
+                `;
+            } catch (error) {
+                contentEl.innerHTML = `
+                    <div class="error">
+                        <i class="ph ph-warning"></i>
+                        <p>Failed to load documentation.</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-muted);">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        loadDocument();
+    </script>
+</body>
+</html>
