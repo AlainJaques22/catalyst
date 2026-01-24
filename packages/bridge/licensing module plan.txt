@@ -1,0 +1,890 @@
+Claude Code Implementation Instructions
+Project Context
+You are implementing a license enforcement system for CatalystBridge - a Java delegate that runs inside Camunda 7. The JAR is dropped into camunda/lib/ alongside a catalyst.lic license file.
+Read the existing codebase first before making any changes. Understand the current structure of CatalystBridge.
+
+Architecture Principles
+
+Separation of Concerns - Each class has one responsibility
+Dependency Injection - Pass dependencies via constructors, not static access
+Immutable Data Objects - Models are immutable where possible
+Interface Segregation - Define interfaces for components that may have multiple implementations
+Testability - Use Clock for time, avoid static state, inject dependencies
+Documentation - Every public class and method has Javadoc
+Comments - Complex logic has inline comments explaining the "why"
+
+Do NOT mix enforcement logic into CatalystBridge.java - keep it in dedicated modules.
+
+Package Structure
+src/main/java/io/catalyst/bridge/
+├── CatalystBridge.java                    # Existing - minimal changes only
+│
+├── licensing/
+│   ├── package-info.java                  # Package documentation
+│   ├── License.java                       # Immutable license data model
+│   ├── LicenseKey.java                    # Parses and validates signed keys
+│   ├── LicenseLoader.java                 # Loads license from file
+│   ├── LicenseValidator.java              # Signature verification
+│   └── InvalidLicenseException.java       # Thrown on validation failure
+│
+├── usage/
+│   ├── package-info.java                  # Package documentation
+│   ├── UsageTracker.java                  # Tracks and persists execution count
+│   ├── UsageData.java                     # Usage data model
+│   ├── UsageStore.java                    # Interface for persistence
+│   ├── FileUsageStore.java                # JSON file implementation
+│   ├── RunRateCalculator.java             # Projects annual usage pace
+│   └── RunRate.java                       # Run rate projection model
+│
+├── enforcement/
+│   ├── package-info.java                  # Package documentation
+│   ├── EnforcementEngine.java             # Main orchestrator
+│   ├── EnforcementStatus.java             # Current enforcement state
+│   ├── EnforcementTrigger.java            # Enum: NO_LICENSE, EXPIRED, LIMIT_EXCEEDED
+│   ├── LimpMode.java                      # Enum with Fibonacci delays
+│   ├── AlertLevel.java                    # Enum: NONE, WARN_WEEKLY, WARN_DAILY, ERROR_EVERY
+│   ├── PreGraceEvaluator.java             # Evaluates run rate and expiry warnings
+│   ├── LimpModeEvaluator.java             # Evaluates limp mode status
+│   ├── DelayEnforcer.java                 # Applies Thread.sleep delays
+│   └── CatalystDisabledException.java     # Thrown when service is blocked
+│
+├── logging/
+│   ├── package-info.java                  # Package documentation
+│   ├── EnforcementLogger.java             # Formats and logs all enforcement messages
+│   ├── LogThrottler.java                  # Prevents log spam (daily/weekly limits)
+│   └── LogMessages.java                   # Message templates as constants
+│
+└── config/
+    ├── package-info.java                  # Package documentation
+    ├── EnforcementConfig.java             # All configurable thresholds
+    └── CatalystPaths.java                 # File path resolution
+
+Data Models
+License.java
+java/**
+ * Immutable representation of a validated Catalyst license.
+ * 
+ * <p>Contains all license terms extracted from a signed license key.
+ * Once created, a License instance cannot be modified.</p>
+ * 
+ * @see LicenseValidator
+ */
+public final class License {
+    private final String key;            // Full original key
+    private final int keyVersion;        // 1 or 2 (for rotation)
+    private final String tier;           // "micro", "starter", "professional", "enterprise"
+    private final int annualLimit;       // 1200, 10000, 50000, 100000
+    private final String customer;       // Customer identifier
+    private final LocalDate startDate;   // License validity start
+    private final LocalDate expiryDate;  // License validity end
+    
+    // Constructor, getters, toString, equals, hashCode
+    
+    /**
+     * Returns a masked version of the key for logging.
+     * Example: "CAT1.eyJ0aWVy...****"
+     */
+    public String getMaskedKey();
+    
+    /**
+     * Returns display name for tier.
+     * Example: "CAT-MICRO-****-XXXX"
+     */
+    public String getDisplayName();
+}
+RunRate.java
+java/**
+ * Immutable projection of annual usage based on current execution rate.
+ * 
+ * <p>Uses cricket "run rate" concept to predict whether the user
+ * will exceed their annual limit at current pace.</p>
+ * 
+ * <p>Calculations require minimum 7 days of data for reliability.</p>
+ */
+public final class RunRate {
+    private final double currentRate;           // Executions per day
+    private final double allowedRate;           // Limit / 365
+    private final double rateRatio;             // currentRate / allowedRate
+    private final int projectedAnnualTotal;     // Projected year-end count
+    private final int projectedPercent;         // Projected as % of limit
+    private final Integer daysUntilLimit;       // Null if under pace
+    private final LocalDate projectedLimitDate; // Null if under pace
+    private final long daysElapsed;             // Days since license start
+    private final long daysRemaining;           // Days until license expiry
+    private final boolean sufficientData;       // True if >= 7 days elapsed
+    
+    // Constructor, getters
+    
+    /** Returns true if current rate exceeds allowed rate */
+    public boolean isOverPace();
+    
+    /** Returns true if 20-50% over pace */
+    public boolean isModeratelyOverPace();
+    
+    /** Returns true if >= 50% over pace */
+    public boolean isSeverelyOverPace();
+    
+    /** Returns percentage over pace (e.g., 27 for 27% over) */
+    public int getOverPacePercent();
+}
+LimpMode.java
+java/**
+ * Limp mode status levels with Fibonacci-based delays.
+ * 
+ * <p>Delays increase following Fibonacci sequence: 3, 8, 21 seconds.
+ * This creates noticeable "step changes" that prompt investigation.</p>
+ */
+public enum LimpMode {
+    /** Normal operation - no enforcement active */
+    NONE(0, 0, null),
+    
+    /** Days 1-30: Service degraded, 3 second delay */
+    STATUS_1(1, 3_000, "SERVICE DEGRADED"),
+    
+    /** Days 31-60: Service impaired, 8 second delay */
+    STATUS_2(2, 8_000, "SERVICE IMPAIRED"),
+    
+    /** Days 61-90: Service critical, 21 second delay */
+    STATUS_3(3, 21_000, "SERVICE CRITICAL"),
+    
+    /** Days 91+: Service blocked entirely */
+    DISABLED(4, -1, "SERVICE UNAVAILABLE");
+    
+    private final int level;
+    private final long delayMillis;
+    private final String headline;
+    
+    // Constructor, getters
+    
+    /** Returns true if service is completely blocked */
+    public boolean isBlocked();
+    
+    /** Returns true if delay should be applied (Status 1-3) */
+    public boolean isDegraded();
+    
+    /**
+     * Determines limp mode status based on days in grace period.
+     * @param graceDays Number of days since trigger activated
+     * @return Appropriate LimpMode for the grace period day
+     */
+    public static LimpMode fromGraceDays(int graceDays);
+}
+EnforcementTrigger.java
+java/**
+ * The three conditions that can trigger enforcement.
+ * 
+ * <p>All triggers follow the same 90-day graduated enforcement path.</p>
+ */
+public enum EnforcementTrigger {
+    /** No catalyst.lic file found */
+    NO_LICENSE("no license", "https://catalyst.io/pricing"),
+    
+    /** License has passed its expiry date */
+    EXPIRED("license expired", "https://catalyst.io/renew"),
+    
+    /** Annual execution count exceeded */
+    LIMIT_EXCEEDED("limit exceeded", "https://catalyst.io/upgrade");
+    
+    private final String displayName;
+    private final String actionUrl;
+    
+    // Constructor, getters
+}
+EnforcementStatus.java
+java/**
+ * Complete enforcement state at a point in time.
+ * 
+ * <p>Combines license status, usage data, and calculated enforcement action.
+ * This is the main output of {@link EnforcementEngine#evaluate()}.</p>
+ */
+public final class EnforcementStatus {
+    private final License license;              // Null if no license
+    private final int executionsUsed;           // Current year count
+    private final RunRate runRate;              // Null if insufficient data
+    private final LimpMode limpMode;            // Current limp mode status
+    private final EnforcementTrigger trigger;   // What caused enforcement, null if none
+    private final int graceDaysElapsed;         // Days since trigger activated
+    private final int graceDaysRemaining;       // Days until disabled
+    private final boolean stepTransition;       // True if limp mode just changed
+    private final AlertLevel preGraceAlert;     // Pre-grace warning level
+    
+    // Constructor, getters
+    
+    /** Returns true if a delay should be applied */
+    public boolean requiresDelay();
+    
+    /** Returns the delay in milliseconds, 0 if none */
+    public long getDelayMillis();
+    
+    /** Returns true if service should be blocked */
+    public boolean isBlocked();
+    
+    /** Returns true if any enforcement is active */
+    public boolean isEnforced();
+    
+    /** Returns true if pre-grace warning should be logged */
+    public boolean hasPreGraceWarning();
+}
+UsageData.java
+java/**
+ * Persisted usage data for a license.
+ * 
+ * <p>Stored in catalyst-usage.json alongside the JAR.</p>
+ */
+public final class UsageData {
+    private final int version;                      // Schema version (1)
+    private final String licenseKey;                // Full license key
+    private final int year;                         // License year
+    private final int count;                        // Execution count
+    private final LocalDate firstExecution;         // First execution this year
+    private final LocalDate lastExecution;          // Most recent execution
+    private final LocalDate noLicenseDetected;      // When missing license first seen
+    private final LocalDate triggerActivated;       // When enforcement started
+    private final EnforcementTrigger activeTrigger; // Current trigger, null if none
+    private final LimpMode lastLimpMode;            // For detecting transitions
+    private final LocalDate lastDailyWarn;          // Throttle daily warnings
+    private final LocalDate lastWeeklyWarn;         // Throttle weekly warnings
+    
+    // Constructor, getters, builder for updates
+}
+
+Core Components
+LicenseLoader.java
+java/**
+ * Loads the license file from the filesystem.
+ * 
+ * <p>Looks for catalyst.lic in the same directory as the JAR file.</p>
+ * 
+ * <p>The license file format:</p>
+ * <pre>
+ * # Comments start with hash
+ * # Blank lines are ignored
+ * CAT1.eyJ0aWVy...base64...SIGNATURE
+ * </pre>
+ */
+public class LicenseLoader {
+    
+    private final CatalystPaths paths;
+    
+    /**
+     * Attempts to load the license file.
+     * @return The license key string, or empty if file not found
+     */
+    public Optional<String> load();
+    
+    /**
+     * Checks if the license file exists.
+     */
+    public boolean licenseFileExists();
+}
+LicenseValidator.java
+java/**
+ * Validates and decodes signed license keys.
+ * 
+ * <p>License key structure: CAT{version}.{base64-payload}.{signature}</p>
+ * 
+ * <p>The payload is JSON containing tier, limit, customer, and dates.
+ * The signature is HMAC-SHA256 using Catalyst's private key.</p>
+ * 
+ * <p>Two public keys are embedded to support key rotation. Both are
+ * valid simultaneously during rotation periods.</p>
+ * 
+ * <p>Validation is entirely offline - no network calls required.</p>
+ */
+public class LicenseValidator {
+    
+    // Embedded public keys for signature verification
+    private static final Map<Integer, String> PUBLIC_KEYS = Map.of(
+        1, "...",  // Original key
+        2, "..."   // Rotation key
+    );
+    
+    /**
+     * Validates a license key and returns the decoded license.
+     * 
+     * @param licenseKey The full license key string
+     * @return Validated License object
+     * @throws InvalidLicenseException if key is malformed or signature invalid
+     */
+    public License validate(String licenseKey) throws InvalidLicenseException;
+}
+UsageStore.java (Interface)
+java/**
+ * Persistence interface for usage tracking data.
+ * 
+ * <p>Implementations must be thread-safe and survive JVM restarts.</p>
+ */
+public interface UsageStore {
+    
+    /**
+     * Loads the current usage data.
+     * @return Current usage data, or empty if no data exists
+     */
+    Optional<UsageData> load();
+    
+    /**
+     * Saves updated usage data atomically.
+     * @param data The usage data to persist
+     */
+    void save(UsageData data);
+    
+    /**
+     * Increments execution count and returns updated data.
+     * <p>This is the primary method called on each execution.</p>
+     * 
+     * @param license Current license (null if no license)
+     * @param clock Clock for timestamps
+     * @return Updated usage data with incremented count
+     */
+    UsageData incrementAndGet(License license, Clock clock);
+}
+FileUsageStore.java
+java/**
+ * JSON file-based implementation of UsageStore.
+ * 
+ * <p>Stores data in catalyst-usage.json in the same directory as the JAR.</p>
+ * 
+ * <p>Thread safety is achieved via synchronized methods.
+ * Atomic writes (write to temp, then rename) prevent corruption.</p>
+ * 
+ * <p>File format is human-readable JSON for easy debugging.</p>
+ */
+public class FileUsageStore implements UsageStore {
+    
+    private final Path filePath;
+    private final Object lock = new Object();
+    
+    // Implementation of interface methods
+}
+RunRateCalculator.java
+java/**
+ * Calculates annual usage run rate and projections.
+ * 
+ * <p>Based on cricket run rate concept:</p>
+ * <ul>
+ *   <li>Allowed rate = annual limit / 365</li>
+ *   <li>Current rate = executions used / days elapsed</li>
+ *   <li>Rate ratio = current / allowed (>1 means over pace)</li>
+ * </ul>
+ * 
+ * <p>Requires minimum 7 days of data for reliable projections.
+ * Returns RunRate with sufficientData=false if less than 7 days.</p>
+ */
+public class RunRateCalculator {
+    
+    /**
+     * Calculates run rate projection.
+     * 
+     * @param executionsUsed Count of executions so far
+     * @param firstExecutionDate Date of first execution
+     * @param annualLimit License execution limit
+     * @param expiryDate License expiry date
+     * @param today Current date
+     * @return Calculated run rate projection
+     */
+    public RunRate calculate(
+        int executionsUsed,
+        LocalDate firstExecutionDate,
+        int annualLimit,
+        LocalDate expiryDate,
+        LocalDate today
+    );
+}
+PreGraceEvaluator.java
+java/**
+ * Evaluates pre-grace warning conditions.
+ * 
+ * <p>Checks two warning types:</p>
+ * <ol>
+ *   <li>License expiry warnings (90/60/30 day thresholds)</li>
+ *   <li>Run rate warnings (20%/50% over pace thresholds)</li>
+ * </ol>
+ * 
+ * <p>Returns the appropriate AlertLevel for logging frequency.</p>
+ */
+public class PreGraceEvaluator {
+    
+    private final EnforcementConfig config;
+    
+    /**
+     * Evaluates license expiry warning level.
+     */
+    public AlertLevel evaluateExpiryWarning(License license, LocalDate today);
+    
+    /**
+     * Evaluates run rate warning level.
+     */
+    public AlertLevel evaluateRunRateWarning(RunRate runRate, long daysRemaining);
+    
+    /**
+     * Returns the more severe of two alert levels.
+     */
+    public AlertLevel combinedAlertLevel(AlertLevel expiry, AlertLevel runRate);
+}
+LimpModeEvaluator.java
+java/**
+ * Evaluates limp mode status based on trigger and grace period.
+ * 
+ * <p>All three triggers (NO_LICENSE, EXPIRED, LIMIT_EXCEEDED) follow
+ * the same 90-day graduated enforcement:</p>
+ * <ul>
+ *   <li>Days 1-30: Status 1 (3s delay)</li>
+ *   <li>Days 31-60: Status 2 (8s delay)</li>
+ *   <li>Days 61-90: Status 3 (21s delay)</li>
+ *   <li>Days 91+: Disabled (blocked)</li>
+ * </ul>
+ */
+public class LimpModeEvaluator {
+    
+    private final EnforcementConfig config;
+    
+    /**
+     * Determines if a trigger condition is active.
+     */
+    public Optional<EnforcementTrigger> evaluateTrigger(
+        boolean licenseExists,
+        License license,
+        int executionsUsed,
+        LocalDate today
+    );
+    
+    /**
+     * Calculates limp mode status based on grace days elapsed.
+     */
+    public LimpMode evaluateLimpMode(int graceDaysElapsed);
+    
+    /**
+     * Calculates days remaining until disabled.
+     */
+    public int calculateGraceDaysRemaining(int graceDaysElapsed);
+}
+EnforcementEngine.java
+java/**
+ * Main orchestrator for license enforcement.
+ * 
+ * <p>This is the primary entry point for enforcement logic. It coordinates:</p>
+ * <ul>
+ *   <li>License loading and validation</li>
+ *   <li>Usage tracking and persistence</li>
+ *   <li>Run rate calculation</li>
+ *   <li>Pre-grace warning evaluation</li>
+ *   <li>Limp mode evaluation</li>
+ *   <li>Logging</li>
+ *   <li>Delay enforcement</li>
+ * </ul>
+ * 
+ * <p>Thread-safe. Designed to be instantiated once per CatalystBridge.</p>
+ * 
+ * <p>Usage:</p>
+ * <pre>
+ * EnforcementEngine engine = EnforcementEngine.create();
+ * engine.enforce(); // Call on every execution
+ * </pre>
+ */
+public class EnforcementEngine {
+    
+    private final LicenseLoader licenseLoader;
+    private final LicenseValidator licenseValidator;
+    private final UsageStore usageStore;
+    private final RunRateCalculator runRateCalculator;
+    private final PreGraceEvaluator preGraceEvaluator;
+    private final LimpModeEvaluator limpModeEvaluator;
+    private final EnforcementLogger logger;
+    private final DelayEnforcer delayEnforcer;
+    private final Clock clock;
+    
+    // Cached license to avoid re-parsing every call
+    private volatile License cachedLicense;
+    private volatile boolean licenseLoadAttempted;
+    
+    /**
+     * Creates an EnforcementEngine with default configuration.
+     */
+    public static EnforcementEngine create();
+    
+    /**
+     * Creates an EnforcementEngine with custom dependencies (for testing).
+     */
+    public static EnforcementEngine create(
+        LicenseLoader licenseLoader,
+        LicenseValidator licenseValidator,
+        UsageStore usageStore,
+        EnforcementConfig config,
+        Clock clock
+    );
+    
+    /**
+     * Evaluates enforcement status and applies any required delays.
+     * 
+     * <p>This method:</p>
+     * <ol>
+     *   <li>Loads and validates license (cached after first call)</li>
+     *   <li>Increments usage counter</li>
+     *   <li>Calculates run rate projection</li>
+     *   <li>Evaluates pre-grace warnings</li>
+     *   <li>Evaluates limp mode status</li>
+     *   <li>Logs appropriate messages</li>
+     *   <li>Applies delay if in limp mode</li>
+     *   <li>Throws if disabled</li>
+     * </ol>
+     * 
+     * @return The current enforcement status
+     * @throws CatalystDisabledException if service is blocked
+     */
+    public EnforcementStatus enforce() throws CatalystDisabledException;
+}
+EnforcementLogger.java
+java/**
+ * Formats and logs all enforcement messages.
+ * 
+ * <p>Responsibilities:</p>
+ * <ul>
+ *   <li>Format multi-line box messages for transitions</li>
+ *   <li>Format single-line messages for per-execution logs</li>
+ *   <li>Respect throttling (daily/weekly limits)</li>
+ *   <li>Log at correct level (WARN/ERROR)</li>
+ * </ul>
+ * 
+ * <p>All log messages use the [CATALYST] prefix for easy filtering.</p>
+ */
+public class EnforcementLogger {
+    
+    private static final String PREFIX = "[CATALYST]";
+    private static final Logger logger = LoggerFactory.getLogger(EnforcementLogger.class);
+    
+    private final LogThrottler throttler;
+    
+    // === Pre-grace warnings ===
+    
+    public void logExpiryWarning(License license, long daysRemaining, AlertLevel level);
+    
+    public void logRunRateWarning(License license, RunRate runRate, AlertLevel level);
+    
+    // === Limp mode messages ===
+    
+    public void logLimpModeTransition(EnforcementStatus status);
+    
+    public void logLimpModePerExecution(EnforcementStatus status);
+    
+    // === Disabled messages ===
+    
+    public void logDisabled(EnforcementStatus status);
+    
+    // === Recovery ===
+    
+    public void logRecovery(EnforcementStatus previousStatus, License newLicense);
+}
+LogThrottler.java
+java/**
+ * Prevents log spam by tracking when warnings were last logged.
+ * 
+ * <p>Supports three frequencies:</p>
+ * <ul>
+ *   <li>Weekly - for early warnings</li>
+ *   <li>Daily - for moderate warnings</li>
+ *   <li>Every execution - for critical warnings (no throttling)</li>
+ * </ul>
+ * 
+ * <p>Thread-safe using synchronized access to last-logged dates.</p>
+ */
+public class LogThrottler {
+    
+    private final UsageStore usageStore;
+    private final Clock clock;
+    
+    /**
+     * Returns true if a weekly warning should be logged.
+     */
+    public boolean shouldLogWeekly();
+    
+    /**
+     * Returns true if a daily warning should be logged.
+     */
+    public boolean shouldLogDaily();
+    
+    /**
+     * Records that a weekly warning was logged.
+     */
+    public void recordWeeklyWarning();
+    
+    /**
+     * Records that a daily warning was logged.
+     */
+    public void recordDailyWarning();
+}
+DelayEnforcer.java
+java/**
+ * Applies Thread.sleep delays for limp mode enforcement.
+ * 
+ * <p>Separated from EnforcementEngine for testability.</p>
+ */
+public class DelayEnforcer {
+    
+    /**
+     * Applies the specified delay.
+     * 
+     * @param delayMillis Milliseconds to sleep
+     * @throws InterruptedException if thread is interrupted
+     */
+    public void applyDelay(long delayMillis) throws InterruptedException;
+}
+EnforcementConfig.java
+java/**
+ * Configuration constants for enforcement thresholds.
+ * 
+ * <p>Provides sensible defaults with ability to override for testing.</p>
+ */
+public class EnforcementConfig {
+    
+    // Run rate thresholds
+    private final double moderateOverPaceRatio;   // Default: 1.2 (20% over)
+    private final double severeOverPaceRatio;     // Default: 1.5 (50% over)
+    
+    // Expiry warning thresholds (days)
+    private final int expiryWarnWeeklyDays;       // Default: 90
+    private final int expiryWarnDailyDays;        // Default: 60
+    private final int expiryWarnEveryDays;        // Default: 30
+    
+    // Grace period thresholds (days)
+    private final int graceStep1Days;             // Default: 30
+    private final int graceStep2Days;             // Default: 60
+    private final int graceTotalDays;             // Default: 90
+    
+    // Minimum data for run rate calculation
+    private final int minDaysForRunRate;          // Default: 7
+    
+    /**
+     * Returns default configuration.
+     */
+    public static EnforcementConfig defaults();
+    
+    /**
+     * Builder for custom configuration.
+     */
+    public static Builder builder();
+}
+CatalystPaths.java
+java/**
+ * Resolves file paths for Catalyst files.
+ * 
+ * <p>All files are located relative to the JAR location:</p>
+ * <ul>
+ *   <li>catalyst.lic - License file</li>
+ *   <li>catalyst-usage.json - Usage data</li>
+ * </ul>
+ */
+public class CatalystPaths {
+    
+    /**
+     * Returns the directory containing the JAR.
+     */
+    public Path getLibDirectory();
+    
+    /**
+     * Returns path to the license file.
+     */
+    public Path getLicenseFilePath();
+    
+    /**
+     * Returns path to the usage data file.
+     */
+    public Path getUsageFilePath();
+}
+
+Integration with CatalystBridge
+Make minimal changes to the existing CatalystBridge.java:
+javapublic class CatalystBridge implements JavaDelegate {
+    
+    // Lazy-initialized enforcement engine (thread-safe singleton)
+    private static volatile EnforcementEngine enforcementEngine;
+    private static final Object ENGINE_LOCK = new Object();
+    
+    @Override
+    public void execute(DelegateExecution execution) throws Exception {
+        
+        // === ENFORCEMENT CHECK ===
+        // Must be first - applies delays, may throw if disabled
+        getEnforcementEngine().enforce();
+        
+        // === EXISTING BRIDGE LOGIC ===
+        // ... rest of existing code unchanged ...
+    }
+    
+    /**
+     * Returns the enforcement engine, creating it if necessary.
+     * Thread-safe lazy initialization.
+     */
+    private EnforcementEngine getEnforcementEngine() {
+        if (enforcementEngine == null) {
+            synchronized (ENGINE_LOCK) {
+                if (enforcementEngine == null) {
+                    enforcementEngine = EnforcementEngine.create();
+                }
+            }
+        }
+        return enforcementEngine;
+    }
+}
+```
+
+---
+
+### File Formats
+
+#### catalyst.lic
+```
+# Catalyst License
+# Customer: Acme Bank
+# Tier: Micro (1,200 executions/year)
+# Expires: 2026-12-31
+# 
+# Do not modify - signature will be invalidated
+
+CAT1.eyJ0aWVyIjoibWljcm8iLCJsaW1pdCI6MTIwMCwiZXhwIjoiMjAyNi0xMi0zMSIsImN1c3QiOiJhY21lLWJhbmsifQ.a8K3mZ9xP2nQ...
+catalyst-usage.json
+json{
+  "version": 1,
+  "licenseKey": "CAT1.eyJ0aWVy...SIGNATURE",
+  "year": 2026,
+  "count": 847,
+  "firstExecution": "2026-01-15",
+  "lastExecution": "2026-06-17",
+  "noLicenseDetected": null,
+  "triggerActivated": null,
+  "activeTrigger": null,
+  "lastLimpMode": "NONE",
+  "lastDailyWarn": "2026-06-16",
+  "lastWeeklyWarn": "2026-06-10"
+}
+
+Log Message Templates
+Store in LogMessages.java as constants. See the full message specification provided earlier for all message formats.
+Key formatting rules:
+
+All messages start with [CATALYST]
+Box messages use ━ character for borders
+Include trigger-specific action URLs
+Include masked license key where applicable
+Include countdown to next state (e.g., "DISABLED MODE in 30 days")
+
+
+Testing Requirements
+Create unit tests for:
+
+RunRateCalculatorTest - Various usage scenarios, edge cases
+LimpModeEvaluatorTest - All trigger types, all grace periods
+PreGraceEvaluatorTest - Expiry and run rate thresholds
+LicenseValidatorTest - Valid keys, invalid signatures, malformed keys
+FileUsageStoreTest - Persistence, atomic writes, concurrent access
+LogThrottlerTest - Daily/weekly throttling
+EnforcementEngineTest - Integration of all components
+
+Use Clock injection for deterministic time-based tests.
+
+Documentation Requirements
+
+Javadoc on every public class and method
+
+Describe purpose
+Document parameters and return values
+Note thread-safety guarantees
+Include code examples where helpful
+
+
+package-info.java for each package
+
+Describe package purpose
+List key classes
+Explain relationships between packages
+
+
+Inline comments for complex logic
+
+Explain the "why", not the "what"
+Document any non-obvious business rules
+Note any performance considerations
+
+
+Update README.md with:
+
+License enforcement overview
+Installation steps (JAR + license file)
+Tier limits and pricing link
+Grace period explanation
+Troubleshooting guide
+
+
+
+
+Implementation Order
+
+Config & Paths - Foundation
+Data Models - License, RunRate, UsageData, LimpMode, EnforcementTrigger
+Licensing - LicenseLoader, LicenseValidator
+Usage - UsageStore, FileUsageStore, RunRateCalculator
+Enforcement - PreGraceEvaluator, LimpModeEvaluator
+Logging - LogThrottler, LogMessages, EnforcementLogger
+Engine - EnforcementEngine, DelayEnforcer
+Integration - CatalystBridge changes
+Tests - Unit and integration tests
+Documentation - README, Javadoc review
+
+
+Definition of Done
+
+ All classes created with full Javadoc
+ package-info.java for each package
+ Inline comments on complex logic
+ Unit tests for all components
+ Integration test for full flow
+ README.md updated
+ No compiler warnings
+ Thread-safe implementation verified
+ Code formatted consistently
+ Architect agent approval
+
+ 
+ ===============================================
+ Completion message
+ ===============================================
+ 
+ Implementation Complete
+Files Created (28 production files + 4 test files)
+Config Package (2 files)
+EnforcementConfig.java - Thresholds and constants
+CatalystPaths.java - File path resolution
+Licensing Package (4 files)
+License.java - Immutable license model
+LicenseLoader.java - Loads catalyst.lic
+LicenseValidator.java - Parses/validates keys
+InvalidLicenseException.java
+Usage Package (5 files)
+UsageData.java - Persisted usage model
+UsageStore.java - Persistence interface
+FileUsageStore.java - JSON file implementation
+RunRate.java - Run rate projection
+RunRateCalculator.java
+Enforcement Package (9 files)
+EnforcementEngine.java - Main orchestrator
+EnforcementStatus.java
+EnforcementTrigger.java
+LimpMode.java - Fibonacci delays
+AlertLevel.java
+PreGraceEvaluator.java
+LimpModeEvaluator.java
+DelayEnforcer.java
+CatalystDisabledException.java
+Logging Package (3 files)
+EnforcementLogger.java
+LogThrottler.java
+LogMessages.java
+Package Documentation (5 files)
+package-info.java for each package
+Modified
+CatalystBridge.java - Added enforcement integration (~15 lines)
+pom.xml - Added jackson-datatype-jsr310 dependency
+Tests (4 new test files, 79 total tests pass)
+LicenseValidatorTest.java
+LimpModeTest.java
+RunRateCalculatorTest.java
+PreGraceEvaluatorTest.java

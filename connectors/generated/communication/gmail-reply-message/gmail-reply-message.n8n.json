@@ -1,0 +1,84 @@
+{
+  "name": "Gmail - Reply to Email",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "catalyst-gmail-reply-message",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "webhook-1",
+      "name": "Webhook",
+      "webhookId": "catalyst-gmail-reply-message"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "reply",
+        "messageId": "={{ $json.body.messageId }}",
+        "text": "={{ $json.body.message }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "ojc6kakou4",
+      "name": "Reply Message"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { success: true, statusCode: 200, responseBody: $json, error: null } }}"
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "respond-1",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Reply Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply Message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "description": "Catalyst connector webhook for Gmail - Reply to Email. Configure credentials in n8n after importing."
+  }
+}

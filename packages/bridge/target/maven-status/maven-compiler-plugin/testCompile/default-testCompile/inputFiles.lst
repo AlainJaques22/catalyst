@@ -1,1 +1,5 @@
-C:\Git Repos\catalyst-connector\packages\bridge\src\test\java\io\catalyst\bridge\CatalystBridgeTest.java
+C:\Git Repos\catalyst\packages\bridge\src\test\java\io\catalyst\bridge\CatalystBridgeTest.java
+C:\Git Repos\catalyst\packages\bridge\src\test\java\io\catalyst\bridge\enforcement\LimpModeTest.java
+C:\Git Repos\catalyst\packages\bridge\src\test\java\io\catalyst\bridge\enforcement\PreGraceEvaluatorTest.java
+C:\Git Repos\catalyst\packages\bridge\src\test\java\io\catalyst\bridge\licensing\LicenseValidatorTest.java
+C:\Git Repos\catalyst\packages\bridge\src\test\java\io\catalyst\bridge\usage\RunRateCalculatorTest.java
