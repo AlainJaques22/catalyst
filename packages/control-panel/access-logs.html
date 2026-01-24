@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Logs - Catalyst Control Panel</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v2'/%3E%3Cpath d='M14 2v2'/%3E%3Cpath d='M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1'/%3E%3Cpath d='M6 2v2'/%3E%3C/svg%3E">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2234;
+            --border-color: #2d3a52;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-primary: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #0a0e27;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================
+           FLOATING GLASSMORPHIC ISLAND HEADER
+           ============================================ */
+
+        .header {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 1340px;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon-svg {
+            width: 28px;
+            height: 28px;
+            color: #ffffff;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo:hover .logo-icon-svg {
+            color: #38bdf8;
+        }
+
+        .logo-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .logo-text {
+            font-size: 1.125rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: #ffffff;
+            line-height: 1;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo:hover .logo-text {
+            color: #38bdf8;
+        }
+
+        .logo-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.625rem;
+            font-weight: 500;
+            color: #64748b;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .nav-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0.875rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link i {
+            font-size: 16px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #6366f1;
+            transform: translateX(-50%);
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .nav-link:hover::after {
+            width: calc(100% - 1rem);
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+        }
+
+        .nav-link.active::after {
+            width: calc(100% - 1rem);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 0.5rem;
+            padding-left: 1rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .status-dot.checking {
+            background: #f59e0b;
+            box-shadow: 0 0 6px #f59e0b;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-dot.error {
+            background: #ef4444;
+            box-shadow: 0 0 6px #ef4444;
+        }
+
+        .nav-cta {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-cta:hover {
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-cta i {
+            font-size: 16px;
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            gap: 5px;
+            padding: 0;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #94a3b8;
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links, .nav-status, .nav-cta {
+                display: none;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                top: 12px;
+                width: calc(100% - 24px);
+                padding: 0.625rem 1rem;
+                border-radius: 24px;
+            }
+            .logo-text {
+                font-size: 1rem;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+
+        .main-content {
+            flex: 1;
+            margin-top: 100px;
+            padding: 1.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        .filter-btn.success.active {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .filter-btn.warning.active {
+            background: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .filter-btn.error.active {
+            background: var(--error);
+            border-color: var(--error);
+        }
+
+        .path-input {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+            width: 200px;
+        }
+
+        .path-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .path-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .auto-refresh-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-primary);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        .refresh-btn {
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .refresh-btn i {
+            font-size: 18px;
+        }
+
+        /* ============================================
+           LOG TABLE
+           ============================================ */
+
+        .log-container {
+            flex: 1;
+            overflow: auto;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+
+        .log-table th {
+            position: sticky;
+            top: 0;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 0.6875rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .log-table td {
+            padding: 0.625rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: middle;
+        }
+
+        .log-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .log-time {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .log-method {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .log-method.GET { color: #10b981; }
+        .log-method.POST { color: #3b82f6; }
+        .log-method.PUT { color: #f59e0b; }
+        .log-method.DELETE { color: #ef4444; }
+
+        .log-path {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+            word-break: break-all;
+        }
+
+        .log-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .log-status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .log-status.redirect {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .log-status.client-error {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .log-status.server-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .log-size {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .log-ip {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon-svg">
+                    <path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/>
+                </svg>
+                <div class="logo-brand">
+                    <span class="logo-text">CATALYST</span>
+                    <span class="logo-subtitle">studio</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="ph ph-house"></i> Dashboard
+                </a>
+                <a href="#" class="nav-link" onclick="window.open('http://localhost:5678', '_blank'); return false;">
+                    <i class="ph ph-flow-arrow"></i> n8n
+                </a>
+                <a href="#" class="nav-link" onclick="window.open('/camunda/app/cockpit/', '_blank'); return false;">
+                    <i class="ph ph-squares-four"></i> Camunda
+                </a>
+                <a href="/connectors.html" class="nav-link">
+                    <i class="ph ph-grid-four"></i> Connectors
+                </a>
+                <a href="/logs.html" class="nav-link">
+                    <i class="ph ph-terminal-window"></i> Logs
+                </a>
+                <a href="/access-logs.html" class="nav-link active">
+                    <i class="ph ph-list-magnifying-glass"></i> Access Logs
+                </a>
+            </nav>
+
+            <div class="nav-status">
+                <div class="status-indicator">
+                    <span class="status-dot checking" id="n8nStatus"></span>
+                    <span>n8n</span>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot checking" id="camundaStatus"></span>
+                    <span>Camunda</span>
+                </div>
+            </div>
+
+            <a href="https://github.com/AlainJaques22/catalyst" target="_blank" class="nav-cta">
+                <i class="ph ph-github-logo"></i>
+                GitHub
+            </a>
+
+            <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="controls">
+            <div class="control-group">
+                <span class="control-label">Status</span>
+                <button class="filter-btn active" data-status="all" onclick="setStatusFilter('all', this)">All</button>
+                <button class="filter-btn success" data-status="2xx" onclick="setStatusFilter('2xx', this)">2xx</button>
+                <button class="filter-btn warning" data-status="4xx" onclick="setStatusFilter('4xx', this)">4xx</button>
+                <button class="filter-btn error" data-status="5xx" onclick="setStatusFilter('5xx', this)">5xx</button>
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">Path</span>
+                <input type="text" class="path-input" id="pathFilter" placeholder="/engine-rest/..." oninput="onPathFilterChange()">
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">Lines</span>
+                <select class="filter-btn" id="linesLimit" onchange="fetchLogs()">
+                    <option value="50">50</option>
+                    <option value="100" selected>100</option>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                </select>
+            </div>
+
+            <div class="auto-refresh-toggle">
+                <span class="control-label">Auto-refresh</span>
+                <div class="toggle-switch active" id="autoRefreshToggle" onclick="toggleAutoRefresh()"></div>
+            </div>
+
+            <button class="refresh-btn" onclick="fetchLogs()" title="Refresh now">
+                <i class="ph ph-arrow-clockwise"></i>
+            </button>
+        </div>
+
+        <div class="log-container">
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span>Total:</span>
+                    <span class="stat-value" id="totalCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Showing:</span>
+                    <span class="stat-value" id="showingCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Last updated:</span>
+                    <span class="stat-value" id="lastUpdated">-</span>
+                </div>
+            </div>
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Method</th>
+                        <th>Path</th>
+                        <th>Status</th>
+                        <th>Size</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody id="logTableBody">
+                </tbody>
+            </table>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="ph ph-magnifying-glass"></i>
+                <p>No access logs found for today</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            logsUrl: '/camunda-logs',
+            pollInterval: 5000,
+        };
+
+        // State
+        let currentStatusFilter = 'all';
+        let currentPathFilter = '';
+        let autoRefresh = true;
+        let refreshInterval = null;
+        let allLogs = [];
+
+        // Get today's log filename
+        function getTodayLogFilename() {
+            const today = new Date().toISOString().split('T')[0];
+            return `localhost_access_log.${today}.txt`;
+        }
+
+        // Parse access log line
+        // Format: IP - - [timestamp] "METHOD /path HTTP/1.1" STATUS SIZE
+        function parseLine(line) {
+            const regex = /^([\d.]+) - - \[([^\]]+)\] "(\w+) ([^\s]+) HTTP\/[\d.]+" (\d+) (\d+)$/;
+            const match = line.match(regex);
+            if (!match) return null;
+
+            return {
+                ip: match[1],
+                timestamp: match[2],
+                method: match[3],
+                path: match[4],
+                status: parseInt(match[5]),
+                size: parseInt(match[6]),
+                raw: line,
+            };
+        }
+
+        // Apply filters
+        function applyFilters(logs) {
+            return logs.filter(log => {
+                // Status filter
+                if (currentStatusFilter === '2xx' && (log.status < 200 || log.status >= 300)) return false;
+                if (currentStatusFilter === '3xx' && (log.status < 300 || log.status >= 400)) return false;
+                if (currentStatusFilter === '4xx' && (log.status < 400 || log.status >= 500)) return false;
+                if (currentStatusFilter === '5xx' && log.status < 500) return false;
+
+                // Path filter
+                if (currentPathFilter && !log.path.toLowerCase().includes(currentPathFilter.toLowerCase())) return false;
+
+                return true;
+            });
+        }
+
+        // Get status class
+        function getStatusClass(status) {
+            if (status >= 200 && status < 300) return 'success';
+            if (status >= 300 && status < 400) return 'redirect';
+            if (status >= 400 && status < 500) return 'client-error';
+            return 'server-error';
+        }
+
+        // Format file size
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // Render logs
+        function renderLogs(logs) {
+            const tbody = document.getElementById('logTableBody');
+            const emptyState = document.getElementById('emptyState');
+
+            if (logs.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = logs.map(log => `
+                <tr>
+                    <td class="log-time">${log.timestamp}</td>
+                    <td class="log-method ${log.method}">${log.method}</td>
+                    <td class="log-path" title="${log.path}">${log.path}</td>
+                    <td><span class="log-status ${getStatusClass(log.status)}">${log.status}</span></td>
+                    <td class="log-size">${formatSize(log.size)}</td>
+                    <td class="log-ip">${log.ip}</td>
+                </tr>
+            `).join('');
+
+            // Update stats
+            document.getElementById('showingCount').textContent = logs.length;
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+        }
+
+        // Fetch logs
+        async function fetchLogs() {
+            try {
+                const filename = getTodayLogFilename();
+                const response = await fetch(`${CONFIG.logsUrl}/${filename}`);
+
+                if (!response.ok) {
+                    allLogs = [];
+                    document.getElementById('totalCount').textContent = 0;
+                    renderLogs([]);
+                    return;
+                }
+
+                const text = await response.text();
+                const lines = text.trim().split('\n');
+                allLogs = lines.map(parseLine).filter(Boolean);
+
+                document.getElementById('totalCount').textContent = allLogs.length;
+
+                // Apply filters and limit
+                const limit = parseInt(document.getElementById('linesLimit').value);
+                const filtered = applyFilters(allLogs);
+                const limited = filtered.slice(-limit).reverse(); // Newest first
+
+                renderLogs(limited);
+            } catch (error) {
+                console.error('Error fetching logs:', error);
+            }
+        }
+
+        // Set status filter
+        function setStatusFilter(status, btn) {
+            currentStatusFilter = status;
+
+            // Update button states
+            document.querySelectorAll('.control-group .filter-btn[data-status]').forEach(b => {
+                b.classList.remove('active');
+            });
+            btn.classList.add('active');
+
+            // Re-render with new filter
+            const limit = parseInt(document.getElementById('linesLimit').value);
+            const filtered = applyFilters(allLogs);
+            const limited = filtered.slice(-limit).reverse();
+            renderLogs(limited);
+        }
+
+        // Path filter change (debounced)
+        let pathFilterTimeout = null;
+        function onPathFilterChange() {
+            clearTimeout(pathFilterTimeout);
+            pathFilterTimeout = setTimeout(() => {
+                currentPathFilter = document.getElementById('pathFilter').value;
+                const limit = parseInt(document.getElementById('linesLimit').value);
+                const filtered = applyFilters(allLogs);
+                const limited = filtered.slice(-limit).reverse();
+                renderLogs(limited);
+            }, 300);
+        }
+
+        // Toggle auto-refresh
+        function toggleAutoRefresh() {
+            autoRefresh = !autoRefresh;
+            const toggle = document.getElementById('autoRefreshToggle');
+            toggle.classList.toggle('active', autoRefresh);
+
+            if (autoRefresh) {
+                startAutoRefresh();
+            } else {
+                stopAutoRefresh();
+            }
+        }
+
+        function startAutoRefresh() {
+            if (refreshInterval) clearInterval(refreshInterval);
+            refreshInterval = setInterval(fetchLogs, CONFIG.pollInterval);
+        }
+
+        function stopAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+        }
+
+        // Check service status
+        async function checkServices() {
+            // Check n8n
+            try {
+                await fetch('/n8n/healthz', { mode: 'no-cors' });
+                document.getElementById('n8nStatus').className = 'status-dot';
+            } catch {
+                document.getElementById('n8nStatus').className = 'status-dot error';
+            }
+
+            // Check Camunda
+            try {
+                await fetch('/camunda-api/version', { mode: 'no-cors' });
+                document.getElementById('camundaStatus').className = 'status-dot';
+            } catch {
+                document.getElementById('camundaStatus').className = 'status-dot error';
+            }
+        }
+
+        // Initialize
+        fetchLogs();
+        startAutoRefresh();
+        checkServices();
+        setInterval(checkServices, 30000);
+    </script>
+</body>
+
+</html>

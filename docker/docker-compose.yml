@@ -38,10 +38,13 @@ services:
       - DB_PASSWORD=camunda
       - WAIT_FOR=postgres:5432
       - TZ=${TZ:-UTC}
+      - LOGGING_LEVEL_ORG_CAMUNDA_BPM_ENGINE_REST=DEBUG
       # Webhook URL allowlist (defaults to localhost and catalyst-n8n if not set)
       # - CATALYST_WEBHOOK_ALLOWLIST=http://localhost:5678/webhook/,http://catalyst-n8n:5678/webhook/,http://n8n:5678/webhook/
     ports:
       - "8080:8080"
+    volumes:
+      - camunda_logs:/camunda/logs
     networks:
       - catalyst-network
     restart: unless-stopped
@@ -59,11 +62,14 @@ services:
       - WEBHOOK_URL=http://localhost:5678/
       - GENERIC_TIMEZONE=${TZ:-UTC}
       - TZ=${TZ:-UTC}
+      - N8N_LOG_LEVEL=debug
+      - N8N_CUSTOM_EXTENSIONS=/home/node/.n8n/custom
     ports:
       - "5678:5678"
     volumes:
       - n8n_data:/home/node/.n8n
       - ./workflows:/home/node/.n8n/workflows
+      - ../../n8n-nodes-camunda7:/home/node/.n8n/custom/n8n-nodes-camunda7
     networks:
       - catalyst-network
     restart: unless-stopped
@@ -101,6 +107,7 @@ services:
       - ../packages/connector-builder:/usr/share/nginx/connector-builder:ro
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../connectors:/usr/share/nginx/connectors:ro
+      - camunda_logs:/usr/share/nginx/camunda-logs:ro
     depends_on:
       - n8n
       - camunda
@@ -125,6 +132,7 @@ services:
 volumes:
   postgres_data:
   n8n_data:
+  camunda_logs:
 
 networks:
   catalyst-network:

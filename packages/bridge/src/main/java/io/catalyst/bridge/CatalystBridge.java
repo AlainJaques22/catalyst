@@ -1,6 +1,8 @@
 package io.catalyst.bridge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.catalyst.bridge.enforcement.CatalystDisabledException;
+import io.catalyst.bridge.enforcement.EnforcementEngine;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -57,6 +59,10 @@ public class CatalystBridge implements JavaDelegate {
 
     private static final int DEFAULT_TIMEOUT_SECONDS = 30;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    // License enforcement engine (lazy-initialized singleton)
+    private static volatile EnforcementEngine enforcementEngine;
+    private static final Object ENGINE_LOCK = new Object();
 
     // Security: Webhook URL allowlist configuration
     private static final String WEBHOOK_ALLOWLIST_ENV = "CATALYST_WEBHOOK_ALLOWLIST";
@@ -131,6 +137,10 @@ public class CatalystBridge implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         // Print banner at start of execution
         printExecutionBanner(execution);
+
+        // License enforcement check - must be first
+        // Applies delays in limp mode, throws CatalystDisabledException if blocked
+        getEnforcementEngine().enforce();
 
         try {
             // Get and validate webhook URL
@@ -606,5 +616,22 @@ public class CatalystBridge implements JavaDelegate {
         } else {
             return node.asText();
         }
+    }
+
+    /**
+     * Returns the enforcement engine, creating it if necessary.
+     * Thread-safe lazy initialization using double-checked locking.
+     *
+     * @return the EnforcementEngine singleton
+     */
+    private EnforcementEngine getEnforcementEngine() {
+        if (enforcementEngine == null) {
+            synchronized (ENGINE_LOCK) {
+                if (enforcementEngine == null) {
+                    enforcementEngine = EnforcementEngine.create();
+                }
+            }
+        }
+        return enforcementEngine;
     }
 }

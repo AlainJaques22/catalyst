@@ -29,4 +29,24 @@ COPY --chown=camunda:camunda web.xml /camunda/webapps/engine-rest/WEB-INF/web.xm
 # Configure Camunda to use JSON serialization by default
 COPY --chown=camunda:camunda bpm-platform.xml /camunda/conf/bpm-platform.xml
 
+# Make logs directory world-readable for nginx access logs panel
+USER root
+RUN chmod 755 /camunda/logs
+
+# Create startup wrapper script that fixes log permissions
+RUN echo '#!/bin/sh' > /camunda/start-with-perms.sh && \
+    echo '# Fix log permissions on startup and periodically' >> /camunda/start-with-perms.sh && \
+    echo 'chmod 755 /camunda/logs 2>/dev/null || true' >> /camunda/start-with-perms.sh && \
+    echo 'chmod 644 /camunda/logs/*.txt /camunda/logs/*.log 2>/dev/null || true' >> /camunda/start-with-perms.sh && \
+    echo '# Background job to fix permissions every 30 seconds' >> /camunda/start-with-perms.sh && \
+    echo '(while true; do sleep 30; chmod 644 /camunda/logs/*.txt /camunda/logs/*.log 2>/dev/null || true; done) &' >> /camunda/start-with-perms.sh && \
+    echo '# Start Camunda' >> /camunda/start-with-perms.sh && \
+    echo 'exec /camunda/camunda.sh' >> /camunda/start-with-perms.sh && \
+    chmod +x /camunda/start-with-perms.sh
+
+USER camunda
+
+# Override entrypoint to use our wrapper script
+CMD ["/camunda/start-with-perms.sh"]
+
 # The base image already defines the entrypoint and cmd
