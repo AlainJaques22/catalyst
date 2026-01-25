@@ -30,7 +30,7 @@ program
   .command('generate <node>')
   .description('Generate a connector from an n8n node schema')
   .option('-o, --operation <operation>', 'Specific operation to generate')
-  .option('-d, --output-dir <dir>', 'Output directory', '../../connectors/generated')
+  .option('-d, --output-dir <dir>', 'Output directory', '../../../connectors/generated')
   .option('--dry-run', 'Preview without writing files')
   .option('--force', 'Skip backup and overwrite existing files')
   .option('-v, --verbose', 'Verbose output')

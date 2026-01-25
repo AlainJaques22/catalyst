@@ -20,8 +20,6 @@
     },
     {
       "parameters": {
-        "resource": "message",
-        "operation": "send",
         "select": "channel",
         "channelId": {
           "__rl": true,
@@ -32,13 +30,26 @@
         "otherOptions": {}
       },
       "type": "n8n-nodes-base.slack",
-      "typeVersion": 2.4,
+      "typeVersion": 2.2,
       "position": [
         220,
         0
       ],
-      "id": "gl909oqefgb",
+      "id": "13j6uttcd3l9",
       "name": "Send Message"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format error response for connector failure\nconst error = $input.item.json.error || $input.item.json;\n\nlet errorMessage = 'Configuration needed. Please check node settings in n8n.';\nif (error.message) {\n  errorMessage = error.message;\n}\n\nreturn {\n  json: {\n    success: false,\n    statusCode: 500,\n    error: errorMessage,\n    responseBody: null\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        100
+      ],
+      "id": "error-format-1",
+      "name": "Format Error Response"
     },
     {
       "parameters": {
@@ -48,7 +59,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        440,
+        660,
         0
       ],
       "id": "respond-1",
@@ -68,6 +79,26 @@
       ]
     },
     "Send Message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Error Response": {
       "main": [
         [
           {

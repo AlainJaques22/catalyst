@@ -2,7 +2,7 @@
   "id": "gmail-send-message",
   "name": "Gmail - Send Email",
   "description": "Send an email using Gmail",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "integration",
   "category": "communication",
   "subcategory": "email",
@@ -30,7 +30,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-24T09:49:54.452Z",
+  "createdAt": "2026-01-25T15:13:09.926Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-send-message.n8n.json",

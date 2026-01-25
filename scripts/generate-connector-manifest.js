@@ -68,17 +68,22 @@ function generateManifest() {
   console.log('\nScanning templates:');
   const templates = scanDirectory('templates', 'template');
 
+  console.log('\nScanning generated connectors:');
+  const generated = scanDirectory('generated', 'integration');
+
   const manifest = {
     version: '1.0.0',
     generatedAt: new Date().toISOString(),
     stats: {
-      totalConnectors: integrations.length + templates.length,
+      totalConnectors: integrations.length + templates.length + generated.length,
       integrations: integrations.length,
-      templates: templates.length
+      templates: templates.length,
+      generated: generated.length
     },
     connectors: {
       integrations,
-      templates
+      templates,
+      generated
     }
   };
 
@@ -93,6 +98,7 @@ function generateManifest() {
   console.log(`\n✅ Generated manifest with ${manifest.stats.totalConnectors} connectors`);
   console.log(`   - ${integrations.length} integrations`);
   console.log(`   - ${templates.length} templates`);
+  console.log(`   - ${generated.length} generated`);
   console.log(`   → ${OUTPUT_FILE}`);
 }
 

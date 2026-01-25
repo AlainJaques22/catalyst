@@ -31,7 +31,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-24T09:32:06.650Z",
+  "createdAt": "2026-01-25T15:15:12.746Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-add-label-message.n8n.json",
