@@ -1120,11 +1120,17 @@
                 return;
             }
 
-            gallery.innerHTML = connectors.map(c => `
+            gallery.innerHTML = connectors.map(c => {
+                // Determine if icon is SVG file or Phosphor icon
+                const iconHtml = c.icon.startsWith('icons/')
+                    ? `<img src="${c.icon}" alt="${c.name}" style="width: 28px; height: 28px; object-fit: contain;">`
+                    : `<i class="ph ${c.icon}"></i>`;
+
+                return `
                 <div class="connector-card" data-category="${c.category}" data-tags="${(c.tags || []).join(' ')}">
                     <div class="connector-header">
                         <div class="connector-icon" style="background: ${c.color}20; color: ${c.color}">
-                            <i class="ph ${c.icon}"></i>
+                            ${iconHtml}
                         </div>
                         <span class="connector-name">${c.name}</span>
                     </div>
@@ -1144,7 +1150,8 @@
                         </a>
                         ` : ''}
                     </div>
-                </div>
+                </div>`;
+            }).join('');
             `).join('');
         }
 

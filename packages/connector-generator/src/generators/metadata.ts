@@ -7,6 +7,7 @@
 import { OperationSchema, ConnectorMetadata } from '../types';
 import { generateConnectorId } from '../utils/naming';
 import { getServiceColor, determineCategory } from '../utils/type-mapper';
+import { getServiceIcon } from '../utils/icon-mapper';
 
 /**
  * Generate connector metadata from operation schema
@@ -15,6 +16,7 @@ export function generateMetadata(schema: OperationSchema): ConnectorMetadata {
   const connectorId = generateConnectorId(schema.nodeId, schema.resource, schema.operation);
   const category = schema.category || determineCategory(schema.nodeName);
   const color = schema.color || getServiceColor(schema.nodeName);
+  const icon = getServiceIcon(schema.nodeId);
 
   return {
     id: connectorId,
@@ -24,7 +26,7 @@ export function generateMetadata(schema: OperationSchema): ConnectorMetadata {
     type: 'integration',
     category,
     subcategory: schema.subcategory,
-    icon: `ph-${schema.nodeId}-logo`, // Phosphor icon pattern
+    icon,
     color,
     tags: schema.tags,
     source: {

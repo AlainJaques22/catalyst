@@ -2,11 +2,11 @@
   "id": "slack-send-message",
   "name": "Slack - Send Message",
   "description": "Send a message to a Slack channel",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "integration",
   "category": "communication",
   "subcategory": "messaging",
-  "icon": "ph-slack-logo",
+  "icon": "icons/slack.svg",
   "color": "#4A154B",
   "tags": [
     "slack",
@@ -30,7 +30,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-25T15:15:30.650Z",
+  "createdAt": "2026-01-25T16:16:07.505Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "slack-send-message.n8n.json",
