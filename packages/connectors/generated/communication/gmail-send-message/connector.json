@@ -1,0 +1,40 @@
+{
+  "id": "gmail-send-message",
+  "name": "Gmail - Send Email",
+  "description": "Send an email using Gmail",
+  "version": "1.0.1",
+  "type": "integration",
+  "category": "communication",
+  "subcategory": "email",
+  "icon": "ph-gmail-logo",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "email",
+    "google",
+    "send",
+    "communication"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "message",
+    "operation": "send",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-25T15:13:09.926Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-send-message.n8n.json",
+    "elementTemplate": "gmail-send-message.element.json",
+    "exampleBpmn": "gmail-send-message.bpmn"
+  }
+}

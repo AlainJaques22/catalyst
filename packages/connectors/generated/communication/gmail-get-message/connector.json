@@ -1,0 +1,40 @@
+{
+  "id": "gmail-get-message",
+  "name": "Gmail - Get Email",
+  "description": "Retrieve a specific email from Gmail",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "subcategory": "email",
+  "icon": "ph-gmail-logo",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "email",
+    "google",
+    "read",
+    "communication"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "message",
+    "operation": "get",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-25T15:15:10.014Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-get-message.n8n.json",
+    "elementTemplate": "gmail-get-message.element.json",
+    "exampleBpmn": "gmail-get-message.bpmn"
+  }
+}

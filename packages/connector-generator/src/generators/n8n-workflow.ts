@@ -159,6 +159,33 @@ export function generateN8nWorkflow(schema: OperationSchema): N8nWorkflow {
     // Note: credentials are NOT included - user configures in n8n
   };
 
+  // Error format node (catches errors from service node)
+  const errorFormatNode: N8nWorkflowNode = {
+    parameters: {
+      jsCode: `// Format error response for connector failure
+const error = $input.item.json.error || $input.item.json;
+
+let errorMessage = 'Configuration needed. Please check node settings in n8n.';
+if (error.message) {
+  errorMessage = error.message;
+}
+
+return {
+  json: {
+    success: false,
+    statusCode: 500,
+    error: errorMessage,
+    responseBody: null
+  }
+};`
+    },
+    type: 'n8n-nodes-base.code',
+    typeVersion: 2,
+    position: [440, 100],
+    id: 'error-format-1',
+    name: 'Format Error Response'
+  };
+
   // Response node
   const responseNode: N8nWorkflowNode = {
     parameters: {
@@ -167,19 +194,23 @@ export function generateN8nWorkflow(schema: OperationSchema): N8nWorkflow {
     },
     type: 'n8n-nodes-base.respondToWebhook',
     typeVersion: 1.1,
-    position: [440, 0],
+    position: [660, 0],
     id: 'respond-1',
     name: 'Respond to Webhook'
   };
 
   return {
     name: schema.displayName,
-    nodes: [webhookNode, serviceNode, responseNode],
+    nodes: [webhookNode, serviceNode, errorFormatNode, responseNode],
     connections: {
       'Webhook': {
         main: [[{ node: operationNodeName, type: 'main', index: 0 }]]
       },
       [operationNodeName]: {
+        main: [[{ node: 'Respond to Webhook', type: 'main', index: 0 }]],
+        error: [[{ node: 'Format Error Response', type: 'main', index: 0 }]]
+      },
+      'Format Error Response': {
         main: [[{ node: 'Respond to Webhook', type: 'main', index: 0 }]]
       }
     },
@@ -237,6 +268,33 @@ export function generateSlackStyleWorkflow(schema: OperationSchema): N8nWorkflow
     // credentials configured by user in n8n
   };
 
+  // Error format node (catches errors from service node)
+  const errorFormatNode: N8nWorkflowNode = {
+    parameters: {
+      jsCode: `// Format error response for connector failure
+const error = $input.item.json.error || $input.item.json;
+
+let errorMessage = 'Configuration needed. Please check node settings in n8n.';
+if (error.message) {
+  errorMessage = error.message;
+}
+
+return {
+  json: {
+    success: false,
+    statusCode: 500,
+    error: errorMessage,
+    responseBody: null
+  }
+};`
+    },
+    type: 'n8n-nodes-base.code',
+    typeVersion: 2,
+    position: [440, 100],
+    id: 'error-format-1',
+    name: 'Format Error Response'
+  };
+
   // Response node
   const responseNode: N8nWorkflowNode = {
     parameters: {
@@ -245,19 +303,23 @@ export function generateSlackStyleWorkflow(schema: OperationSchema): N8nWorkflow
     },
     type: 'n8n-nodes-base.respondToWebhook',
     typeVersion: 1.1,
-    position: [440, 0],
+    position: [660, 0],
     id: 'respond-1',
     name: 'Respond to Webhook'
   };
 
   return {
     name: schema.displayName,
-    nodes: [webhookNode, serviceNode, responseNode],
+    nodes: [webhookNode, serviceNode, errorFormatNode, responseNode],
     connections: {
       'Webhook': {
         main: [[{ node: 'Send a message', type: 'main', index: 0 }]]
       },
       'Send a message': {
+        main: [[{ node: 'Respond to Webhook', type: 'main', index: 0 }]],
+        error: [[{ node: 'Format Error Response', type: 'main', index: 0 }]]
+      },
+      'Format Error Response': {
         main: [[{ node: 'Respond to Webhook', type: 'main', index: 0 }]]
       }
     },

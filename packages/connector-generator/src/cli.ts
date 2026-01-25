@@ -32,6 +32,7 @@ program
   .option('-o, --operation <operation>', 'Specific operation to generate')
   .option('-d, --output-dir <dir>', 'Output directory', '../../connectors/generated')
   .option('--dry-run', 'Preview without writing files')
+  .option('--force', 'Skip backup and overwrite existing files')
   .option('-v, --verbose', 'Verbose output')
   .action((node: string, options) => {
     try {
@@ -45,7 +46,8 @@ program
       const genOptions: GeneratorOptions = {
         outputDir,
         dryRun: options.dryRun,
-        verbose: options.verbose
+        verbose: options.verbose,
+        force: options.force
       };
 
       let schemas;

@@ -41,16 +41,61 @@ export function generateConnector(
   const connectorId = generateConnectorId(schema.nodeId, schema.resource, schema.operation);
   const connectorDir = path.join(options.outputDir, schema.category, connectorId);
 
-  // Generate all files
+  // Check if connector already exists and handle versioning
+  let version = '1.0.0';
+  const metadataPath = path.join(connectorDir, 'connector.json');
+
+  if (fs.existsSync(metadataPath)) {
+    try {
+      const existingMetadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
+      const [major, minor, patch] = existingMetadata.version.split('.').map(Number);
+      version = `${major}.${minor}.${patch + 1}`;
+
+      if (options.verbose) {
+        console.log(`Bumping version from ${existingMetadata.version} to ${version}`);
+      }
+    } catch (error) {
+      console.warn(`Could not read existing metadata, using default version ${version}`);
+    }
+  }
+
+  // Generate all files with updated version
   const elementTemplate = elementTemplateToJson(generateElementTemplate(schema));
   const n8nWorkflow = n8nWorkflowToJson(generateN8nWorkflow(schema));
   const bpmn = generateBpmnExample(schema);
   const readme = generateReadme(schema);
-  const metadata = metadataToJson(generateMetadata(schema));
+
+  // Generate metadata with version
+  const metadataObj = generateMetadata(schema);
+  metadataObj.version = version;
+  const metadata = metadataToJson(metadataObj);
 
   if (!options.dryRun) {
     // Create directory
     fs.mkdirSync(connectorDir, { recursive: true });
+
+    // Create backups before overwriting (unless force is enabled)
+    if (fs.existsSync(metadataPath) && !options.force) {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+      const bpmnPath = path.join(connectorDir, `${connectorId}.bpmn`);
+      const n8nPath = path.join(connectorDir, `${connectorId}.n8n.json`);
+
+      if (fs.existsSync(bpmnPath)) {
+        const backupPath = `${bpmnPath}.backup-${timestamp}`;
+        fs.copyFileSync(bpmnPath, backupPath);
+        if (options.verbose) {
+          console.log(`Created backup: ${path.basename(backupPath)}`);
+        }
+      }
+
+      if (fs.existsSync(n8nPath)) {
+        const backupPath = `${n8nPath}.backup-${timestamp}`;
+        fs.copyFileSync(n8nPath, backupPath);
+        if (options.verbose) {
+          console.log(`Created backup: ${path.basename(backupPath)}`);
+        }
+      }
+    }
 
     // Write files
     fs.writeFileSync(path.join(connectorDir, `${connectorId}.element.json`), elementTemplate);

@@ -1,10 +1,10 @@
 {
-  "name": "Slack - Send Message",
+  "name": "Gmail - Get Email",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "catalyst-slack-send-message",
+        "path": "catalyst-gmail-get-message",
         "responseMode": "responseNode",
         "options": {}
       },
@@ -16,27 +16,18 @@
       ],
       "id": "webhook-1",
       "name": "Webhook",
-      "webhookId": "catalyst-slack-send-message"
+      "webhookId": "catalyst-gmail-get-message"
     },
     {
-      "parameters": {
-        "select": "channel",
-        "channelId": {
-          "__rl": true,
-          "value": "={{ $json.body.channel }}",
-          "mode": "id"
-        },
-        "text": "={{ $json.body.text }}",
-        "otherOptions": {}
-      },
-      "type": "n8n-nodes-base.slack",
-      "typeVersion": 2.2,
+      "parameters": {},
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
       "position": [
         220,
         0
       ],
-      "id": "13j6uttcd3l9",
-      "name": "Send Message"
+      "id": "bg8mawr7he8",
+      "name": "Get Message"
     },
     {
       "parameters": {
@@ -71,14 +62,14 @@
       "main": [
         [
           {
-            "node": "Send Message",
+            "node": "Get Message",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Send Message": {
+    "Get Message": {
       "main": [
         [
           {
@@ -115,6 +106,6 @@
     "executionOrder": "v1"
   },
   "meta": {
-    "description": "Catalyst connector webhook for Slack - Send Message. Configure credentials in n8n after importing."
+    "description": "Catalyst connector webhook for Gmail - Get Email. Configure credentials in n8n after importing."
   }
 }

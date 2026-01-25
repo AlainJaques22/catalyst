@@ -1,0 +1,41 @@
+{
+  "id": "gmail-add-label-message",
+  "name": "Gmail - Add Label",
+  "description": "Add a label to an email in Gmail",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "subcategory": "email",
+  "icon": "ph-gmail-logo",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "email",
+    "google",
+    "label",
+    "organize",
+    "communication"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "message",
+    "operation": "addLabel",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-25T15:15:12.746Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-add-label-message.n8n.json",
+    "elementTemplate": "gmail-add-label-message.element.json",
+    "exampleBpmn": "gmail-add-label-message.bpmn"
+  }
+}

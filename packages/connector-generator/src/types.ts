@@ -142,7 +142,10 @@ export interface ElementTemplate {
 export interface N8nWorkflow {
   name: string;
   nodes: N8nWorkflowNode[];
-  connections: Record<string, { main: Array<Array<{ node: string; type: string; index: number }>> }>;
+  connections: Record<string, {
+    main: Array<Array<{ node: string; type: string; index: number }>>;
+    error?: Array<Array<{ node: string; type: string; index: number }>>;
+  }>;
   active: boolean;
   settings: { executionOrder: string };
   meta?: { description: string };
@@ -173,4 +176,5 @@ export interface GeneratorOptions {
   overwrite?: boolean;
   dryRun?: boolean;
   verbose?: boolean;
+  force?: boolean;
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_slack-send-message" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Catalyst Connector Generator" exporterVersion="1.0.0">
-  <bpmn:process id="slack-send-message-example" name="Slack - Send Message Example" isExecutable="true" camunda:historyTimeToLive="P1D">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_gmail-send-message" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Catalyst Connector Generator" exporterVersion="1.0.0">
+  <bpmn:process id="gmail-send-message-example" name="Gmail - Send Email Example" isExecutable="true" camunda:historyTimeToLive="P1D">
     <bpmn:startEvent id="StartEvent_1" name="Start">
       <bpmn:outgoing>Flow_1</bpmn:outgoing>
     </bpmn:startEvent>
@@ -8,14 +8,29 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="channel" label="Channel" type="string" defaultValue="#general">
+          <camunda:formField id="to" label="To" type="string" defaultValue="recipient@example.com">
             <camunda:properties>
-              <camunda:property id="description" value="The Slack channel to send the message to (e.g., #general or channel ID)" />
+              <camunda:property id="description" value="Email address of the recipient" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="text" label="Message Text" type="string" defaultValue="Hello from Catalyst!">
+          <camunda:formField id="subject" label="Subject" type="string" defaultValue="Email subject">
             <camunda:properties>
-              <camunda:property id="description" value="The text content of the message to send" />
+              <camunda:property id="description" value="Subject line of the email" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="message" label="Message" type="string" defaultValue="Your email message here">
+            <camunda:properties>
+              <camunda:property id="description" value="The body content of the email (plain text or HTML)" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="cc" label="CC" type="string" defaultValue="cc@example.com">
+            <camunda:properties>
+              <camunda:property id="description" value="Email addresses to CC (comma-separated)" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="bcc" label="BCC" type="string" defaultValue="bcc@example.com">
+            <camunda:properties>
+              <camunda:property id="description" value="Email addresses to BCC (comma-separated)" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>
@@ -24,22 +39,28 @@
       <bpmn:outgoing>Flow_2</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_Input" targetRef="Activity_Service" />
-    <bpmn:serviceTask id="Activity_Service" name="Slack Send Message" camunda:modelerTemplate="io.catalyst.template.slack-send-message" camunda:modelerTemplateVersion="1" camunda:class="io.catalyst.bridge.CatalystBridge">
+    <bpmn:serviceTask id="Activity_Service" name="Gmail Send Message" camunda:modelerTemplate="io.catalyst.template.gmail-send-message" camunda:modelerTemplateVersion="1" camunda:class="io.catalyst.bridge.CatalystBridge">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="timeout">30</camunda:inputParameter>
-          <camunda:inputParameter name="channel">${channel}</camunda:inputParameter>
-          <camunda:inputParameter name="text">${text}</camunda:inputParameter>
+          <camunda:inputParameter name="to">${to}</camunda:inputParameter>
+          <camunda:inputParameter name="subject">${subject}</camunda:inputParameter>
+          <camunda:inputParameter name="message">${message}</camunda:inputParameter>
+          <camunda:inputParameter name="cc">${cc}</camunda:inputParameter>
+          <camunda:inputParameter name="bcc">${bcc}</camunda:inputParameter>
           <camunda:inputParameter name="payload">{
-  &quot;channel&quot;: &quot;${channel}&quot;,
-  &quot;text&quot;: &quot;${text}&quot;
+  &quot;to&quot;: &quot;${to}&quot;,
+  &quot;subject&quot;: &quot;${subject}&quot;,
+  &quot;message&quot;: &quot;${message}&quot;,
+  &quot;cc&quot;: &quot;${cc}&quot;,
+  &quot;bcc&quot;: &quot;${bcc}&quot;
 }</camunda:inputParameter>
           <camunda:inputParameter name="outputMapping">{
   &quot;success&quot;: &quot;$.success&quot;,
   &quot;statusCode&quot;: &quot;$.statusCode&quot;,
   &quot;error&quot;: &quot;$.error&quot;
 }</camunda:inputParameter>
-          <camunda:inputParameter name="webhookUrl">http://catalyst-n8n:5678/webhook/catalyst-slack-send-message</camunda:inputParameter>
+          <camunda:inputParameter name="webhookUrl">http://catalyst-n8n:5678/webhook/catalyst-gmail-send-message</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_2</bpmn:incoming>
@@ -56,7 +77,7 @@
     </bpmn:endEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="slack-send-message-example">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="gmail-send-message-example">
       <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
         <dc:Bounds x="152" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
