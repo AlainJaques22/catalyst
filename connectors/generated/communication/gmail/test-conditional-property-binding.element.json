@@ -1,0 +1,145 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Test - Property Binding Conditionals",
+  "id": "test.conditional.property",
+  "description": "Test if conditional properties work with camunda:property binding instead of camunda:inputParameter",
+  "version": 1,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "groups": [
+    {
+      "id": "operation",
+      "label": "Operation"
+    },
+    {
+      "id": "params",
+      "label": "Parameters"
+    }
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "id": "operation",
+      "label": "Operation Type",
+      "type": "Dropdown",
+      "value": "send",
+      "binding": {
+        "type": "property",
+        "name": "operationType"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Send Message",
+          "value": "send"
+        },
+        {
+          "name": "Get Message",
+          "value": "get"
+        },
+        {
+          "name": "Delete Message",
+          "value": "delete"
+        }
+      ],
+      "description": "Using camunda:property binding type"
+    },
+    {
+      "id": "to",
+      "label": "To (SEND ONLY)",
+      "type": "String",
+      "value": "${to}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "to"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "send"
+      },
+      "description": "Should ONLY show when operation=send",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "subject",
+      "label": "Subject (SEND ONLY)",
+      "type": "String",
+      "value": "${subject}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "subject"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "send"
+      },
+      "description": "Should ONLY show when operation=send"
+    },
+    {
+      "id": "messageId",
+      "label": "Message ID (GET ONLY)",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "get"
+      },
+      "description": "Should ONLY show when operation=get",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "deleteMessageId",
+      "label": "Message ID (DELETE ONLY)",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "delete"
+      },
+      "description": "Should ONLY show when operation=delete",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Webhook URL",
+      "type": "String",
+      "value": "http://localhost:5678/webhook/test",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "webhookUrl"
+      },
+      "group": "params",
+      "description": "Always visible - no condition"
+    }
+  ]
+}
