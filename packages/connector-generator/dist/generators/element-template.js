@@ -172,19 +172,32 @@ function generateMultiOperationElementTemplate(schema) {
             group: 'connection'
         }
     ];
-    // Build a single operation dropdown with all operations from all resources
-    // Format: "Resource - Operation" (e.g., "Message - Send", "Draft - Create")
+    // Build groups and properties per operation
+    // Strategy: Create one group per operation, with all parameters for that operation
+    // When user selects an operation, only that group's parameters will show
+    const groups = [
+        { id: 'connection', label: 'Connection' },
+        { id: 'operation', label: 'Operation' }
+    ];
     const allOperations = [];
     for (const resource of schema.resources) {
         for (const operation of resource.operations) {
+            const operationValue = `${resource.value}:${operation.value}`;
             allOperations.push({
                 name: `${resource.name} - ${operation.name}`,
-                value: `${resource.value}:${operation.value}`, // Format: "message:send"
+                value: operationValue,
                 resource: resource.value,
                 operation: operation.value
             });
+            // Create a group for this operation
+            groups.push({
+                id: `group-${operationValue}`,
+                label: `${resource.name} - ${operation.name}`
+            });
         }
     }
+    // Add output group
+    groups.push({ id: 'output', label: 'Output' });
     // Single operation dropdown
     properties.push({
         id: 'operation',
@@ -204,76 +217,62 @@ function generateMultiOperationElementTemplate(schema) {
             notEmpty: true
         }
     });
-    // Collect and deduplicate parameters
-    // Map: paramName -> { param info, operations that use it }
-    const parameterMap = new Map();
+    // Add parameters for each operation
     for (const resource of schema.resources) {
         for (const operation of resource.operations) {
             const operationValue = `${resource.value}:${operation.value}`;
+            const groupId = `group-${operationValue}`;
+            // Add all parameters for this operation
             for (const param of operation.parameters) {
-                if (!parameterMap.has(param.name)) {
-                    parameterMap.set(param.name, {
-                        param,
-                        operations: new Set()
-                    });
+                // Determine element type
+                // For options type without options array (dynamic options), use String
+                let elementType = (0, type_mapper_1.mapN8nTypeToElementType)(param.type);
+                if (param.type === 'options' && !param.options) {
+                    elementType = 'String';
                 }
-                parameterMap.get(param.name).operations.add(operationValue);
+                const property = {
+                    id: `${operationValue}_${param.name}`,
+                    label: param.displayName,
+                    type: elementType,
+                    value: `\${${param.name}}`,
+                    binding: {
+                        type: 'camunda:inputParameter',
+                        name: param.name
+                    },
+                    group: groupId,
+                    condition: {
+                        type: 'simple',
+                        property: 'operation',
+                        equals: operationValue
+                    }
+                };
+                if (param.description) {
+                    property.description = param.description;
+                }
+                if (param.required) {
+                    property.constraints = {
+                        notEmpty: true
+                    };
+                }
+                // Handle options/dropdown (only if options are provided)
+                if (param.type === 'options' && param.options && param.options.length > 0) {
+                    property.choices = param.options.map((opt) => ({
+                        name: opt.name,
+                        value: opt.value
+                    }));
+                    property.value = param.default ?? param.options[0]?.value ?? '';
+                }
+                // Handle boolean as dropdown
+                if (param.type === 'boolean') {
+                    property.choices = [
+                        { name: 'True', value: 'true' },
+                        { name: 'False', value: 'false' }
+                    ];
+                    property.value = param.default?.toString() ?? 'false';
+                }
+                properties.push(property);
             }
         }
-    }
-    // Add ONE property per unique parameter name
-    for (const [paramName, { param, operations }] of parameterMap.entries()) {
-        const elementType = (0, type_mapper_1.mapN8nTypeToElementType)(param.type);
-        const property = {
-            id: paramName,
-            label: param.displayName,
-            type: elementType,
-            value: `\${${param.name}}`,
-            binding: {
-                type: 'camunda:inputParameter',
-                name: param.name
-            },
-            group: 'input'
-        };
-        // Add condition based on number of operations
-        // NOTE: Camunda element templates don't support OR conditions (oneOf)
-        // Only add condition if parameter is used by a single operation
-        const operationsArray = Array.from(operations);
-        if (operationsArray.length === 1) {
-            // Single operation uses this parameter - add simple condition
-            property.condition = {
-                type: 'simple',
-                property: 'operation',
-                equals: operationsArray[0]
-            };
-        }
-        // If multiple operations use this parameter, don't add condition (always visible)
-        // This is a limitation of Camunda element templates
-        if (param.description) {
-            property.description = param.description;
-        }
-        if (param.required) {
-            property.constraints = {
-                notEmpty: true
-            };
-        }
-        // Handle options/dropdown
-        if (param.type === 'options' && param.options) {
-            property.choices = param.options.map((opt) => ({
-                name: opt.name,
-                value: opt.value
-            }));
-            property.value = param.default ?? param.options[0]?.value ?? '';
-        }
-        // Handle boolean as dropdown
-        if (param.type === 'boolean') {
-            property.choices = [
-                { name: 'True', value: 'true' },
-                { name: 'False', value: 'false' }
-            ];
-            property.value = param.default?.toString() ?? 'false';
-        }
-        properties.push(property);
     }
     // Add dynamic payload
     properties.push({
@@ -308,12 +307,7 @@ function generateMultiOperationElementTemplate(schema) {
         icon: {
             contents: DEFAULT_ICON
         },
-        groups: [
-            { id: 'connection', label: 'Connection' },
-            { id: 'operation', label: 'Operation' },
-            { id: 'input', label: 'Parameters' },
-            { id: 'output', label: 'Output' }
-        ],
+        groups,
         properties
     };
 }
