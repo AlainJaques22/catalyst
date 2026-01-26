@@ -2,7 +2,7 @@
   "id": "gmail-remove-labels-thread",
   "name": "Gmail Connector - Thread - Remove Label",
   "description": "Remove label from thread",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:16:57.739Z",
+  "createdAt": "2026-01-26T15:48:00.370Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-remove-labels-thread.n8n.json",

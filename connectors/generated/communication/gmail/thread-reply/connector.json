@@ -2,7 +2,7 @@
   "id": "gmail-reply-thread",
   "name": "Gmail Connector - Thread - Reply",
   "description": "Reply to a message",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:16:57.740Z",
+  "createdAt": "2026-01-26T15:48:00.371Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-reply-thread.n8n.json",

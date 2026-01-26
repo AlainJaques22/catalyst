@@ -65,7 +65,8 @@
         "type": "camunda:inputParameter",
         "name": "messageId"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The unique identifier of the message"
     },
     {
       "label": "🏷️ Label Names or IDs",

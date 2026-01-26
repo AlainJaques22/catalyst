@@ -2,7 +2,7 @@
   "id": "gmail-get-message",
   "name": "Gmail Connector - Message - Get",
   "description": "Get a message",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:16:57.709Z",
+  "createdAt": "2026-01-26T15:48:00.342Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-get-message.n8n.json",

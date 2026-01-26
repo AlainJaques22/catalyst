@@ -118,7 +118,8 @@
         "type": "camunda:inputParameter",
         "name": "filtersNotice"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Informational text to guide the user"
     },
     {
       "label": "🔍 Filters",
@@ -128,7 +129,8 @@
         "type": "camunda:inputParameter",
         "name": "filters"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Filters to narrow down results (click to configure)"
     },
     {
       "label": "⚙️ Options",
@@ -138,7 +140,8 @@
         "type": "camunda:inputParameter",
         "name": "options"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Additional options for this operation (click to configure)"
     },
     {
       "label": "📤 Output Mapping",

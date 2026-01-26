@@ -65,7 +65,8 @@
         "type": "camunda:inputParameter",
         "name": "subject"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The subject line of the email"
     },
     {
       "label": "🧵 To reply to an existing thread, specify the exact subject title of that thread.",
@@ -75,7 +76,8 @@
         "type": "camunda:inputParameter",
         "name": "threadNotice"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Informational text to guide the user"
     },
     {
       "label": "✉️ Email Type",
@@ -86,6 +88,7 @@
         "name": "emailType"
       },
       "group": "input",
+      "description": "Whether to send as plain text or HTML formatted email",
       "choices": [
         {
           "name": "HTML",
@@ -105,7 +108,8 @@
         "type": "camunda:inputParameter",
         "name": "message"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The content/body of the email message"
     },
     {
       "label": "⚙️ Options",
@@ -115,7 +119,8 @@
         "type": "camunda:inputParameter",
         "name": "options"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Additional options for this operation (click to configure)"
     },
     {
       "label": "📤 Output Mapping",

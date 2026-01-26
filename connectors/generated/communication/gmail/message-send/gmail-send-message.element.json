@@ -76,7 +76,8 @@
         "type": "camunda:inputParameter",
         "name": "subject"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The subject line of the email"
     },
     {
       "label": "✉️ Email Type",
@@ -87,6 +88,7 @@
         "name": "emailType"
       },
       "group": "input",
+      "description": "Whether to send as plain text or HTML formatted email",
       "choices": [
         {
           "name": "Text",
@@ -106,7 +108,8 @@
         "type": "camunda:inputParameter",
         "name": "message"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The content/body of the email message"
     },
     {
       "label": "⚙️ Options",
@@ -116,7 +119,8 @@
         "type": "camunda:inputParameter",
         "name": "options"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Additional options for this operation (click to configure)"
     },
     {
       "label": "📤 Output Mapping",

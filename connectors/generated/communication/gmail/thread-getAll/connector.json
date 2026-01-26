@@ -2,7 +2,7 @@
   "id": "gmail-get-all-thread",
   "name": "Gmail Connector - Thread - Get Many",
   "description": "Get many threads",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:16:57.737Z",
+  "createdAt": "2026-01-26T15:48:00.368Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-get-all-thread.n8n.json",

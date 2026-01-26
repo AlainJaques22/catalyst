@@ -80,9 +80,8 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
       group: 'input'
     };
 
-    if (param.description) {
-      property.description = param.description;
-    }
+    // Add description (use provided description or generate default)
+    property.description = param.description || generateDefaultDescription(param.name, param.displayName, param.type);
 
     // Handle options/dropdown
     if (param.type === 'options' && param.options) {
@@ -337,6 +336,65 @@ function generatePayloadExamples(schema: MultiOperationSchema): string {
   examples.push('Edit the payload JSON above to match your operation.');
 
   return examples.join('\n');
+}
+
+/**
+ * Generate default description for parameters missing descriptions
+ */
+function generateDefaultDescription(name: string, displayName: string, type: string): string {
+  const lower = name.toLowerCase();
+
+  // Common ID fields
+  if (lower.includes('messageid')) {
+    return 'The unique identifier of the message';
+  }
+  if (lower.includes('draftid')) {
+    return 'The unique identifier of the draft';
+  }
+  if (lower.includes('threadid')) {
+    return 'The unique identifier of the thread';
+  }
+  if (lower.includes('labelid')) {
+    return 'The unique identifier of the label';
+  }
+
+  // Email fields
+  if (lower.includes('subject')) {
+    return 'The subject line of the email';
+  }
+  if (lower.includes('message') && !lower.includes('id')) {
+    return 'The content/body of the email message';
+  }
+  if (lower.includes('emailtype') || lower.includes('email_type')) {
+    return 'Whether to send as plain text or HTML formatted email';
+  }
+
+  // Collection/Options fields
+  if (type === 'collection' && lower.includes('option')) {
+    return 'Additional options for this operation (click to configure)';
+  }
+  if (type === 'collection' && lower.includes('filter')) {
+    return 'Filters to narrow down results (click to configure)';
+  }
+
+  // Notice/info fields (static text)
+  if (lower.includes('notice') || displayName.length > 50) {
+    return 'Informational text to guide the user'; // These are informational
+  }
+
+  // Generic fallbacks based on type
+  if (type === 'options' || type === 'multiOptions') {
+    return `Select ${displayName.toLowerCase()} from available options`;
+  }
+  if (type === 'boolean') {
+    return `Enable or disable ${displayName.toLowerCase()}`;
+  }
+  if (type === 'number') {
+    return `Numeric value for ${displayName.toLowerCase()}`;
+  }
+
+  // Default: use display name
+  return `Specify ${displayName.toLowerCase()} for this operation`;
 }
 
 /**

@@ -65,7 +65,8 @@
         "type": "camunda:inputParameter",
         "name": "messageId"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The unique identifier of the message"
     },
     {
       "label": "✨ Simplify",
@@ -96,7 +97,8 @@
         "type": "camunda:inputParameter",
         "name": "options"
       },
-      "group": "input"
+      "group": "input",
+      "description": "Additional options for this operation (click to configure)"
     },
     {
       "label": "📤 Output Mapping",

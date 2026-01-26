@@ -65,7 +65,8 @@
         "type": "camunda:inputParameter",
         "name": "threadId"
       },
-      "group": "input"
+      "group": "input",
+      "description": "The unique identifier of the thread"
     },
     {
       "label": "🏷️ Label Names or IDs",
