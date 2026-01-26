@@ -4,7 +4,7 @@
  * Generates n8n webhook workflow JSON from operation schema
  */
 
-import { OperationSchema, N8nWorkflow, N8nWorkflowNode } from '../types';
+import { OperationSchema, N8nWorkflow, N8nWorkflowNode, MultiOperationSchema } from '../types';
 import {
   generateConnectorId,
   generateWebhookPath,
@@ -331,6 +331,151 @@ return {
       description: 'Production webhook version for Camunda integration.'
     }
   };
+}
+
+/**
+ * Generate multi-operation n8n workflow template
+ * Creates ONE simple template workflow that users configure in n8n UI
+ *
+ * User workflow:
+ * 1. Import this template into n8n
+ * 2. Click on the service node (e.g., Gmail)
+ * 3. Select Resource from dropdown (Message, Draft, Label, Thread)
+ * 4. Select Operation from dropdown (send, get, reply, etc.)
+ * 5. n8n automatically shows relevant fields for selected operation
+ * 6. Variables are already pre-mapped ({{ $json.body.to }}, etc.)
+ * 7. Configure OAuth credentials
+ * 8. Save and activate workflow
+ */
+export function generateMultiOperationWorkflow(schema: MultiOperationSchema): N8nWorkflow {
+  const webhookPath = generateWebhookPath(schema.nodeId);
+
+  // Collect ALL possible parameters across all operations
+  const allParameters = new Set<string>();
+  for (const resource of schema.resources) {
+    for (const operation of resource.operations) {
+      for (const param of operation.parameters) {
+        allParameters.add(param.name);
+      }
+    }
+  }
+
+  // Webhook node
+  const webhookNode: N8nWorkflowNode = {
+    parameters: {
+      httpMethod: 'POST',
+      path: webhookPath,
+      responseMode: 'responseNode',
+      options: {}
+    },
+    type: 'n8n-nodes-base.webhook',
+    typeVersion: 2.1,
+    position: [0, 0],
+    id: 'webhook-1',
+    name: 'Webhook',
+    webhookId: webhookPath
+  };
+
+  // Service node (unconfigured - user selects resource/operation)
+  // Pre-map ALL parameters so n8n shows them when relevant
+  const serviceParams: Record<string, any> = {
+    // User will select these in n8n UI:
+    // resource: ''
+    // operation: ''
+  };
+
+  // Pre-map all possible parameters
+  // n8n will only show relevant ones based on resource/operation selection
+  for (const paramName of Array.from(allParameters).sort()) {
+    serviceParams[paramName] = `={{ $json.body.${paramName} }}`;
+  }
+
+  const serviceNode: N8nWorkflowNode = {
+    parameters: serviceParams,
+    type: `n8n-nodes-base.${schema.nodeId}`,
+    typeVersion: getNodeTypeVersion(schema.nodeId),
+    position: [300, 0],
+    id: generateNodeId(),
+    name: schema.nodeName
+    // Note: User configures credentials and resource/operation in n8n
+  };
+
+  // Error format node
+  const errorFormatNode: N8nWorkflowNode = {
+    parameters: {
+      jsCode: `// Format error response
+const error = $input.item.json.error || $input.item.json;
+
+let errorMessage = 'Connector not configured. Please:
+1. Open the ${schema.nodeName} node in n8n
+2. Select a Resource (${schema.resources.map(r => r.name).join(', ')})
+3. Select an Operation
+4. Configure OAuth credentials
+5. Save and activate workflow';
+
+if (error.message) {
+  errorMessage = error.message;
+}
+
+return {
+  json: {
+    success: false,
+    statusCode: 500,
+    error: errorMessage,
+    responseBody: null
+  }
+};`
+    },
+    type: 'n8n-nodes-base.code',
+    typeVersion: 2,
+    position: [520, 100],
+    id: 'error-format-1',
+    name: 'Format Error Response'
+  };
+
+  // Response node
+  const responseNode: N8nWorkflowNode = {
+    parameters: {
+      respondWith: 'json',
+      responseBody: '={{ { success: true, statusCode: 200, responseBody: $json, error: null } }}'
+    },
+    type: 'n8n-nodes-base.respondToWebhook',
+    typeVersion: 1.1,
+    position: [740, 0],
+    id: 'respond-1',
+    name: 'Respond to Webhook'
+  };
+
+  return {
+    name: `Catalyst ${schema.displayName} Template`,
+    nodes: [webhookNode, serviceNode, errorFormatNode, responseNode],
+    connections: {
+      'Webhook': {
+        main: [[{ node: schema.nodeName, type: 'main', index: 0 }]]
+      },
+      [schema.nodeName]: {
+        main: [[{ node: 'Respond to Webhook', type: 'main', index: 0 }]],
+        error: [[{ node: 'Format Error Response', type: 'main', index: 0 }]]
+      },
+      'Format Error Response': {
+        main: [[{ node: 'Respond to Webhook', type: 'main', index: 0 }]]
+      }
+    },
+    active: false, // User activates after configuration
+    settings: {
+      executionOrder: 'v1'
+    },
+    meta: {
+      description: `Catalyst ${schema.displayName} Template - Configure resource, operation, and credentials in n8n after importing. Supports ${schema.resources.length} resources with ${countTotalOperations(schema)} operations.`
+    }
+  };
+}
+
+/**
+ * Count total operations across all resources
+ */
+function countTotalOperations(schema: MultiOperationSchema): number {
+  return schema.resources.reduce((sum, r) => sum + r.operations.length, 0);
 }
 
 /**
