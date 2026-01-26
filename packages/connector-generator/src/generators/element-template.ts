@@ -150,7 +150,8 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
 
 /**
  * Generate multi-operation element template from multi-operation schema
- * Supports conditional properties based on resource/operation selection
+ * Uses simplified payload-only pattern for Camunda 7 compatibility
+ * (Conditional properties are Camunda 8 only)
  */
 export function generateMultiOperationElementTemplate(schema: MultiOperationSchema): ElementTemplate {
   const templateId = generateTemplateId(schema.nodeId);
@@ -193,42 +194,30 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     }
   ];
 
-  // Build groups and properties per operation
-  // Strategy: Create one group per operation, with all parameters for that operation
-  // When user selects an operation, only that group's parameters will show
-
+  // Simple groups: Connection, Operation, Input, Output
   const groups: Array<{ id: string; label: string }> = [
     { id: 'connection', label: 'Connection' },
-    { id: 'operation', label: 'Operation' }
+    { id: 'operation', label: 'Operation' },
+    { id: 'input', label: 'Input' },
+    { id: 'output', label: 'Output' }
   ];
 
-  const allOperations: Array<{ name: string; value: string; resource: string; operation: string }> = [];
-
+  // Build operation choices
+  const allOperations: Array<{ name: string; value: string }> = [];
   for (const resource of schema.resources) {
     for (const operation of resource.operations) {
       const operationValue = `${resource.value}:${operation.value}`;
       allOperations.push({
         name: `${resource.name} - ${operation.name}`,
-        value: operationValue,
-        resource: resource.value,
-        operation: operation.value
-      });
-
-      // Create a group for this operation
-      groups.push({
-        id: `group-${operationValue}`,
-        label: `${resource.name} - ${operation.name}`
+        value: operationValue
       });
     }
   }
 
-  // Add output group
-  groups.push({ id: 'output', label: 'Output' });
-
-  // Single operation dropdown
+  // Operation dropdown (for reference only)
   properties.push({
     id: 'operation',
-    label: 'Operation',
+    label: 'Operation (Reference)',
     type: 'Dropdown',
     value: allOperations[0]?.value || '',
     binding: {
@@ -236,91 +225,30 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
       name: 'operation'
     },
     group: 'operation',
-    choices: allOperations.map(op => ({
-      name: op.name,
-      value: op.value
-    })),
-    constraints: {
-      notEmpty: true
-    }
+    choices: allOperations,
+    description: 'Select operation type for reference. Configure actual operation in Payload field below.'
   });
 
-  // Add parameters for each operation
-  for (const resource of schema.resources) {
-    for (const operation of resource.operations) {
-      const operationValue = `${resource.value}:${operation.value}`;
-      const groupId = `group-${operationValue}`;
+  // Generate payload examples documentation
+  const payloadExamples = generatePayloadExamples(schema);
 
-      // Add all parameters for this operation
-      for (const param of operation.parameters) {
-        // Determine element type
-        // For options type without options array (dynamic options), use String
-        let elementType = mapN8nTypeToElementType(param.type);
-        if (param.type === 'options' && !param.options) {
-          elementType = 'String';
-        }
+  // Simplified payload-only approach (Camunda 7 compatible)
+  // No individual parameter fields - users edit JSON directly
+  const defaultPayload = generateDefaultPayload(schema);
 
-        const property: ElementTemplateProperty = {
-          id: `${operationValue}_${param.name}`,
-          label: param.displayName,
-          type: elementType,
-          value: `\${${param.name}}`,
-          binding: {
-            type: 'camunda:inputParameter',
-            name: param.name
-          },
-          group: groupId,
-          condition: {
-            type: 'simple',
-            property: 'operation',
-            equals: operationValue
-          }
-        };
-
-        if (param.description) {
-          property.description = param.description;
-        }
-
-        if (param.required) {
-          property.constraints = {
-            notEmpty: true
-          };
-        }
-
-        // Handle options/dropdown (only if options are provided)
-        if (param.type === 'options' && param.options && param.options.length > 0) {
-          property.choices = param.options.map((opt: any) => ({
-            name: opt.name,
-            value: opt.value
-          }));
-          property.value = param.default ?? param.options[0]?.value ?? '';
-        }
-
-        // Handle boolean as dropdown
-        if (param.type === 'boolean') {
-          property.choices = [
-            { name: 'True', value: 'true' },
-            { name: 'False', value: 'false' }
-          ];
-          property.value = param.default?.toString() ?? 'false';
-        }
-
-        properties.push(property);
-      }
-    }
-  }
-
-  // Add dynamic payload
   properties.push({
     label: 'Payload',
     type: 'Text',
-    value: generateMultiOperationPayload(schema),
+    value: defaultPayload,
     binding: {
       type: 'camunda:inputParameter',
       name: 'payload'
     },
     group: 'input',
-    description: 'Dynamic JSON payload sent to n8n'
+    description: payloadExamples,
+    constraints: {
+      notEmpty: true
+    }
   });
 
   // Add output mapping
@@ -351,35 +279,76 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
 }
 
 /**
- * Generate dynamic payload template for multi-operation schema
- * Includes all possible parameters with variable substitution
- * Operation format is "resource:operation", so we need to parse it
+ * Generate default payload for the most common operation
+ * Uses first operation as default example
  */
-function generateMultiOperationPayload(schema: MultiOperationSchema): string {
-  // Collect all unique parameter names across all operations
-  const allParams = new Set<string>();
-
-  for (const resource of schema.resources) {
-    for (const operation of resource.operations) {
-      for (const param of operation.parameters) {
-        allParams.add(param.name);
-      }
-    }
+function generateDefaultPayload(schema: MultiOperationSchema): string {
+  if (schema.resources.length === 0 || schema.resources[0].operations.length === 0) {
+    return '{\n  "resource": "message",\n  "operation": "send"\n}';
   }
 
-  // Build payload object
-  // The operation value is "resource:operation", so we parse it
+  const firstResource = schema.resources[0];
+  const firstOperation = firstResource.operations[0];
+
   const payload: Record<string, string> = {
-    resource: '${operation.split(":")[0]}',
-    operation: '${operation.split(":")[1]}'
+    resource: firstResource.value,
+    operation: firstOperation.value
   };
 
-  // Add all parameters as variables
-  for (const paramName of Array.from(allParams).sort()) {
-    payload[paramName] = `\${${paramName}}`;
+  // Add parameters for first operation as example
+  for (const param of firstOperation.parameters.slice(0, 5)) { // Limit to first 5 params
+    payload[param.name] = `\${${param.name}}`;
   }
 
   return JSON.stringify(payload, null, 2);
+}
+
+/**
+ * Generate payload examples documentation for all operations
+ * Shows users how to structure payloads for different operations
+ */
+function generatePayloadExamples(schema: MultiOperationSchema): string {
+  const examples: string[] = [
+    'JSON payload sent to n8n. Use ${variableName} syntax for process variables.',
+    '',
+    'Common Examples:',
+    ''
+  ];
+
+  // Group operations by resource
+  for (const resource of schema.resources) {
+    examples.push(`=== ${resource.name} ===`);
+    examples.push('');
+
+    // Show first 3 operations per resource as examples
+    for (const operation of resource.operations.slice(0, 3)) {
+      examples.push(`${operation.name}:`);
+
+      const examplePayload: Record<string, string> = {
+        resource: resource.value,
+        operation: operation.value
+      };
+
+      // Add key parameters (first 3)
+      for (const param of operation.parameters.slice(0, 3)) {
+        if (param.required || operation.parameters.indexOf(param) < 2) {
+          examplePayload[param.name] = `\${${param.name}}`;
+        }
+      }
+
+      examples.push(JSON.stringify(examplePayload, null, 2));
+      examples.push('');
+    }
+
+    if (resource.operations.length > 3) {
+      examples.push(`... and ${resource.operations.length - 3} more operations`);
+      examples.push('');
+    }
+  }
+
+  examples.push('Edit the payload JSON above to match your operation.');
+
+  return examples.join('\n');
 }
 
 /**
