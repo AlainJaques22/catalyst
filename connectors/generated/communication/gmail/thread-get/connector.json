@@ -2,7 +2,7 @@
   "id": "gmail-get-thread",
   "name": "Gmail Connector - Thread - Get",
   "description": "Get a thread",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:48:00.366Z",
+  "createdAt": "2026-01-26T16:09:18.841Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-get-thread.n8n.json",

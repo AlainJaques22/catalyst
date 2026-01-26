@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "🔗 n8n Webhook URL",
+      "label": "🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-trash-thread",
       "binding": {
@@ -43,22 +43,24 @@
         "name": "webhookUrl"
       },
       "group": "connection",
+      "description": "The endpoint URL where n8n will receive requests from Camunda",
       "constraints": {
         "notEmpty": true
       }
     },
     {
-      "label": "⏱️ Timeout (seconds)",
+      "label": "⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out",
       "type": "String",
       "value": "30",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "timeout"
       },
-      "group": "connection"
+      "group": "connection",
+      "description": "Maximum time to wait for n8n response before timing out"
     },
     {
-      "label": "🔑 Thread ID",
+      "label": "🔑 Thread ID - The ID of the thread you are operating on",
       "type": "String",
       "value": "${threadId}",
       "binding": {
@@ -69,14 +71,15 @@
       "description": "The ID of the thread you are operating on"
     },
     {
-      "label": "📤 Output Mapping",
+      "label": "📤 Output Mapping - Maps response fields to process variables (JSONPath format)",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "outputMapping"
       },
-      "group": "output"
+      "group": "output",
+      "description": "Maps response fields to process variables (JSONPath format)"
     }
   ]
 }

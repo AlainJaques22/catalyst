@@ -2,7 +2,7 @@
   "id": "gmail-mark-as-unread-message",
   "name": "Gmail Connector - Message - Mark as Unread",
   "description": "Mark a message as unread",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:48:00.348Z",
+  "createdAt": "2026-01-26T16:09:18.821Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-mark-as-unread-message.n8n.json",

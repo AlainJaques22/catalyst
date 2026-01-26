@@ -2,7 +2,7 @@
   "id": "gmail-send-and-wait-message",
   "name": "Gmail Connector - Message - Send and Wait for Response",
   "description": "Send message and wait for response",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T15:48:00.358Z",
+  "createdAt": "2026-01-26T16:09:18.832Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-send-and-wait-message.n8n.json",

@@ -41,7 +41,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
     },
     // Connection group
     {
-      label: '🔗 n8n Webhook URL',
+      label: '🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda',
       type: 'String',
       value: webhookUrl,
       binding: {
@@ -49,19 +49,21 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
         name: 'webhookUrl'
       },
       group: 'connection',
+      description: 'The endpoint URL where n8n will receive requests from Camunda',
       constraints: {
         notEmpty: true
       }
     },
     {
-      label: '⏱️ Timeout (seconds)',
+      label: '⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out',
       type: 'String',
       value: '30',
       binding: {
         type: 'camunda:inputParameter',
         name: 'timeout'
       },
-      group: 'connection'
+      group: 'connection',
+      description: 'Maximum time to wait for n8n response before timing out'
     }
   ];
 
@@ -69,19 +71,26 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
   for (const param of schema.parameters) {
     const elementType = mapN8nTypeToElementType(param.type);
 
+    // Get description (use provided or generate default)
+    const description = param.description || generateDefaultDescription(param.name, param.displayName, param.type);
+
+    // Create descriptive label: "Icon FieldName - Description"
+    const icon = getFieldIcon(param.name);
+    const label = description && !isNoticeField(param.name, param.displayName)
+      ? `${icon} ${param.displayName} - ${description}`
+      : `${icon} ${param.displayName}`;
+
     const property: ElementTemplateProperty = {
-      label: `${getFieldIcon(param.name)} ${param.displayName}`,
+      label,
       type: elementType,
       value: `\${${param.name}}`,
       binding: {
         type: 'camunda:inputParameter',
         name: param.name
       },
-      group: 'input'
+      group: 'input',
+      description
     };
-
-    // Add description (use provided description or generate default)
-    property.description = param.description || generateDefaultDescription(param.name, param.displayName, param.type);
 
     // Handle options/dropdown
     if (param.type === 'options' && param.options) {
@@ -106,14 +115,15 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
 
   // Add output mapping
   properties.push({
-    label: '📤 Output Mapping',
+    label: '📤 Output Mapping - Maps response fields to process variables (JSONPath format)',
     type: 'Text',
     value: generateOutputMapping(),
     binding: {
       type: 'camunda:inputParameter',
       name: 'outputMapping'
     },
-    group: 'output'
+    group: 'output',
+    description: 'Maps response fields to process variables (JSONPath format)'
   });
 
   return {
@@ -157,7 +167,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     },
     // Connection group
     {
-      label: '🔗 n8n Webhook URL',
+      label: '🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda',
       type: 'String',
       value: webhookUrl,
       binding: {
@@ -165,19 +175,21 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
         name: 'webhookUrl'
       },
       group: 'connection',
+      description: 'The endpoint URL where n8n will receive requests from Camunda',
       constraints: {
         notEmpty: true
       }
     },
     {
-      label: '⏱️ Timeout (seconds)',
+      label: '⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out',
       type: 'String',
       value: '30',
       binding: {
         type: 'camunda:inputParameter',
         name: 'timeout'
       },
-      group: 'connection'
+      group: 'connection',
+      description: 'Maximum time to wait for n8n response before timing out'
     }
   ];
 
@@ -240,14 +252,15 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
 
   // Add output mapping
   properties.push({
-    label: '📤 Output Mapping',
+    label: '📤 Output Mapping - Maps response fields to process variables (JSONPath format)',
     type: 'Text',
     value: generateOutputMapping(),
     binding: {
       type: 'camunda:inputParameter',
       name: 'outputMapping'
     },
-    group: 'output'
+    group: 'output',
+    description: 'Maps response fields to process variables (JSONPath format)'
   });
 
   return {
@@ -336,6 +349,14 @@ function generatePayloadExamples(schema: MultiOperationSchema): string {
   examples.push('Edit the payload JSON above to match your operation.');
 
   return examples.join('\n');
+}
+
+/**
+ * Check if field is a notice/informational field (already descriptive)
+ */
+function isNoticeField(name: string, displayName: string): boolean {
+  const lower = name.toLowerCase();
+  return lower.includes('notice') || displayName.length > 50;
 }
 
 /**
