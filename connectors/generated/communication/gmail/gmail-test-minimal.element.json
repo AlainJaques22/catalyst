@@ -1,0 +1,30 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Gmail Test Minimal",
+  "id": "io.catalyst.test.gmail.minimal",
+  "description": "Minimal test template",
+  "version": 1,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "label": "Webhook URL",
+      "type": "String",
+      "value": "http://localhost:5678/webhook/test",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "webhookUrl"
+      }
+    }
+  ]
+}

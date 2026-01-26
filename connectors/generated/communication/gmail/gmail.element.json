@@ -3,7 +3,7 @@
   "name": "Catalyst - Gmail Connector",
   "id": "io.catalyst.template.gmail",
   "description": "Gmail integration connector",
-  "version": 2,
+  "version": 1,
   "appliesTo": [
     "bpmn:ServiceTask"
   ],

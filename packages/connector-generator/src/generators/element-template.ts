@@ -343,7 +343,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     name: `Catalyst - ${schema.displayName}`,
     id: templateId,
     description: schema.description,
-    version: 2,
+    version: 1,
     appliesTo: ['bpmn:ServiceTask'],
     icon: {
       contents: DEFAULT_ICON
