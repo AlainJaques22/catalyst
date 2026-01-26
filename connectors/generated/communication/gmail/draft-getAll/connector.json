@@ -2,7 +2,7 @@
   "id": "gmail-get-all-draft",
   "name": "Gmail Connector - Draft - Get Many",
   "description": "Get many drafts",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T16:09:18.794Z",
+  "createdAt": "2026-01-26T18:54:22.028Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-get-all-draft.n8n.json",

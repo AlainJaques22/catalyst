@@ -8,29 +8,29 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="threadId" label="Thread ID" type="string" defaultValue="">
+          <camunda:formField id="threadId" label="Thread ID - The ID of the thread you are operating on" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="The ID of the thread you are operating on" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="messageId" label="Message Snippet or ID" type="string" defaultValue="">
+          <camunda:formField id="messageId" label="Message Snippet or ID - Choose from the list, or specify an ID using an &lt;a href=&quot;https://docs.n8n.io/code/expressions/&quot;&gt;expression&lt;/a&gt;" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="Choose from the list, or specify an ID using an &lt;a href=&quot;https://docs.n8n.io/code/expressions/&quot;&gt;expression&lt;/a&gt;" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="emailType" label="Email Type" type="string" defaultValue="text">
+          <camunda:formField id="emailType" label="Email Type - Whether to send as plain text or HTML formatted email" type="string" defaultValue="text">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Whether to send as plain text or HTML formatted email" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="message" label="Message" type="string" defaultValue="">
+          <camunda:formField id="message" label="Message - The content/body of the email message" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="The content/body of the email message" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="options" label="Options" type="string" defaultValue="[object Object]">
+          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="[object Object]">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Additional options for this operation" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

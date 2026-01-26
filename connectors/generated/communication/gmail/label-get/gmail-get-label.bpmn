@@ -8,7 +8,7 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="labelId" label="Label ID" type="string" defaultValue="">
+          <camunda:formField id="labelId" label="Label ID - The ID of the label" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="The ID of the label" />
             </camunda:properties>

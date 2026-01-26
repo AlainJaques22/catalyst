@@ -2,7 +2,7 @@
   "id": "gmail-get-all-label",
   "name": "Gmail Connector - Label - Get Many",
   "description": "Get many labels",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T16:09:18.805Z",
+  "createdAt": "2026-01-26T18:54:22.039Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-get-all-label.n8n.json",

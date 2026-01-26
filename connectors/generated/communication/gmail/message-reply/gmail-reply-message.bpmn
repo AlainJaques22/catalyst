@@ -8,24 +8,24 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="messageId" label="Message ID" type="string" defaultValue="">
+          <camunda:formField id="messageId" label="Message ID - The unique identifier of the message" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="The unique identifier of the message" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="emailType" label="Email Type" type="string" defaultValue="html">
+          <camunda:formField id="emailType" label="Email Type - Whether to send as plain text or HTML formatted email" type="string" defaultValue="html">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Whether to send as plain text or HTML formatted email" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="message" label="Message" type="string" defaultValue="">
+          <camunda:formField id="message" label="Message - The content/body of the email message" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="The content/body of the email message" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="options" label="Options" type="string" defaultValue="[object Object]">
+          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="[object Object]">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Additional options for this operation" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

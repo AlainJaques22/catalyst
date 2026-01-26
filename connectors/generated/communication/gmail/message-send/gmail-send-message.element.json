@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-send-message",
       "binding": {
@@ -49,7 +49,7 @@
       }
     },
     {
-      "label": "⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -60,7 +60,7 @@
       "description": "Maximum time to wait for n8n response before timing out"
     },
     {
-      "label": "✉️ To - The email addresses of the recipients. Multiple addresses can be separated by a comma. e.g. jay@getsby.com, jon@smith.com.",
+      "label": "✉️ To",
       "type": "String",
       "value": "${sendTo}",
       "binding": {
@@ -71,7 +71,7 @@
       "description": "The email addresses of the recipients. Multiple addresses can be separated by a comma. e.g. jay@getsby.com, jon@smith.com."
     },
     {
-      "label": "📝 Subject - The subject line of the email",
+      "label": "📝 Subject",
       "type": "String",
       "value": "${subject}",
       "binding": {
@@ -82,7 +82,7 @@
       "description": "The subject line of the email"
     },
     {
-      "label": "✉️ Email Type - Whether to send as plain text or HTML formatted email",
+      "label": "✉️ Email Type",
       "type": "Dropdown",
       "value": "html",
       "binding": {
@@ -103,7 +103,7 @@
       ]
     },
     {
-      "label": "💬 Message - The content/body of the email message",
+      "label": "💬 Message",
       "type": "String",
       "value": "${message}",
       "binding": {
@@ -114,7 +114,7 @@
       "description": "The content/body of the email message"
     },
     {
-      "label": "⚙️ Options - Additional options for this operation (click to configure)",
+      "label": "⚙️ Options",
       "type": "Text",
       "value": "${options}",
       "binding": {
@@ -125,7 +125,7 @@
       "description": "Additional options for this operation (click to configure)"
     },
     {
-      "label": "📤 Output Mapping - Maps response fields to process variables (JSONPath format)",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

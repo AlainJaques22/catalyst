@@ -28,9 +28,12 @@ export function generateBpmnExample(schema: OperationSchema): string {
   // Generate form fields for user task
   const formFields = schema.parameters.map(param => {
     const defaultValue = param.default ?? (param.placeholder || `Enter ${param.displayName.toLowerCase()}`);
-    return `          <camunda:formField id="${param.name}" label="${param.displayName}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
+    const description = param.description || generateDefaultDescriptionForBpmn(param.name, param.displayName, param.type);
+    const label = description ? `${param.displayName} - ${description}` : param.displayName;
+
+    return `          <camunda:formField id="${param.name}" label="${escapeXml(label)}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
             <camunda:properties>
-              <camunda:property id="description" value="${escapeXml(param.description || '')}" />
+              <camunda:property id="description" value="${escapeXml(description)}" />
             </camunda:properties>
           </camunda:formField>`;
   }).join('\n');
@@ -146,9 +149,12 @@ export function generateMultiOperationBpmnExample(schema: MultiOperationSchema):
   const sampleParams = firstOperation.parameters.slice(0, 5);
   const formFields = sampleParams.map(param => {
     const defaultValue = param.default ?? (param.placeholder || `Enter ${param.displayName.toLowerCase()}`);
-    return `          <camunda:formField id="${param.name}" label="${param.displayName}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
+    const description = param.description || generateDefaultDescriptionForBpmn(param.name, param.displayName, param.type);
+    const label = description ? `${param.displayName} - ${description}` : param.displayName;
+
+    return `          <camunda:formField id="${param.name}" label="${escapeXml(label)}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
             <camunda:properties>
-              <camunda:property id="description" value="${escapeXml(param.description || '')}" />
+              <camunda:property id="description" value="${escapeXml(description)}" />
             </camunda:properties>
           </camunda:formField>`;
   }).join('\n');
@@ -276,6 +282,65 @@ ${inputParams}
  */
 function countTotalOperations(schema: MultiOperationSchema): number {
   return schema.resources.reduce((sum, r) => sum + r.operations.length, 0);
+}
+
+/**
+ * Generate default description for BPMN form fields
+ */
+function generateDefaultDescriptionForBpmn(name: string, displayName: string, type: string): string {
+  const lower = name.toLowerCase();
+
+  // Common ID fields
+  if (lower.includes('messageid')) {
+    return 'The unique identifier of the message';
+  }
+  if (lower.includes('draftid')) {
+    return 'The unique identifier of the draft';
+  }
+  if (lower.includes('threadid')) {
+    return 'The unique identifier of the thread';
+  }
+  if (lower.includes('labelid')) {
+    return 'The unique identifier of the label';
+  }
+
+  // Email fields
+  if (lower.includes('subject')) {
+    return 'The subject line of the email';
+  }
+  if (lower.includes('message') && !lower.includes('id')) {
+    return 'The content/body of the email message';
+  }
+  if (lower.includes('emailtype') || lower.includes('email_type')) {
+    return 'Whether to send as plain text or HTML formatted email';
+  }
+
+  // Collection/Options fields
+  if (type === 'collection' && lower.includes('option')) {
+    return 'Additional options for this operation';
+  }
+  if (type === 'collection' && lower.includes('filter')) {
+    return 'Filters to narrow down results';
+  }
+
+  // Notice/info fields (static text)
+  if (lower.includes('notice') || displayName.length > 50) {
+    return 'Informational text to guide the user';
+  }
+
+  // Generic fallbacks based on type
+  if (type === 'options' || type === 'multiOptions') {
+    return `Select ${displayName.toLowerCase()} from available options`;
+  }
+  if (type === 'boolean') {
+    return `Enable or disable ${displayName.toLowerCase()}`;
+  }
+  if (type === 'number') {
+    return `Numeric value for ${displayName.toLowerCase()}`;
+  }
+
+  // Default: use display name
+  return `Specify ${displayName.toLowerCase()} for this operation`;
 }
 
 /**

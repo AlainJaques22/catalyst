@@ -8,12 +8,12 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="threadId" label="Thread ID" type="string" defaultValue="">
+          <camunda:formField id="threadId" label="Thread ID - The unique identifier of the thread" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="The unique identifier of the thread" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="labelIds" label="Label Names or IDs" type="string" defaultValue="">
+          <camunda:formField id="labelIds" label="Label Names or IDs - Choose from the list, or specify IDs using an &lt;a href=&quot;https://docs.n8n.io/code/expressions/&quot;&gt;expression&lt;/a&gt;" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="Choose from the list, or specify IDs using an &lt;a href=&quot;https://docs.n8n.io/code/expressions/&quot;&gt;expression&lt;/a&gt;" />
             </camunda:properties>

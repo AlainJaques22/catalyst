@@ -41,7 +41,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
     },
     // Connection group
     {
-      label: '🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda',
+      label: '🔗 n8n Webhook URL',
       type: 'String',
       value: webhookUrl,
       binding: {
@@ -55,7 +55,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
       }
     },
     {
-      label: '⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out',
+      label: '⏱️ Timeout (seconds)',
       type: 'String',
       value: '30',
       binding: {
@@ -74,14 +74,8 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
     // Get description (use provided or generate default)
     const description = param.description || generateDefaultDescription(param.name, param.displayName, param.type);
 
-    // Create descriptive label: "Icon FieldName - Description"
-    const icon = getFieldIcon(param.name);
-    const label = description && !isNoticeField(param.name, param.displayName)
-      ? `${icon} ${param.displayName} - ${description}`
-      : `${icon} ${param.displayName}`;
-
     const property: ElementTemplateProperty = {
-      label,
+      label: `${getFieldIcon(param.name)} ${param.displayName}`,
       type: elementType,
       value: `\${${param.name}}`,
       binding: {
@@ -115,7 +109,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
 
   // Add output mapping
   properties.push({
-    label: '📤 Output Mapping - Maps response fields to process variables (JSONPath format)',
+    label: '📤 Output Mapping',
     type: 'Text',
     value: generateOutputMapping(),
     binding: {
@@ -167,7 +161,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     },
     // Connection group
     {
-      label: '🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda',
+      label: '🔗 n8n Webhook URL',
       type: 'String',
       value: webhookUrl,
       binding: {
@@ -181,7 +175,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
       }
     },
     {
-      label: '⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out',
+      label: '⏱️ Timeout (seconds)',
       type: 'String',
       value: '30',
       binding: {
@@ -252,7 +246,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
 
   // Add output mapping
   properties.push({
-    label: '📤 Output Mapping - Maps response fields to process variables (JSONPath format)',
+    label: '📤 Output Mapping',
     type: 'Text',
     value: generateOutputMapping(),
     binding: {

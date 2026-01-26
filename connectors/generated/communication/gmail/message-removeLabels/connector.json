@@ -2,7 +2,7 @@
   "id": "gmail-remove-labels-message",
   "name": "Gmail Connector - Message - Remove Label",
   "description": "Remove label from message",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T16:09:18.823Z",
+  "createdAt": "2026-01-26T18:54:22.054Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-remove-labels-message.n8n.json",

@@ -8,14 +8,14 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="name" label="Name" type="string" defaultValue="">
+          <camunda:formField id="name" label="Name - Label Name" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="Label Name" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="options" label="Options" type="string" defaultValue="[object Object]">
+          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="[object Object]">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Additional options for this operation" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

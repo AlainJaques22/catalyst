@@ -8,12 +8,12 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="returnAll" label="Return All" type="string" defaultValue="false">
+          <camunda:formField id="returnAll" label="Return All - Whether to return all results or only up to a given limit" type="string" defaultValue="false">
             <camunda:properties>
               <camunda:property id="description" value="Whether to return all results or only up to a given limit" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="limit" label="Limit" type="string" defaultValue="50">
+          <camunda:formField id="limit" label="Limit - Max number of results to return" type="string" defaultValue="50">
             <camunda:properties>
               <camunda:property id="description" value="Max number of results to return" />
             </camunda:properties>

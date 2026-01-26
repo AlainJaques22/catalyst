@@ -8,9 +8,9 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="messageId" label="Draft ID" type="string" defaultValue="">
+          <camunda:formField id="messageId" label="Draft ID - The unique identifier of the message" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="The unique identifier of the message" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

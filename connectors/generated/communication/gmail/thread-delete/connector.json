@@ -2,7 +2,7 @@
   "id": "gmail-delete-thread",
   "name": "Gmail Connector - Thread - Delete",
   "description": "Delete a thread",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T16:09:18.839Z",
+  "createdAt": "2026-01-26T18:54:22.066Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-delete-thread.n8n.json",

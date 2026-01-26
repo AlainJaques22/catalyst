@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-create-label",
       "binding": {
@@ -49,7 +49,7 @@
       }
     },
     {
-      "label": "⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -60,7 +60,7 @@
       "description": "Maximum time to wait for n8n response before timing out"
     },
     {
-      "label": "🏷️ Name - Label Name",
+      "label": "🏷️ Name",
       "type": "String",
       "value": "${name}",
       "binding": {
@@ -71,7 +71,7 @@
       "description": "Label Name"
     },
     {
-      "label": "⚙️ Options - Additional options for this operation (click to configure)",
+      "label": "⚙️ Options",
       "type": "Text",
       "value": "${options}",
       "binding": {
@@ -82,7 +82,7 @@
       "description": "Additional options for this operation (click to configure)"
     },
     {
-      "label": "📤 Output Mapping - Maps response fields to process variables (JSONPath format)",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

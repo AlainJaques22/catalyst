@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-get-all-thread",
       "binding": {
@@ -49,7 +49,7 @@
       }
     },
     {
-      "label": "⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -60,7 +60,7 @@
       "description": "Maximum time to wait for n8n response before timing out"
     },
     {
-      "label": "📋 Return All - Whether to return all results or only up to a given limit",
+      "label": "📋 Return All",
       "type": "Dropdown",
       "value": "false",
       "binding": {
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "label": "📋 Limit - Max number of results to return",
+      "label": "📋 Limit",
       "type": "String",
       "value": "${limit}",
       "binding": {
@@ -103,7 +103,7 @@
       "description": "Informational text to guide the user"
     },
     {
-      "label": "🔍 Filters - Filters to narrow down results (click to configure)",
+      "label": "🔍 Filters",
       "type": "Text",
       "value": "${filters}",
       "binding": {
@@ -114,7 +114,7 @@
       "description": "Filters to narrow down results (click to configure)"
     },
     {
-      "label": "📤 Output Mapping - Maps response fields to process variables (JSONPath format)",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

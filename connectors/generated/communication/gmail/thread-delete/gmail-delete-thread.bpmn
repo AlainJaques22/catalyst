@@ -8,7 +8,7 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="threadId" label="Thread ID" type="string" defaultValue="">
+          <camunda:formField id="threadId" label="Thread ID - The ID of the thread you are operating on" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="The ID of the thread you are operating on" />
             </camunda:properties>

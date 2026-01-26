@@ -2,7 +2,7 @@
   "id": "gmail-delete-label",
   "name": "Gmail Connector - Label - Delete",
   "description": "Delete a label",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T16:09:18.799Z",
+  "createdAt": "2026-01-26T18:54:22.034Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-delete-label.n8n.json",

@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "🔗 n8n Webhook URL - The endpoint URL where n8n will receive requests from Camunda",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-trash-thread",
       "binding": {
@@ -49,7 +49,7 @@
       }
     },
     {
-      "label": "⏱️ Timeout (seconds) - Maximum time to wait for n8n response before timing out",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -60,7 +60,7 @@
       "description": "Maximum time to wait for n8n response before timing out"
     },
     {
-      "label": "🔑 Thread ID - The ID of the thread you are operating on",
+      "label": "🔑 Thread ID",
       "type": "String",
       "value": "${threadId}",
       "binding": {
@@ -71,7 +71,7 @@
       "description": "The ID of the thread you are operating on"
     },
     {
-      "label": "📤 Output Mapping - Maps response fields to process variables (JSONPath format)",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

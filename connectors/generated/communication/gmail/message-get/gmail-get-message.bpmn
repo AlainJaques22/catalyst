@@ -8,19 +8,19 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="messageId" label="Message ID" type="string" defaultValue="">
+          <camunda:formField id="messageId" label="Message ID - The unique identifier of the message" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="The unique identifier of the message" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="simple" label="Simplify" type="string" defaultValue="true">
+          <camunda:formField id="simple" label="Simplify - Whether to return a simplified version of the response instead of the raw data" type="string" defaultValue="true">
             <camunda:properties>
               <camunda:property id="description" value="Whether to return a simplified version of the response instead of the raw data" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="options" label="Options" type="string" defaultValue="[object Object]">
+          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="[object Object]">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Additional options for this operation" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>

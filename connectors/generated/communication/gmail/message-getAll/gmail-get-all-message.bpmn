@@ -8,34 +8,34 @@
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="returnAll" label="Return All" type="string" defaultValue="false">
+          <camunda:formField id="returnAll" label="Return All - Whether to return all results or only up to a given limit" type="string" defaultValue="false">
             <camunda:properties>
               <camunda:property id="description" value="Whether to return all results or only up to a given limit" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="limit" label="Limit" type="string" defaultValue="50">
+          <camunda:formField id="limit" label="Limit - Max number of results to return" type="string" defaultValue="50">
             <camunda:properties>
               <camunda:property id="description" value="Max number of results to return" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="simple" label="Simplify" type="string" defaultValue="true">
+          <camunda:formField id="simple" label="Simplify - Whether to return a simplified version of the response instead of the raw data" type="string" defaultValue="true">
             <camunda:properties>
               <camunda:property id="description" value="Whether to return a simplified version of the response instead of the raw data" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="filtersNotice" label="Fetching a lot of messages may take a long time. Consider using filters to speed things up" type="string" defaultValue="">
+          <camunda:formField id="filtersNotice" label="Fetching a lot of messages may take a long time. Consider using filters to speed things up - Informational text to guide the user" type="string" defaultValue="">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Informational text to guide the user" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="filters" label="Filters" type="string" defaultValue="[object Object]">
+          <camunda:formField id="filters" label="Filters - Filters to narrow down results" type="string" defaultValue="[object Object]">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Filters to narrow down results" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="options" label="Options" type="string" defaultValue="[object Object]">
+          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="[object Object]">
             <camunda:properties>
-              <camunda:property id="description" value="" />
+              <camunda:property id="description" value="Additional options for this operation" />
             </camunda:properties>
           </camunda:formField>
         </camunda:formData>
