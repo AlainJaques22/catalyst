@@ -265,22 +265,19 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     };
 
     // Add condition based on number of operations
+    // NOTE: Camunda element templates don't support OR conditions (oneOf)
+    // Only add condition if parameter is used by a single operation
     const operationsArray = Array.from(operations);
     if (operationsArray.length === 1) {
-      // Single operation uses this parameter
+      // Single operation uses this parameter - add simple condition
       property.condition = {
         type: 'simple',
         property: 'operation',
         equals: operationsArray[0]
       };
-    } else {
-      // Multiple operations use this parameter
-      property.condition = {
-        type: 'oneOf',
-        property: 'operation',
-        oneOf: operationsArray
-      };
     }
+    // If multiple operations use this parameter, don't add condition (always visible)
+    // This is a limitation of Camunda element templates
 
     if (param.description) {
       property.description = param.description;

@@ -191,14 +191,6 @@
         "name": "subject"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:create",
-          "message:send"
-        ]
-      },
       "constraints": {
         "notEmpty": true
       }
@@ -229,16 +221,6 @@
         "name": "emailType"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:create",
-          "message:reply",
-          "message:send",
-          "thread:reply"
-        ]
-      },
       "constraints": {
         "notEmpty": true
       },
@@ -263,16 +245,6 @@
         "name": "message"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:create",
-          "message:reply",
-          "message:send",
-          "thread:reply"
-        ]
-      },
       "constraints": {
         "notEmpty": true
       }
@@ -286,23 +258,7 @@
         "type": "camunda:inputParameter",
         "name": "options"
       },
-      "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:create",
-          "draft:get",
-          "draft:getAll",
-          "label:create",
-          "message:get",
-          "message:getAll",
-          "message:reply",
-          "message:send",
-          "thread:get",
-          "thread:reply"
-        ]
-      }
+      "group": "input"
     },
     {
       "id": "messageId",
@@ -314,22 +270,6 @@
         "name": "messageId"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:delete",
-          "draft:get",
-          "message:addLabels",
-          "message:delete",
-          "message:get",
-          "message:markAsRead",
-          "message:markAsUnread",
-          "message:removeLabels",
-          "message:reply",
-          "thread:reply"
-        ]
-      },
       "constraints": {
         "notEmpty": true
       }
@@ -344,16 +284,6 @@
         "name": "returnAll"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:getAll",
-          "label:getAll",
-          "message:getAll",
-          "thread:getAll"
-        ]
-      },
       "description": "Whether to return all results or only up to a given limit",
       "choices": [
         {
@@ -376,16 +306,6 @@
         "name": "limit"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "draft:getAll",
-          "label:getAll",
-          "message:getAll",
-          "thread:getAll"
-        ]
-      },
       "description": "Max number of results to return"
     },
     {
@@ -418,14 +338,6 @@
         "name": "labelId"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "label:delete",
-          "label:get"
-        ]
-      },
       "description": "The ID of the label",
       "constraints": {
         "notEmpty": true
@@ -441,16 +353,6 @@
         "name": "labelIds"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "message:addLabels",
-          "message:removeLabels",
-          "thread:addLabels",
-          "thread:removeLabels"
-        ]
-      },
       "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
       "constraints": {
         "notEmpty": true
@@ -466,15 +368,6 @@
         "name": "simple"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "message:get",
-          "message:getAll",
-          "thread:get"
-        ]
-      },
       "description": "Whether to return a simplified version of the response instead of the raw data",
       "choices": [
         {
@@ -496,15 +389,7 @@
         "type": "camunda:inputParameter",
         "name": "filtersNotice"
       },
-      "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "message:getAll",
-          "thread:getAll"
-        ]
-      }
+      "group": "input"
     },
     {
       "id": "filters",
@@ -515,15 +400,7 @@
         "type": "camunda:inputParameter",
         "name": "filters"
       },
-      "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "message:getAll",
-          "thread:getAll"
-        ]
-      }
+      "group": "input"
     },
     {
       "id": "sendTo",
@@ -555,19 +432,6 @@
         "name": "threadId"
       },
       "group": "input",
-      "condition": {
-        "type": "oneOf",
-        "property": "operation",
-        "oneOf": [
-          "thread:addLabels",
-          "thread:delete",
-          "thread:get",
-          "thread:removeLabels",
-          "thread:reply",
-          "thread:trash",
-          "thread:untrash"
-        ]
-      },
       "constraints": {
         "notEmpty": true
       }
