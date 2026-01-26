@@ -4,7 +4,7 @@
  * Generates example BPMN process XML from operation schema
  */
 
-import { OperationSchema } from '../types';
+import { OperationSchema, MultiOperationSchema } from '../types';
 import {
   generateConnectorId,
   generateTemplateId,
@@ -127,6 +127,155 @@ ${inputParams}
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 `;
+}
+
+/**
+ * Generate multi-operation example BPMN
+ * Shows how to use the multi-operation connector in a process
+ */
+export function generateMultiOperationBpmnExample(schema: MultiOperationSchema): string {
+  const processId = `Process_${schema.nodeId}_example`;
+  const processName = `${schema.displayName} - Example Usage`;
+  const templateId = `io.catalyst.template.${schema.nodeId}`;
+
+  // Pick the first operation from first resource as example
+  const firstResource = schema.resources[0];
+  const firstOperation = firstResource.operations[0];
+
+  // Generate form fields for user task (first 5 parameters)
+  const sampleParams = firstOperation.parameters.slice(0, 5);
+  const formFields = sampleParams.map(param => {
+    const defaultValue = param.default ?? (param.placeholder || `Enter ${param.displayName.toLowerCase()}`);
+    return `          <camunda:formField id="${param.name}" label="${param.displayName}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
+            <camunda:properties>
+              <camunda:property id="description" value="${escapeXml(param.description || '')}" />
+            </camunda:properties>
+          </camunda:formField>`;
+  }).join('\n');
+
+  // Generate input parameters
+  const inputParams = sampleParams.map(param =>
+    `          <camunda:inputParameter name="${param.name}">\${${param.name}}</camunda:inputParameter>`
+  ).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_${schema.nodeId}" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Catalyst Connector Generator" exporterVersion="2.0.0">
+  <bpmn:process id="${processId}" name="${escapeXml(processName)}" isExecutable="true" camunda:historyTimeToLive="P1D">
+    <bpmn:documentation>Example process showing how to use the ${schema.displayName}.
+
+This example demonstrates the "${firstResource.name} - ${firstOperation.name}" operation.
+The connector supports ${schema.resources.length} resources with ${countTotalOperations(schema)} total operations.
+
+To use a different operation:
+1. Select the Service Task
+2. In Properties Panel, choose different Resource and Operation
+3. Configure the parameters that appear
+
+Resources available: ${schema.resources.map(r => r.name).join(', ')}
+    </bpmn:documentation>
+
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_Input" />
+
+    <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
+      <bpmn:documentation>Enter the parameters for ${firstResource.name} - ${firstOperation.name}</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:formData>
+${formFields}
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_Input" targetRef="Activity_Service" />
+
+    <bpmn:serviceTask id="Activity_Service" name="${escapeXml(schema.displayName)}" camunda:modelerTemplate="${templateId}" camunda:modelerTemplateVersion="2" camunda:class="io.catalyst.bridge.CatalystBridge">
+      <bpmn:documentation>Executes ${firstResource.name} - ${firstOperation.name} operation.
+
+To change the operation:
+1. Select this task
+2. In Properties Panel → Operation section
+3. Choose Resource: ${firstResource.name}
+4. Choose Operation: ${firstOperation.name}
+5. Configure parameters (fields change based on operation)</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="timeout">30</camunda:inputParameter>
+          <camunda:inputParameter name="resource">${firstResource.value}</camunda:inputParameter>
+          <camunda:inputParameter name="operation">${firstOperation.value}</camunda:inputParameter>
+${inputParams}
+          <camunda:inputParameter name="webhookUrl">http://catalyst-n8n:5678/webhook/catalyst-${schema.nodeId}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Activity_Service" targetRef="Activity_ViewResults" />
+
+    <bpmn:userTask id="Activity_ViewResults" name="View Results" camunda:assignee="demo">
+      <bpmn:documentation>Review the results from ${schema.displayName}.</bpmn:documentation>
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Activity_ViewResults" targetRef="EndEvent_1" />
+
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="${processId}">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="145" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_Input_di" bpmnElement="Activity_Input">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_Service_di" bpmnElement="Activity_Service">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_ViewResults_di" bpmnElement="Activity_ViewResults">
+        <dc:Bounds x="560" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="712" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="720" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="500" y="120" />
+        <di:waypoint x="560" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="660" y="120" />
+        <di:waypoint x="712" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
+`;
+}
+
+/**
+ * Count total operations
+ */
+function countTotalOperations(schema: MultiOperationSchema): number {
+  return schema.resources.reduce((sum, r) => sum + r.operations.length, 0);
 }
 
 /**

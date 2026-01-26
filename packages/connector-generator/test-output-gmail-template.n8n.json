@@ -20,12 +20,22 @@
     },
     {
       "parameters": {
+        "emailType": "={{ $json.body.emailType }}",
+        "filters": "={{ $json.body.filters }}",
+        "filtersNotice": "={{ $json.body.filtersNotice }}",
         "labelId": "={{ $json.body.labelId }}",
         "labelIds": "={{ $json.body.labelIds }}",
         "limit": "={{ $json.body.limit }}",
+        "message": "={{ $json.body.message }}",
         "messageId": "={{ $json.body.messageId }}",
+        "name": "={{ $json.body.name }}",
+        "options": "={{ $json.body.options }}",
         "returnAll": "={{ $json.body.returnAll }}",
-        "threadId": "={{ $json.body.threadId }}"
+        "sendTo": "={{ $json.body.sendTo }}",
+        "simple": "={{ $json.body.simple }}",
+        "subject": "={{ $json.body.subject }}",
+        "threadId": "={{ $json.body.threadId }}",
+        "threadNotice": "={{ $json.body.threadNotice }}"
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
@@ -33,7 +43,7 @@
         300,
         0
       ],
-      "id": "yaipxk1815k",
+      "id": "5siopre6diw",
       "name": "Gmail"
     },
     {
@@ -113,6 +123,6 @@
     "executionOrder": "v1"
   },
   "meta": {
-    "description": "Catalyst Gmail Connector Template - Configure resource, operation, and credentials in n8n after importing. Supports 4 resources with 15 operations."
+    "description": "Catalyst Gmail Connector Template - Configure resource, operation, and credentials in n8n after importing. Supports 4 resources with 26 operations."
   }
 }

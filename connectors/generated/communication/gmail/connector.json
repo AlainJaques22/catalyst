@@ -30,10 +30,12 @@
     "tested": false
   },
   "featured": false,
-  "createdAt": "2026-01-26T07:10:08.323Z",
+  "createdAt": "2026-01-26T07:27:34.615Z",
   "files": {
     "readme": "README.md",
     "elementTemplate": "gmail.element.json",
-    "n8nWorkflow": "gmail-template.n8n.json"
+    "n8nWorkflow": "gmail-template.n8n.json",
+    "exampleBpmn": "gmail-example.bpmn",
+    "setupBpmn": "gmail-setup.bpmn"
   }
 }

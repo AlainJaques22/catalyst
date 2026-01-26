@@ -19,6 +19,8 @@ import { generateConnector, previewConnector } from './connector-generator';
 import { extractN8nNodeSchema } from './extractors/n8n-schema-extractor';
 import { generateMultiOperationElementTemplate } from './generators/element-template';
 import { generateMultiOperationWorkflow } from './generators/n8n-workflow';
+import { generateMultiOperationBpmnExample } from './generators/bpmn-example';
+import { generateSetupBpmn } from './generators/setup-bpmn';
 import { GeneratorOptions } from './types';
 
 const program = new Command();
@@ -127,9 +129,13 @@ program
 
       const elementTemplate = generateMultiOperationElementTemplate(filteredSchema);
       const workflow = generateMultiOperationWorkflow(filteredSchema);
+      const exampleBpmn = generateMultiOperationBpmnExample(filteredSchema);
+      const setupBpmn = generateSetupBpmn(filteredSchema);
 
       console.log(chalk.green(`✓ Element template: ${elementTemplate.properties.length} properties`));
-      console.log(chalk.green(`✓ Workflow template: ${workflow.nodes.length} nodes\n`));
+      console.log(chalk.green(`✓ Workflow template: ${workflow.nodes.length} nodes`));
+      console.log(chalk.green(`✓ Example BPMN`));
+      console.log(chalk.green(`✓ Setup BPMN\n`));
 
       // 4. Write files or preview
       if (options.dryRun) {
@@ -156,6 +162,16 @@ program
         const workflowPath = path.join(connectorDir, `${node}-template.n8n.json`);
         fs.writeFileSync(workflowPath, JSON.stringify(workflow, null, 2));
         console.log(chalk.green(`✓ ${workflowPath}`));
+
+        // Write example BPMN
+        const exampleBpmnPath = path.join(connectorDir, `${node}-example.bpmn`);
+        fs.writeFileSync(exampleBpmnPath, exampleBpmn);
+        console.log(chalk.green(`✓ ${exampleBpmnPath}`));
+
+        // Write setup BPMN
+        const setupBpmnPath = path.join(connectorDir, `${node}-setup.bpmn`);
+        fs.writeFileSync(setupBpmnPath, setupBpmn);
+        console.log(chalk.green(`✓ ${setupBpmnPath}`));
 
         // Write basic README
         const readmePath = path.join(connectorDir, 'README.md');
@@ -190,7 +206,9 @@ program
           files: {
             readme: 'README.md',
             elementTemplate: `${node}.element.json`,
-            n8nWorkflow: `${node}-template.n8n.json`
+            n8nWorkflow: `${node}-template.n8n.json`,
+            exampleBpmn: `${node}-example.bpmn`,
+            setupBpmn: `${node}-setup.bpmn`
           }
         };
         fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));

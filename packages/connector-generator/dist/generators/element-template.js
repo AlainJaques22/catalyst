@@ -6,6 +6,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateElementTemplate = generateElementTemplate;
+exports.generateMultiOperationElementTemplate = generateMultiOperationElementTemplate;
 exports.elementTemplateToJson = elementTemplateToJson;
 const naming_1 = require("../utils/naming");
 const type_mapper_1 = require("../utils/type-mapper");
@@ -127,6 +128,213 @@ function generateElementTemplate(schema) {
         ],
         properties
     };
+}
+/**
+ * Generate multi-operation element template from multi-operation schema
+ * Supports conditional properties based on resource/operation selection
+ */
+function generateMultiOperationElementTemplate(schema) {
+    const templateId = (0, naming_1.generateTemplateId)(schema.nodeId);
+    const webhookUrl = (0, naming_1.generateWebhookUrl)(schema.nodeId);
+    const properties = [
+        // Implementation (hidden, always CatalystBridge)
+        {
+            label: 'Implementation',
+            type: 'String',
+            value: 'io.catalyst.bridge.CatalystBridge',
+            binding: {
+                type: 'property',
+                name: 'camunda:class'
+            }
+        },
+        // Connection group
+        {
+            label: 'n8n Webhook URL',
+            type: 'String',
+            value: webhookUrl,
+            binding: {
+                type: 'camunda:inputParameter',
+                name: 'webhookUrl'
+            },
+            group: 'connection',
+            constraints: {
+                notEmpty: true
+            }
+        },
+        {
+            label: 'Timeout (seconds)',
+            type: 'String',
+            value: '30',
+            binding: {
+                type: 'camunda:inputParameter',
+                name: 'timeout'
+            },
+            group: 'connection'
+        }
+    ];
+    // Add resource dropdown if multiple resources
+    if (schema.resources.length > 1) {
+        properties.push({
+            id: 'resource',
+            label: 'Resource',
+            type: 'Dropdown',
+            value: schema.resources[0].value,
+            binding: {
+                type: 'camunda:inputParameter',
+                name: 'resource'
+            },
+            group: 'operation',
+            choices: schema.resources.map(r => ({
+                name: r.name,
+                value: r.value
+            })),
+            constraints: {
+                notEmpty: true
+            }
+        });
+    }
+    // Add operation dropdowns and parameters for each resource
+    for (const resource of schema.resources) {
+        // Operation dropdown for this resource
+        const operationProperty = {
+            id: `operation_${resource.value}`,
+            label: 'Operation',
+            type: 'Dropdown',
+            value: resource.operations[0]?.value || '',
+            binding: {
+                type: 'camunda:inputParameter',
+                name: 'operation'
+            },
+            group: 'operation',
+            choices: resource.operations.map(op => ({
+                name: op.name,
+                value: op.value
+            })),
+            constraints: {
+                notEmpty: true
+            }
+        };
+        // Add condition if multiple resources
+        if (schema.resources.length > 1) {
+            operationProperty.condition = {
+                property: 'resource',
+                equals: resource.value
+            };
+        }
+        properties.push(operationProperty);
+        // Add parameters for each operation
+        for (const operation of resource.operations) {
+            for (const param of operation.parameters) {
+                const elementType = (0, type_mapper_1.mapN8nTypeToElementType)(param.type);
+                const property = {
+                    id: `${resource.value}_${operation.value}_${param.name}`,
+                    label: param.displayName,
+                    type: elementType,
+                    value: `\${${param.name}}`,
+                    binding: {
+                        type: 'camunda:inputParameter',
+                        name: param.name
+                    },
+                    group: 'input',
+                    condition: {
+                        property: `operation_${resource.value}`,
+                        equals: operation.value
+                    }
+                };
+                if (param.description) {
+                    property.description = param.description;
+                }
+                if (param.required) {
+                    property.constraints = {
+                        notEmpty: true
+                    };
+                }
+                // Handle options/dropdown
+                if (param.type === 'options' && param.options) {
+                    property.choices = param.options.map(opt => ({
+                        name: opt.name,
+                        value: opt.value
+                    }));
+                    property.value = param.default ?? param.options[0]?.value ?? '';
+                }
+                // Handle boolean as dropdown
+                if (param.type === 'boolean') {
+                    property.choices = [
+                        { name: 'True', value: 'true' },
+                        { name: 'False', value: 'false' }
+                    ];
+                    property.value = param.default?.toString() ?? 'false';
+                }
+                properties.push(property);
+            }
+        }
+    }
+    // Add dynamic payload
+    properties.push({
+        label: 'Payload',
+        type: 'Text',
+        value: generateMultiOperationPayload(schema),
+        binding: {
+            type: 'camunda:inputParameter',
+            name: 'payload'
+        },
+        group: 'input',
+        description: 'Dynamic JSON payload sent to n8n'
+    });
+    // Add output mapping
+    properties.push({
+        label: 'Output Mapping',
+        type: 'Text',
+        value: (0, type_mapper_1.generateOutputMapping)(),
+        binding: {
+            type: 'camunda:inputParameter',
+            name: 'outputMapping'
+        },
+        group: 'output'
+    });
+    return {
+        $schema: 'https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json',
+        name: `Catalyst - ${schema.displayName}`,
+        id: templateId,
+        description: schema.description,
+        version: 2,
+        appliesTo: ['bpmn:ServiceTask'],
+        icon: {
+            contents: DEFAULT_ICON
+        },
+        groups: [
+            { id: 'connection', label: 'Connection' },
+            { id: 'operation', label: 'Operation' },
+            { id: 'input', label: 'Parameters' },
+            { id: 'output', label: 'Output' }
+        ],
+        properties
+    };
+}
+/**
+ * Generate dynamic payload template for multi-operation schema
+ * Includes all possible parameters with variable substitution
+ */
+function generateMultiOperationPayload(schema) {
+    // Collect all unique parameter names across all operations
+    const allParams = new Set();
+    for (const resource of schema.resources) {
+        for (const operation of resource.operations) {
+            for (const param of operation.parameters) {
+                allParams.add(param.name);
+            }
+        }
+    }
+    // Build payload object
+    const payload = {
+        resource: '${resource}',
+        operation: '${operation}'
+    };
+    // Add all parameters as variables
+    for (const paramName of Array.from(allParams).sort()) {
+        payload[paramName] = `\${${paramName}}`;
+    }
+    return JSON.stringify(payload, null, 2);
 }
 /**
  * Convert element template to JSON string
