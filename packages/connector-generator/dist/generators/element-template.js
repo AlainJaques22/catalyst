@@ -221,6 +221,7 @@ function generateMultiOperationElementTemplate(schema) {
                     },
                     group: 'input',
                     condition: {
+                        type: 'simple',
                         property: 'operation',
                         equals: operationValue
                     }

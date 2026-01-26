@@ -153,8 +153,14 @@ export interface ElementTemplateProperty {
         value: string;
     }>;
     condition?: {
+        type?: 'simple' | 'oneOf' | 'allMatch';
         property: string;
-        equals: string | boolean;
+        equals?: string | boolean;
+        oneOf?: string[];
+        allMatch?: Array<{
+            property: string;
+            equals: string | boolean;
+        }>;
     };
 }
 export interface ElementTemplate {

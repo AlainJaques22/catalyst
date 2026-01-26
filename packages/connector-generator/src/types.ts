@@ -155,8 +155,11 @@ export interface ElementTemplateProperty {
   };
   choices?: Array<{ name: string; value: string }>;
   condition?: {             // NEW: Conditional visibility
+    type?: 'simple' | 'oneOf' | 'allMatch';  // Condition type
     property: string;       // References another property's id
-    equals: string | boolean;
+    equals?: string | boolean;  // For simple type
+    oneOf?: string[];       // For oneOf type
+    allMatch?: Array<{ property: string; equals: string | boolean }>;  // For allMatch type
   };
 }
 

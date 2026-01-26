@@ -247,6 +247,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
           },
           group: 'input',
           condition: {
+            type: 'simple',
             property: 'operation',
             equals: operationValue
           }

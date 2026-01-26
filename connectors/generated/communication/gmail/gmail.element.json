@@ -148,6 +148,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "draft:delete"
       },
@@ -166,6 +167,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "label:delete"
       },
@@ -185,6 +187,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "label:get"
       },
@@ -204,6 +207,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "label:getAll"
       },
@@ -230,6 +234,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "label:getAll"
       },
@@ -246,6 +251,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:addLabels"
       },
@@ -264,6 +270,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:addLabels"
       },
@@ -283,6 +290,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:delete"
       },
@@ -301,6 +309,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:markAsRead"
       },
@@ -319,6 +328,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:markAsUnread"
       },
@@ -337,6 +347,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:removeLabels"
       },
@@ -355,6 +366,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "message:removeLabels"
       },
@@ -374,6 +386,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:addLabels"
       },
@@ -392,6 +405,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:addLabels"
       },
@@ -411,6 +425,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:delete"
       },
@@ -430,6 +445,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:removeLabels"
       },
@@ -448,6 +464,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:removeLabels"
       },
@@ -467,6 +484,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:trash"
       },
@@ -486,6 +504,7 @@
       },
       "group": "input",
       "condition": {
+        "type": "simple",
         "property": "operation",
         "equals": "thread:untrash"
       },
