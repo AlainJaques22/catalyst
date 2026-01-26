@@ -1,0 +1,45 @@
+{
+  "id": "gmail-get-thread",
+  "name": "Gmail Connector - Thread - Get",
+  "description": "Get a thread",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "thread",
+    "operation": "get",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 2,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.491Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-get-thread.n8n.json",
+    "elementTemplate": "gmail-get-thread.element.json",
+    "exampleBpmn": "gmail-get-thread.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "thread",
+    "resourceName": "Thread",
+    "operation": "get",
+    "operationName": "Get"
+  }
+}

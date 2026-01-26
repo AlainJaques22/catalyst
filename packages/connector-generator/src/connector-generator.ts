@@ -39,7 +39,12 @@ export function generateConnector(
   options: GeneratorOptions
 ): GeneratedFiles {
   const connectorId = generateConnectorId(schema.nodeId, schema.resource, schema.operation);
-  const connectorDir = path.join(options.outputDir, schema.category, connectorId);
+
+  // Use hierarchical directory structure if schema has hierarchy metadata
+  // Structure: {outputDir}/{category}/{nodeId}/{resource}-{operation}/
+  const connectorDir = schema.hierarchy
+    ? path.join(options.outputDir, schema.category, schema.nodeId, `${schema.resource}-${schema.operation}`)
+    : path.join(options.outputDir, schema.category, connectorId);
 
   // Check if connector already exists and handle versioning
   let version = '1.0.0';

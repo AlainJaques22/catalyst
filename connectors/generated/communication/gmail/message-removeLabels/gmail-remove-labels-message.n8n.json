@@ -1,0 +1,111 @@
+{
+  "name": "Gmail Connector - Message - Remove Label",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "catalyst-gmail-remove-labels-message",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "webhook-1",
+      "name": "Webhook",
+      "webhookId": "catalyst-gmail-remove-labels-message"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "ldgn5bdggol",
+      "name": "Removelabels Message"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format error response for connector failure\nconst error = $input.item.json.error || $input.item.json;\n\nlet errorMessage = 'Configuration needed. Please check node settings in n8n.';\nif (error.message) {\n  errorMessage = error.message;\n}\n\nreturn {\n  json: {\n    success: false,\n    statusCode: 500,\n    error: errorMessage,\n    responseBody: null\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        100
+      ],
+      "id": "error-format-1",
+      "name": "Format Error Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { success: true, statusCode: 200, responseBody: $json, error: null } }}"
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        0
+      ],
+      "id": "respond-1",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Removelabels Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Removelabels Message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ],
+      "error": [
+        [
+          {
+            "node": "Format Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Error Response": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "description": "Catalyst connector webhook for Gmail Connector - Message - Remove Label. Configure credentials in n8n after importing."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "gmail-delete-thread",
+  "name": "Gmail Connector - Thread - Delete",
+  "description": "Delete a thread",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "thread",
+    "operation": "delete",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.489Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-delete-thread.n8n.json",
+    "elementTemplate": "gmail-delete-thread.element.json",
+    "exampleBpmn": "gmail-delete-thread.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "thread",
+    "resourceName": "Thread",
+    "operation": "delete",
+    "operationName": "Delete"
+  }
+}

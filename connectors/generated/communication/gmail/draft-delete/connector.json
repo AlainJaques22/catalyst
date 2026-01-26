@@ -1,0 +1,45 @@
+{
+  "id": "gmail-delete-draft",
+  "name": "Gmail Connector - Draft - Delete",
+  "description": "Delete a draft",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "draft",
+    "operation": "delete",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.442Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-delete-draft.n8n.json",
+    "elementTemplate": "gmail-delete-draft.element.json",
+    "exampleBpmn": "gmail-delete-draft.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "draft",
+    "resourceName": "Draft",
+    "operation": "delete",
+    "operationName": "Delete"
+  }
+}

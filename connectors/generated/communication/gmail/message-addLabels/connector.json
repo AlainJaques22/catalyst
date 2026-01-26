@@ -1,0 +1,45 @@
+{
+  "id": "gmail-add-labels-message",
+  "name": "Gmail Connector - Message - Add Label",
+  "description": "Add label to message",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "message",
+    "operation": "addLabels",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.461Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-add-labels-message.n8n.json",
+    "elementTemplate": "gmail-add-labels-message.element.json",
+    "exampleBpmn": "gmail-add-labels-message.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "message",
+    "resourceName": "Message",
+    "operation": "addLabels",
+    "operationName": "Add Label"
+  }
+}

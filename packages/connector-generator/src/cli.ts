@@ -21,6 +21,7 @@ import { generateMultiOperationElementTemplate } from './generators/element-temp
 import { generateMultiOperationWorkflow } from './generators/n8n-workflow';
 import { generateMultiOperationBpmnExample } from './generators/bpmn-example';
 import { generateSetupBpmn } from './generators/setup-bpmn';
+import { generateConnectorId } from './utils/naming';
 import { GeneratorOptions } from './types';
 
 const program = new Command();
@@ -93,10 +94,11 @@ program
 // Generate multi-operation command
 program
   .command('generate-multi <node>')
-  .description('Generate multi-operation connector with all resources and operations')
+  .description('Generate individual connectors for all resources and operations')
   .option('-d, --output-dir <dir>', 'Output directory', '../../../connectors/generated')
   .option('--tier <tier>', 'Max quality tier to include (1-3)', '3')
   .option('--dry-run', 'Preview without writing files')
+  .option('--force', 'Skip backup and overwrite existing files')
   .option('-v, --verbose', 'Verbose output')
   .action(async (node: string, options) => {
     try {
@@ -124,102 +126,84 @@ program
         console.log(chalk.yellow(`⚠ Filtered to tier ${maxTier}: ${filteredOps} operations (excluded ${totalOps - filteredOps})\n`));
       }
 
-      // 3. Generate files
-      console.log(chalk.blue('Generating files...\n'));
+      // 3. Generate individual connector for each operation
+      console.log(chalk.blue('Generating individual connectors...\n'));
 
-      const elementTemplate = generateMultiOperationElementTemplate(filteredSchema);
-      const workflow = generateMultiOperationWorkflow(filteredSchema);
-      const exampleBpmn = generateMultiOperationBpmnExample(filteredSchema);
-      const setupBpmn = generateSetupBpmn(filteredSchema);
+      const outputDir = path.resolve(__dirname, options.outputDir);
+      let generatedCount = 0;
 
-      console.log(chalk.green(`✓ Element template: ${elementTemplate.properties.length} properties`));
-      console.log(chalk.green(`✓ Workflow template: ${workflow.nodes.length} nodes`));
-      console.log(chalk.green(`✓ Example BPMN`));
-      console.log(chalk.green(`✓ Setup BPMN\n`));
+      for (const resource of filteredSchema.resources) {
+        for (const operation of resource.operations) {
+          // Convert to OperationSchema format
+          const operationSchema: any = {
+            nodeId: schema.nodeId,
+            nodeName: schema.nodeName,
+            resourceName: resource.name,
+            operationName: operation.name,
+            displayName: `${schema.displayName} - ${resource.name} - ${operation.name}`,
+            description: operation.description || `${operation.name} operation for ${resource.name}`,
+            resource: resource.value,
+            operation: operation.value,
+            parameters: operation.parameters,
+            category: schema.category,
+            credentials: schema.credentials,
+            icon: schema.icon,
+            color: schema.color,
+            tags: schema.tags || [schema.nodeId, resource.value, operation.value],
+            // Add hierarchy metadata
+            hierarchy: {
+              node: schema.nodeId,
+              nodeName: schema.displayName,
+              resource: resource.value,
+              resourceName: resource.name,
+              operation: operation.value,
+              operationName: operation.name
+            }
+          };
 
-      // 4. Write files or preview
-      if (options.dryRun) {
-        console.log(chalk.yellow('Dry run - files not written\n'));
-        console.log(chalk.cyan('Element Template Preview:'));
-        console.log(JSON.stringify(elementTemplate, null, 2).substring(0, 500) + '...\n');
-        console.log(chalk.cyan('Workflow Template Preview:'));
-        console.log(JSON.stringify(workflow, null, 2).substring(0, 500) + '...\n');
-      } else {
-        const outputDir = path.resolve(__dirname, options.outputDir);
-        const connectorDir = path.join(outputDir, schema.category, node);
+          const connectorId = generateConnectorId(schema.nodeId, resource.value, operation.value);
 
-        // Create directory
-        if (!fs.existsSync(connectorDir)) {
-          fs.mkdirSync(connectorDir, { recursive: true });
-        }
+          if (options.dryRun) {
+            console.log(chalk.yellow(`Preview: ${connectorId}`));
+          } else {
+            const result = generateConnector(operationSchema, {
+              outputDir: outputDir,
+              dryRun: false,
+              verbose: options.verbose,
+              force: options.force
+            });
 
-        // Write element template
-        const elementPath = path.join(connectorDir, `${node}.element.json`);
-        fs.writeFileSync(elementPath, JSON.stringify(elementTemplate, null, 2));
-        console.log(chalk.green(`✓ ${elementPath}`));
-
-        // Write workflow template
-        const workflowPath = path.join(connectorDir, `${node}-template.n8n.json`);
-        fs.writeFileSync(workflowPath, JSON.stringify(workflow, null, 2));
-        console.log(chalk.green(`✓ ${workflowPath}`));
-
-        // Write example BPMN
-        const exampleBpmnPath = path.join(connectorDir, `${node}-example.bpmn`);
-        fs.writeFileSync(exampleBpmnPath, exampleBpmn);
-        console.log(chalk.green(`✓ ${exampleBpmnPath}`));
-
-        // Write setup BPMN
-        const setupBpmnPath = path.join(connectorDir, `${node}-setup.bpmn`);
-        fs.writeFileSync(setupBpmnPath, setupBpmn);
-        console.log(chalk.green(`✓ ${setupBpmnPath}`));
-
-        // Write basic README
-        const readmePath = path.join(connectorDir, 'README.md');
-        const readmeContent = generateMultiOperationReadme(filteredSchema);
-        fs.writeFileSync(readmePath, readmeContent);
-        console.log(chalk.green(`✓ ${readmePath}`));
-
-        // Write connector metadata
-        const metadataPath = path.join(connectorDir, 'connector.json');
-        const metadata = {
-          id: node,
-          name: schema.displayName,
-          description: schema.description,
-          version: '2.0.0',
-          type: 'integration',
-          multiOperation: true,
-          operationCount: filteredOps,
-          resources: filteredSchema.resources.map(r => r.name),
-          category: schema.category,
-          tags: schema.tags,
-          icon: schema.icon,
-          color: schema.color,
-          credentials: schema.credentials,
-          quality: {
-            tier: maxTier,
-            generated: true,
-            reviewed: false,
-            tested: false
-          },
-          featured: false,
-          createdAt: new Date().toISOString(),
-          files: {
-            readme: 'README.md',
-            elementTemplate: `${node}.element.json`,
-            n8nWorkflow: `${node}-template.n8n.json`,
-            exampleBpmn: `${node}-example.bpmn`,
-            setupBpmn: `${node}-setup.bpmn`
+            console.log(chalk.green(`✓ Generated: ${result.connectorId}`));
+            if (options.verbose) {
+              console.log(chalk.gray(`  Directory: ${result.directory}`));
+            }
+            generatedCount++;
           }
-        };
-        fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));
-        console.log(chalk.green(`✓ ${metadataPath}\n`));
+        }
+      }
 
-        console.log(chalk.blue(`✅ Multi-operation connector generated: ${connectorDir}\n`));
+      // 4. Summary
+      if (options.dryRun) {
+        console.log(chalk.yellow(`\nDry run - ${filteredOps} connectors not written\n`));
+      } else {
+        console.log(chalk.blue(`\n✅ Generated ${generatedCount} individual connectors\n`));
+        console.log(chalk.gray('Directory structure:'));
+        console.log(chalk.gray(`  ${outputDir}/${schema.category}/${schema.nodeId}/`));
+        console.log(chalk.gray(`    ├── draft-create/`));
+        console.log(chalk.gray(`    ├── draft-delete/`));
+        console.log(chalk.gray(`    ├── message-send/`));
+        console.log(chalk.gray(`    └── ... (${generatedCount} total)\n`));
+        console.log(chalk.gray('Each connector includes:'));
+        console.log(chalk.gray('  - Element template (.element.json)'));
+        console.log(chalk.gray('  - n8n workflow (.n8n.json)'));
+        console.log(chalk.gray('  - Example BPMN (.bpmn)'));
+        console.log(chalk.gray('  - README.md'));
+        console.log(chalk.gray('  - Metadata (connector.json)\n'));
         console.log(chalk.gray('Next steps:'));
-        console.log(chalk.gray('1. Import element template into Camunda Modeler'));
-        console.log(chalk.gray('2. Import workflow template into n8n'));
-        console.log(chalk.gray('3. Configure resource, operation, and credentials in n8n'));
-        console.log(chalk.gray('4. Test the connector\n'));
+        console.log(chalk.gray('1. Import element templates into Camunda Modeler'));
+        console.log(chalk.gray('2. Import workflow templates into n8n'));
+        console.log(chalk.gray('3. Configure credentials in n8n'));
+        console.log(chalk.gray('4. Test connectors\n'));
       }
 
     } catch (error: any) {

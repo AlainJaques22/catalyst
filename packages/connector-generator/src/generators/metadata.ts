@@ -18,7 +18,7 @@ export function generateMetadata(schema: OperationSchema): ConnectorMetadata {
   const color = schema.color || getServiceColor(schema.nodeName);
   const icon = getServiceIcon(schema.nodeId);
 
-  return {
+  const metadata: ConnectorMetadata = {
     id: connectorId,
     name: schema.displayName,
     description: schema.description,
@@ -52,6 +52,13 @@ export function generateMetadata(schema: OperationSchema): ConnectorMetadata {
       exampleBpmn: `${connectorId}.bpmn`
     }
   };
+
+  // Add hierarchy if present (for gallery categorization)
+  if (schema.hierarchy) {
+    metadata.hierarchy = schema.hierarchy;
+  }
+
+  return metadata;
 }
 
 /**

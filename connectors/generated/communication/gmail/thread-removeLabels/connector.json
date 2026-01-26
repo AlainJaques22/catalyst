@@ -1,0 +1,45 @@
+{
+  "id": "gmail-remove-labels-thread",
+  "name": "Gmail Connector - Thread - Remove Label",
+  "description": "Remove label from thread",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "thread",
+    "operation": "removeLabels",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.496Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-remove-labels-thread.n8n.json",
+    "elementTemplate": "gmail-remove-labels-thread.element.json",
+    "exampleBpmn": "gmail-remove-labels-thread.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "thread",
+    "resourceName": "Thread",
+    "operation": "removeLabels",
+    "operationName": "Remove Label"
+  }
+}

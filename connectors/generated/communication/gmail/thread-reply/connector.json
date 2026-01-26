@@ -1,0 +1,45 @@
+{
+  "id": "gmail-reply-thread",
+  "name": "Gmail Connector - Thread - Reply",
+  "description": "Reply to a message",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "thread",
+    "operation": "reply",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 2,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.498Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-reply-thread.n8n.json",
+    "elementTemplate": "gmail-reply-thread.element.json",
+    "exampleBpmn": "gmail-reply-thread.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "thread",
+    "resourceName": "Thread",
+    "operation": "reply",
+    "operationName": "Reply"
+  }
+}

@@ -62,6 +62,14 @@ export interface OperationSchema {
   category: string;
   subcategory?: string;
   tags: string[];
+  hierarchy?: {             // Hierarchical categorization for gallery
+    node: string;           // e.g., "gmail"
+    nodeName: string;       // e.g., "Gmail"
+    resource: string;       // e.g., "message"
+    resourceName: string;   // e.g., "Message"
+    operation: string;      // e.g., "send"
+    operationName: string;  // e.g., "Send"
+  };
 }
 
 export interface OperationParameter {
@@ -136,6 +144,14 @@ export interface ConnectorMetadata {
     n8nWorkflow: string;
     elementTemplate: string;
     exampleBpmn: string;
+  };
+  hierarchy?: {             // Hierarchical categorization for gallery
+    node: string;           // e.g., "gmail"
+    nodeName: string;       // e.g., "Gmail"
+    resource: string;       // e.g., "message"
+    resourceName: string;   // e.g., "Message"
+    operation: string;      // e.g., "send"
+    operationName: string;  // e.g., "Send"
   };
 }
 

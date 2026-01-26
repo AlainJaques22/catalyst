@@ -1,0 +1,45 @@
+{
+  "id": "gmail-get-label",
+  "name": "Gmail Connector - Label - Get",
+  "description": "Get a label info",
+  "version": "1.0.0",
+  "type": "integration",
+  "category": "communication",
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "source": {
+    "type": "n8n",
+    "node": "gmail",
+    "resource": "label",
+    "operation": "get",
+    "version": "1.0"
+  },
+  "quality": {
+    "tier": 1,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "authentication": "api-key",
+  "featured": false,
+  "createdAt": "2026-01-26T14:53:05.455Z",
+  "files": {
+    "readme": "README.md",
+    "n8nWorkflow": "gmail-get-label.n8n.json",
+    "elementTemplate": "gmail-get-label.element.json",
+    "exampleBpmn": "gmail-get-label.bpmn"
+  },
+  "hierarchy": {
+    "node": "gmail",
+    "nodeName": "Gmail Connector",
+    "resource": "label",
+    "resourceName": "Label",
+    "operation": "get",
+    "operationName": "Get"
+  }
+}
