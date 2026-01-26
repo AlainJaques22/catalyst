@@ -75,6 +75,34 @@ export interface OperationParameter {
   options?: Array<{ name: string; value: string }>;
 }
 
+// Multi-Operation Schema (one connector with all operations)
+export interface MultiOperationSchema {
+  nodeId: string;           // e.g., "gmail"
+  nodeName: string;         // e.g., "Gmail"
+  displayName: string;      // e.g., "Gmail Connector"
+  description: string;
+  icon?: string;
+  iconSvg?: string;
+  color?: string;
+  credentials: string[];
+  category: string;
+  subcategory?: string;
+  tags: string[];
+
+  // Resources and operations hierarchy
+  resources: Array<{
+    value: string;          // e.g., "message"
+    name: string;           // e.g., "Message"
+    operations: Array<{
+      value: string;        // e.g., "send"
+      name: string;         // e.g., "Send"
+      description: string;
+      parameters: OperationParameter[];
+      tier: 1 | 2 | 3;      // Quality classification
+    }>;
+  }>;
+}
+
 // Catalyst Connector Output Types
 export interface ConnectorMetadata {
   id: string;
@@ -112,6 +140,7 @@ export interface ConnectorMetadata {
 }
 
 export interface ElementTemplateProperty {
+  id?: string;              // NEW: For condition references
   label: string;
   type: 'String' | 'Text' | 'Dropdown' | 'Boolean' | 'Hidden';
   value?: string;
@@ -125,6 +154,10 @@ export interface ElementTemplateProperty {
     notEmpty?: boolean;
   };
   choices?: Array<{ name: string; value: string }>;
+  condition?: {             // NEW: Conditional visibility
+    property: string;       // References another property's id
+    equals: string | boolean;
+  };
 }
 
 export interface ElementTemplate {
