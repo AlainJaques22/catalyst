@@ -235,8 +235,6 @@
         "oneOf": [
           "draft:create",
           "message:reply",
-          "message:reply",
-          "message:send",
           "message:send",
           "thread:reply"
         ]

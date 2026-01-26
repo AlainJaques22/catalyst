@@ -214,10 +214,10 @@ function generateMultiOperationElementTemplate(schema) {
                 if (!parameterMap.has(param.name)) {
                     parameterMap.set(param.name, {
                         param,
-                        operations: []
+                        operations: new Set()
                     });
                 }
-                parameterMap.get(param.name).operations.push(operationValue);
+                parameterMap.get(param.name).operations.add(operationValue);
             }
         }
     }
@@ -236,12 +236,13 @@ function generateMultiOperationElementTemplate(schema) {
             group: 'input'
         };
         // Add condition based on number of operations
-        if (operations.length === 1) {
+        const operationsArray = Array.from(operations);
+        if (operationsArray.length === 1) {
             // Single operation uses this parameter
             property.condition = {
                 type: 'simple',
                 property: 'operation',
-                equals: operations[0]
+                equals: operationsArray[0]
             };
         }
         else {
@@ -249,7 +250,7 @@ function generateMultiOperationElementTemplate(schema) {
             property.condition = {
                 type: 'oneOf',
                 property: 'operation',
-                oneOf: operations
+                oneOf: operationsArray
             };
         }
         if (param.description) {
