@@ -15,7 +15,9 @@
   "dependencies": {
     "commander": "^11.1.0",
     "handlebars": "^4.7.8",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "n8n-nodes-base": "^1.30.0",
+    "ts-morph": "^21.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
