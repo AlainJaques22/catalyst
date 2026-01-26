@@ -23,7 +23,7 @@
               <camunda:property id="description" value="Informational text to guide the user" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="filters" label="Filters - Filters to narrow down results" type="string" defaultValue="[object Object]">
+          <camunda:formField id="filters" label="Filters - Filters to narrow down results" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="Filters to narrow down results" />
             </camunda:properties>

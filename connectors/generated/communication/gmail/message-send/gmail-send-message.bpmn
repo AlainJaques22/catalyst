@@ -28,7 +28,7 @@
               <camunda:property id="description" value="The content/body of the email message" />
             </camunda:properties>
           </camunda:formField>
-          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="[object Object]">
+          <camunda:formField id="options" label="Options - Additional options for this operation" type="string" defaultValue="">
             <camunda:properties>
               <camunda:property id="description" value="Additional options for this operation" />
             </camunda:properties>

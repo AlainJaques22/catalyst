@@ -27,11 +27,23 @@ export function generateBpmnExample(schema: OperationSchema): string {
 
   // Generate form fields for user task
   const formFields = schema.parameters.map(param => {
-    const defaultValue = param.default ?? (param.placeholder || `Enter ${param.displayName.toLowerCase()}`);
+    // Handle default value - convert objects to JSON string or empty string
+    let defaultValue: string;
+    if (param.default !== undefined && param.default !== null) {
+      if (typeof param.default === 'object') {
+        // For objects/arrays, use JSON string or empty string
+        defaultValue = Object.keys(param.default).length > 0 ? JSON.stringify(param.default) : '';
+      } else {
+        defaultValue = String(param.default);
+      }
+    } else {
+      defaultValue = param.placeholder || '';
+    }
+
     const description = param.description || generateDefaultDescriptionForBpmn(param.name, param.displayName, param.type);
     const label = description ? `${param.displayName} - ${description}` : param.displayName;
 
-    return `          <camunda:formField id="${param.name}" label="${escapeXml(label)}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
+    return `          <camunda:formField id="${param.name}" label="${escapeXml(label)}" type="string" defaultValue="${escapeXml(defaultValue)}">
             <camunda:properties>
               <camunda:property id="description" value="${escapeXml(description)}" />
             </camunda:properties>
@@ -148,11 +160,23 @@ export function generateMultiOperationBpmnExample(schema: MultiOperationSchema):
   // Generate form fields for user task (first 5 parameters)
   const sampleParams = firstOperation.parameters.slice(0, 5);
   const formFields = sampleParams.map(param => {
-    const defaultValue = param.default ?? (param.placeholder || `Enter ${param.displayName.toLowerCase()}`);
+    // Handle default value - convert objects to JSON string or empty string
+    let defaultValue: string;
+    if (param.default !== undefined && param.default !== null) {
+      if (typeof param.default === 'object') {
+        // For objects/arrays, use JSON string or empty string
+        defaultValue = Object.keys(param.default).length > 0 ? JSON.stringify(param.default) : '';
+      } else {
+        defaultValue = String(param.default);
+      }
+    } else {
+      defaultValue = param.placeholder || '';
+    }
+
     const description = param.description || generateDefaultDescriptionForBpmn(param.name, param.displayName, param.type);
     const label = description ? `${param.displayName} - ${description}` : param.displayName;
 
-    return `          <camunda:formField id="${param.name}" label="${escapeXml(label)}" type="string" defaultValue="${escapeXml(String(defaultValue))}">
+    return `          <camunda:formField id="${param.name}" label="${escapeXml(label)}" type="string" defaultValue="${escapeXml(defaultValue)}">
             <camunda:properties>
               <camunda:property id="description" value="${escapeXml(description)}" />
             </camunda:properties>

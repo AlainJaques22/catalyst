@@ -2,7 +2,7 @@
   "id": "gmail-create-label",
   "name": "Gmail Connector - Label - Create",
   "description": "Create a label",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T18:54:22.031Z",
+  "createdAt": "2026-01-26T19:00:52.902Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-create-label.n8n.json",

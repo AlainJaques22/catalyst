@@ -2,7 +2,7 @@
   "id": "gmail-delete-message",
   "name": "Gmail Connector - Message - Delete",
   "description": "Delete a message",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T18:54:22.043Z",
+  "createdAt": "2026-01-26T19:00:52.916Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-delete-message.n8n.json",
