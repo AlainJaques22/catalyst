@@ -1,0 +1,103 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Test - Conditional Properties Simple",
+  "id": "test.conditional.simple",
+  "description": "Test if conditional properties work - 2 operations with unique parameters",
+  "version": 1,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "groups": [
+    {
+      "id": "operation",
+      "label": "Operation"
+    },
+    {
+      "id": "params",
+      "label": "Parameters"
+    }
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "id": "operation",
+      "label": "Operation",
+      "type": "Dropdown",
+      "value": "send",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "operation"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Send Message",
+          "value": "send"
+        },
+        {
+          "name": "Get Message",
+          "value": "get"
+        }
+      ]
+    },
+    {
+      "id": "to",
+      "label": "To (SEND ONLY)",
+      "type": "String",
+      "value": "${to}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "to"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "send"
+      },
+      "description": "This should ONLY show when operation=send"
+    },
+    {
+      "id": "subject",
+      "label": "Subject (SEND ONLY)",
+      "type": "String",
+      "value": "${subject}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "subject"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "send"
+      },
+      "description": "This should ONLY show when operation=send"
+    },
+    {
+      "id": "messageId",
+      "label": "Message ID (GET ONLY)",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "get"
+      },
+      "description": "This should ONLY show when operation=get"
+    }
+  ]
+}

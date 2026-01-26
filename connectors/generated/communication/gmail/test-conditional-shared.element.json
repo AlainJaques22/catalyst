@@ -1,0 +1,141 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Test - Conditional Properties Shared Param",
+  "id": "test.conditional.shared",
+  "description": "Test if same parameter name can appear in multiple operations",
+  "version": 1,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "groups": [
+    {
+      "id": "operation",
+      "label": "Operation"
+    },
+    {
+      "id": "params",
+      "label": "Parameters"
+    }
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "id": "operation",
+      "label": "Operation",
+      "type": "Dropdown",
+      "value": "send",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "operation"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Send Message",
+          "value": "send"
+        },
+        {
+          "name": "Reply Message",
+          "value": "reply"
+        },
+        {
+          "name": "Get Message",
+          "value": "get"
+        }
+      ]
+    },
+    {
+      "id": "send_to",
+      "label": "To (SEND)",
+      "type": "String",
+      "value": "${to}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "to"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "send"
+      },
+      "description": "Send operation - To field"
+    },
+    {
+      "id": "send_subject",
+      "label": "Subject (SEND)",
+      "type": "String",
+      "value": "${subject}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "subject"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "send"
+      },
+      "description": "Send operation - Subject field"
+    },
+    {
+      "id": "reply_messageId",
+      "label": "Message ID (REPLY)",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "reply"
+      },
+      "description": "Reply operation - Message ID to reply to"
+    },
+    {
+      "id": "reply_subject",
+      "label": "Subject (REPLY)",
+      "type": "String",
+      "value": "${subject}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "subject"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "reply"
+      },
+      "description": "Reply operation - Subject field (SAME BINDING NAME as Send)"
+    },
+    {
+      "id": "get_messageId",
+      "label": "Message ID (GET)",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "params",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "get"
+      },
+      "description": "Get operation - Message ID (SAME BINDING NAME as Reply)"
+    }
+  ]
+}
