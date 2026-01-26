@@ -13,15 +13,15 @@
   "groups": [
     {
       "id": "connection",
-      "label": "Connection"
+      "label": "⚡ Connection"
     },
     {
       "id": "input",
-      "label": "Input"
+      "label": "📥 Input"
     },
     {
       "id": "output",
-      "label": "Output"
+      "label": "📤 Output"
     }
   ],
   "properties": [
@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "n8n Webhook URL",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-trash-thread",
       "binding": {
@@ -48,7 +48,7 @@
       }
     },
     {
-      "label": "Timeout (seconds)",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -58,7 +58,7 @@
       "group": "connection"
     },
     {
-      "label": "Thread ID",
+      "label": "🔑 Thread ID",
       "type": "String",
       "value": "${threadId}",
       "binding": {
@@ -69,17 +69,7 @@
       "description": "The ID of the thread you are operating on"
     },
     {
-      "label": "Payload",
-      "type": "Text",
-      "value": "{\n  \"threadId\": \"${threadId}\"\n}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "payload"
-      },
-      "group": "input"
-    },
-    {
-      "label": "Output Mapping",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

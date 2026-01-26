@@ -2,7 +2,7 @@
   "id": "gmail-add-labels-message",
   "name": "Gmail Connector - Message - Add Label",
   "description": "Add label to message",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T14:53:05.461Z",
+  "createdAt": "2026-01-26T15:16:57.703Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-add-labels-message.n8n.json",

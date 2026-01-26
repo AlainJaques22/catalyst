@@ -13,15 +13,15 @@
   "groups": [
     {
       "id": "connection",
-      "label": "Connection"
+      "label": "⚡ Connection"
     },
     {
       "id": "input",
-      "label": "Input"
+      "label": "📥 Input"
     },
     {
       "id": "output",
-      "label": "Output"
+      "label": "📤 Output"
     }
   ],
   "properties": [
@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "n8n Webhook URL",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-get-all-message",
       "binding": {
@@ -48,7 +48,7 @@
       }
     },
     {
-      "label": "Timeout (seconds)",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -58,7 +58,7 @@
       "group": "connection"
     },
     {
-      "label": "Return All",
+      "label": "📋 Return All",
       "type": "Dropdown",
       "value": "false",
       "binding": {
@@ -79,7 +79,7 @@
       ]
     },
     {
-      "label": "Limit",
+      "label": "📋 Limit",
       "type": "String",
       "value": "${limit}",
       "binding": {
@@ -90,7 +90,7 @@
       "description": "Max number of results to return"
     },
     {
-      "label": "Simplify",
+      "label": "✨ Simplify",
       "type": "Dropdown",
       "value": "true",
       "binding": {
@@ -111,7 +111,7 @@
       ]
     },
     {
-      "label": "Fetching a lot of messages may take a long time. Consider using filters to speed things up",
+      "label": "🔍 Fetching a lot of messages may take a long time. Consider using filters to speed things up",
       "type": "String",
       "value": "${filtersNotice}",
       "binding": {
@@ -121,7 +121,7 @@
       "group": "input"
     },
     {
-      "label": "Filters",
+      "label": "🔍 Filters",
       "type": "Text",
       "value": "${filters}",
       "binding": {
@@ -131,7 +131,7 @@
       "group": "input"
     },
     {
-      "label": "Options",
+      "label": "⚙️ Options",
       "type": "Text",
       "value": "${options}",
       "binding": {
@@ -141,17 +141,7 @@
       "group": "input"
     },
     {
-      "label": "Payload",
-      "type": "Text",
-      "value": "{\n  \"returnAll\": \"${returnAll}\",\n  \"limit\": \"${limit}\",\n  \"simple\": \"${simple}\",\n  \"filtersNotice\": \"${filtersNotice}\",\n  \"filters\": \"${filters}\",\n  \"options\": \"${options}\"\n}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "payload"
-      },
-      "group": "input"
-    },
-    {
-      "label": "Output Mapping",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

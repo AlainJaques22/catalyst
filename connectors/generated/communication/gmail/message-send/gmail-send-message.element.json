@@ -13,15 +13,15 @@
   "groups": [
     {
       "id": "connection",
-      "label": "Connection"
+      "label": "⚡ Connection"
     },
     {
       "id": "input",
-      "label": "Input"
+      "label": "📥 Input"
     },
     {
       "id": "output",
-      "label": "Output"
+      "label": "📤 Output"
     }
   ],
   "properties": [
@@ -35,7 +35,7 @@
       }
     },
     {
-      "label": "n8n Webhook URL",
+      "label": "🔗 n8n Webhook URL",
       "type": "String",
       "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail-send-message",
       "binding": {
@@ -48,7 +48,7 @@
       }
     },
     {
-      "label": "Timeout (seconds)",
+      "label": "⏱️ Timeout (seconds)",
       "type": "String",
       "value": "30",
       "binding": {
@@ -58,7 +58,7 @@
       "group": "connection"
     },
     {
-      "label": "To",
+      "label": "✉️ To",
       "type": "String",
       "value": "${sendTo}",
       "binding": {
@@ -69,7 +69,7 @@
       "description": "The email addresses of the recipients. Multiple addresses can be separated by a comma. e.g. jay@getsby.com, jon@smith.com."
     },
     {
-      "label": "Subject",
+      "label": "📝 Subject",
       "type": "String",
       "value": "${subject}",
       "binding": {
@@ -79,7 +79,7 @@
       "group": "input"
     },
     {
-      "label": "Email Type",
+      "label": "✉️ Email Type",
       "type": "Dropdown",
       "value": "html",
       "binding": {
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "label": "Message",
+      "label": "💬 Message",
       "type": "String",
       "value": "${message}",
       "binding": {
@@ -109,7 +109,7 @@
       "group": "input"
     },
     {
-      "label": "Options",
+      "label": "⚙️ Options",
       "type": "Text",
       "value": "${options}",
       "binding": {
@@ -119,17 +119,7 @@
       "group": "input"
     },
     {
-      "label": "Payload",
-      "type": "Text",
-      "value": "{\n  \"sendTo\": \"${sendTo}\",\n  \"subject\": \"${subject}\",\n  \"emailType\": \"${emailType}\",\n  \"message\": \"${message}\",\n  \"options\": \"${options}\"\n}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "payload"
-      },
-      "group": "input"
-    },
-    {
-      "label": "Output Mapping",
+      "label": "📤 Output Mapping",
       "type": "Text",
       "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
       "binding": {

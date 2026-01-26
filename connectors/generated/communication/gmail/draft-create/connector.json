@@ -2,7 +2,7 @@
   "id": "gmail-create-draft",
   "name": "Gmail Connector - Draft - Create",
   "description": "Create a draft",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "integration",
   "category": "communication",
   "icon": "icons/gmail.svg",
@@ -27,7 +27,7 @@
   },
   "authentication": "api-key",
   "featured": false,
-  "createdAt": "2026-01-26T14:53:05.437Z",
+  "createdAt": "2026-01-26T15:16:57.684Z",
   "files": {
     "readme": "README.md",
     "n8nWorkflow": "gmail-create-draft.n8n.json",

@@ -41,7 +41,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
     },
     // Connection group
     {
-      label: 'n8n Webhook URL',
+      label: '🔗 n8n Webhook URL',
       type: 'String',
       value: webhookUrl,
       binding: {
@@ -54,7 +54,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
       }
     },
     {
-      label: 'Timeout (seconds)',
+      label: '⏱️ Timeout (seconds)',
       type: 'String',
       value: '30',
       binding: {
@@ -70,7 +70,7 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
     const elementType = mapN8nTypeToElementType(param.type);
 
     const property: ElementTemplateProperty = {
-      label: param.displayName,
+      label: `${getFieldIcon(param.name)} ${param.displayName}`,
       type: elementType,
       value: `\${${param.name}}`,
       binding: {
@@ -105,21 +105,9 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
     properties.push(property);
   }
 
-  // Add payload
-  properties.push({
-    label: 'Payload',
-    type: 'Text',
-    value: generatePayloadTemplate(schema.parameters),
-    binding: {
-      type: 'camunda:inputParameter',
-      name: 'payload'
-    },
-    group: 'input'
-  });
-
   // Add output mapping
   properties.push({
-    label: 'Output Mapping',
+    label: '📤 Output Mapping',
     type: 'Text',
     value: generateOutputMapping(),
     binding: {
@@ -140,9 +128,9 @@ export function generateElementTemplate(schema: OperationSchema): ElementTemplat
       contents: DEFAULT_ICON
     },
     groups: [
-      { id: 'connection', label: 'Connection' },
-      { id: 'input', label: 'Input' },
-      { id: 'output', label: 'Output' }
+      { id: 'connection', label: '⚡ Connection' },
+      { id: 'input', label: '📥 Input' },
+      { id: 'output', label: '📤 Output' }
     ],
     properties
   };
@@ -170,7 +158,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     },
     // Connection group
     {
-      label: 'n8n Webhook URL',
+      label: '🔗 n8n Webhook URL',
       type: 'String',
       value: webhookUrl,
       binding: {
@@ -183,7 +171,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
       }
     },
     {
-      label: 'Timeout (seconds)',
+      label: '⏱️ Timeout (seconds)',
       type: 'String',
       value: '30',
       binding: {
@@ -253,7 +241,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
 
   // Add output mapping
   properties.push({
-    label: 'Output Mapping',
+    label: '📤 Output Mapping',
     type: 'Text',
     value: generateOutputMapping(),
     binding: {
@@ -349,6 +337,96 @@ function generatePayloadExamples(schema: MultiOperationSchema): string {
   examples.push('Edit the payload JSON above to match your operation.');
 
   return examples.join('\n');
+}
+
+/**
+ * Get icon for a field based on its name
+ */
+function getFieldIcon(fieldName: string): string {
+  const name = fieldName.toLowerCase();
+
+  // Email related
+  if (name.includes('email') || name.includes('to') || name.includes('from') || name.includes('cc') || name.includes('bcc')) {
+    return '✉️';
+  }
+
+  // Subject
+  if (name.includes('subject') || name.includes('title')) {
+    return '📝';
+  }
+
+  // Message/Body/Content
+  if (name.includes('message') || name.includes('body') || name.includes('content') || name.includes('text')) {
+    return '💬';
+  }
+
+  // IDs
+  if (name.includes('id') && !name.includes('label')) {
+    return '🔑';
+  }
+
+  // Labels
+  if (name.includes('label')) {
+    return '🏷️';
+  }
+
+  // Thread
+  if (name.includes('thread')) {
+    return '🧵';
+  }
+
+  // Draft
+  if (name.includes('draft')) {
+    return '📄';
+  }
+
+  // Attachments
+  if (name.includes('attach') || name.includes('file')) {
+    return '📎';
+  }
+
+  // Options/Settings
+  if (name.includes('option') || name.includes('setting') || name.includes('config')) {
+    return '⚙️';
+  }
+
+  // Format/Type
+  if (name.includes('format') || name.includes('type')) {
+    return '🎨';
+  }
+
+  // URL/Link
+  if (name.includes('url') || name.includes('link')) {
+    return '🔗';
+  }
+
+  // Date/Time
+  if (name.includes('date') || name.includes('time')) {
+    return '📅';
+  }
+
+  // Name
+  if (name.includes('name')) {
+    return '🏷️';
+  }
+
+  // Filter/Search/Query
+  if (name.includes('filter') || name.includes('search') || name.includes('query')) {
+    return '🔍';
+  }
+
+  // Status/State
+  if (name.includes('status') || name.includes('state')) {
+    return '📊';
+  }
+
+  // Simple/Simplify
+  if (name.includes('simple')) {
+    return '✨';
+  }
+
+  // Default
+  return '📋';
 }
 
 /**
