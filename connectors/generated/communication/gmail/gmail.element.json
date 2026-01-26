@@ -1,0 +1,615 @@
+{
+  "$schema": "https://unpkg.com/@camunda/element-templates-json-schema/resources/schema.json",
+  "name": "Catalyst - Gmail Connector",
+  "id": "io.catalyst.template.gmail",
+  "description": "Gmail integration connector",
+  "version": 2,
+  "appliesTo": [
+    "bpmn:ServiceTask"
+  ],
+  "icon": {
+    "contents": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z'/%3E%3Cpath d='M2 17l10 5 10-5'/%3E%3Cpath d='M2 12l10 5 10-5'/%3E%3C/svg%3E"
+  },
+  "groups": [
+    {
+      "id": "connection",
+      "label": "Connection"
+    },
+    {
+      "id": "operation",
+      "label": "Operation"
+    },
+    {
+      "id": "input",
+      "label": "Parameters"
+    },
+    {
+      "id": "output",
+      "label": "Output"
+    }
+  ],
+  "properties": [
+    {
+      "label": "Implementation",
+      "type": "String",
+      "value": "io.catalyst.bridge.CatalystBridge",
+      "binding": {
+        "type": "property",
+        "name": "camunda:class"
+      }
+    },
+    {
+      "label": "n8n Webhook URL",
+      "type": "String",
+      "value": "http://catalyst-n8n:5678/webhook/catalyst-gmail",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "webhookUrl"
+      },
+      "group": "connection",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Timeout (seconds)",
+      "type": "String",
+      "value": "30",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "timeout"
+      },
+      "group": "connection"
+    },
+    {
+      "id": "resource",
+      "label": "Resource",
+      "type": "Dropdown",
+      "value": "draft",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "resource"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Draft",
+          "value": "draft"
+        },
+        {
+          "name": "Label",
+          "value": "label"
+        },
+        {
+          "name": "Message",
+          "value": "message"
+        },
+        {
+          "name": "Thread",
+          "value": "thread"
+        }
+      ],
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "operation_draft",
+      "label": "Operation",
+      "type": "Dropdown",
+      "value": "delete",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "operation"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Delete",
+          "value": "delete"
+        }
+      ],
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "resource",
+        "equals": "draft"
+      }
+    },
+    {
+      "id": "draft_delete_messageId",
+      "label": "Draft ID",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_draft",
+        "equals": "delete"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "operation_label",
+      "label": "Operation",
+      "type": "Dropdown",
+      "value": "delete",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "operation"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Delete",
+          "value": "delete"
+        },
+        {
+          "name": "Get",
+          "value": "get"
+        },
+        {
+          "name": "Get Many",
+          "value": "getAll"
+        }
+      ],
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "resource",
+        "equals": "label"
+      }
+    },
+    {
+      "id": "label_delete_labelId",
+      "label": "Label ID",
+      "type": "String",
+      "value": "${labelId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_label",
+        "equals": "delete"
+      },
+      "description": "The ID of the label",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "label_get_labelId",
+      "label": "Label ID",
+      "type": "String",
+      "value": "${labelId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_label",
+        "equals": "get"
+      },
+      "description": "The ID of the label",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "label_getAll_returnAll",
+      "label": "Return All",
+      "type": "Dropdown",
+      "value": "false",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "returnAll"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_label",
+        "equals": "getAll"
+      },
+      "description": "Whether to return all results or only up to a given limit",
+      "choices": [
+        {
+          "name": "True",
+          "value": "true"
+        },
+        {
+          "name": "False",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "id": "label_getAll_limit",
+      "label": "Limit",
+      "type": "String",
+      "value": "${limit}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "limit"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_label",
+        "equals": "getAll"
+      },
+      "description": "Max number of results to return"
+    },
+    {
+      "id": "operation_message",
+      "label": "Operation",
+      "type": "Dropdown",
+      "value": "addLabels",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "operation"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Add Label",
+          "value": "addLabels"
+        },
+        {
+          "name": "Delete",
+          "value": "delete"
+        },
+        {
+          "name": "Mark as Read",
+          "value": "markAsRead"
+        },
+        {
+          "name": "Mark as Unread",
+          "value": "markAsUnread"
+        },
+        {
+          "name": "Remove Label",
+          "value": "removeLabels"
+        },
+        {
+          "name": "Send and Wait for Response",
+          "value": "sendAndWait"
+        }
+      ],
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "resource",
+        "equals": "message"
+      }
+    },
+    {
+      "id": "message_addLabels_messageId",
+      "label": "Message ID",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "addLabels"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "message_addLabels_labelIds",
+      "label": "Label Names or IDs",
+      "type": "String",
+      "value": "${labelIds}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelIds"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "addLabels"
+      },
+      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "message_delete_messageId",
+      "label": "Message ID",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "delete"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "message_markAsRead_messageId",
+      "label": "Message ID",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "markAsRead"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "message_markAsUnread_messageId",
+      "label": "Message ID",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "markAsUnread"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "message_removeLabels_messageId",
+      "label": "Message ID",
+      "type": "String",
+      "value": "${messageId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "messageId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "removeLabels"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "message_removeLabels_labelIds",
+      "label": "Label Names or IDs",
+      "type": "String",
+      "value": "${labelIds}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelIds"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_message",
+        "equals": "removeLabels"
+      },
+      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "operation_thread",
+      "label": "Operation",
+      "type": "Dropdown",
+      "value": "addLabels",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "operation"
+      },
+      "group": "operation",
+      "choices": [
+        {
+          "name": "Add Label",
+          "value": "addLabels"
+        },
+        {
+          "name": "Delete",
+          "value": "delete"
+        },
+        {
+          "name": "Remove Label",
+          "value": "removeLabels"
+        },
+        {
+          "name": "Trash",
+          "value": "trash"
+        },
+        {
+          "name": "Untrash",
+          "value": "untrash"
+        }
+      ],
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "resource",
+        "equals": "thread"
+      }
+    },
+    {
+      "id": "thread_addLabels_threadId",
+      "label": "Thread ID",
+      "type": "String",
+      "value": "${threadId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "threadId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "addLabels"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "thread_addLabels_labelIds",
+      "label": "Label Names or IDs",
+      "type": "String",
+      "value": "${labelIds}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelIds"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "addLabels"
+      },
+      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "thread_delete_threadId",
+      "label": "Thread ID",
+      "type": "String",
+      "value": "${threadId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "threadId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "delete"
+      },
+      "description": "The ID of the thread you are operating on",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "thread_removeLabels_threadId",
+      "label": "Thread ID",
+      "type": "String",
+      "value": "${threadId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "threadId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "removeLabels"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "thread_removeLabels_labelIds",
+      "label": "Label Names or IDs",
+      "type": "String",
+      "value": "${labelIds}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelIds"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "removeLabels"
+      },
+      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "thread_trash_threadId",
+      "label": "Thread ID",
+      "type": "String",
+      "value": "${threadId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "threadId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "trash"
+      },
+      "description": "The ID of the thread you are operating on",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "thread_untrash_threadId",
+      "label": "Thread ID",
+      "type": "String",
+      "value": "${threadId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "threadId"
+      },
+      "group": "input",
+      "condition": {
+        "property": "operation_thread",
+        "equals": "untrash"
+      },
+      "description": "The ID of the thread you are operating on",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Payload",
+      "type": "Text",
+      "value": "{\n  \"resource\": \"${resource}\",\n  \"operation\": \"${operation}\",\n  \"labelId\": \"${labelId}\",\n  \"labelIds\": \"${labelIds}\",\n  \"limit\": \"${limit}\",\n  \"messageId\": \"${messageId}\",\n  \"returnAll\": \"${returnAll}\",\n  \"threadId\": \"${threadId}\"\n}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "payload"
+      },
+      "group": "input",
+      "description": "Dynamic JSON payload sent to n8n"
+    },
+    {
+      "label": "Output Mapping",
+      "type": "Text",
+      "value": "{\n  \"success\": \"$.success\",\n  \"statusCode\": \"$.statusCode\",\n  \"error\": \"$.error\"\n}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "outputMapping"
+      },
+      "group": "output"
+    }
+  ]
+}

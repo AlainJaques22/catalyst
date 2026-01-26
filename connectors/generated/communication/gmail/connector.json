@@ -1,0 +1,39 @@
+{
+  "id": "gmail",
+  "name": "Gmail Connector",
+  "description": "Gmail integration connector",
+  "version": "2.0.0",
+  "type": "integration",
+  "multiOperation": true,
+  "operationCount": 15,
+  "resources": [
+    "Draft",
+    "Label",
+    "Message",
+    "Thread"
+  ],
+  "category": "communication",
+  "tags": [
+    "gmail",
+    "integration",
+    "automation"
+  ],
+  "icon": "icons/gmail.svg",
+  "color": "#EA4335",
+  "credentials": [
+    "oAuth2"
+  ],
+  "quality": {
+    "tier": 2,
+    "generated": true,
+    "reviewed": false,
+    "tested": false
+  },
+  "featured": false,
+  "createdAt": "2026-01-26T07:10:08.323Z",
+  "files": {
+    "readme": "README.md",
+    "elementTemplate": "gmail.element.json",
+    "n8nWorkflow": "gmail-template.n8n.json"
+  }
+}
