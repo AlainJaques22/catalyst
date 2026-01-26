@@ -5,7 +5,7 @@
   "version": "2.0.0",
   "type": "integration",
   "multiOperation": true,
-  "operationCount": 15,
+  "operationCount": 26,
   "resources": [
     "Draft",
     "Label",
@@ -24,13 +24,13 @@
     "oAuth2"
   ],
   "quality": {
-    "tier": 2,
+    "tier": 3,
     "generated": true,
     "reviewed": false,
     "tested": false
   },
   "featured": false,
-  "createdAt": "2026-01-26T08:46:15.116Z",
+  "createdAt": "2026-01-26T09:40:18.505Z",
   "files": {
     "readme": "README.md",
     "elementTemplate": "gmail.element.json",

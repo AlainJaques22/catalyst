@@ -6,7 +6,7 @@ Gmail integration connector
 
 This is a multi-operation connector that supports:
 - **Resources**: Draft, Label, Message, Thread
-- **Total Operations**: 15
+- **Total Operations**: 26
 
 ## Setup Instructions
 
@@ -28,10 +28,10 @@ This is a multi-operation connector that supports:
 
 1. Click on the Gmail node
 2. **Select Resource**: Choose from dropdown
-   - Draft: 1 operations
-   - Label: 3 operations
-   - Message: 6 operations
-   - Thread: 5 operations
+   - Draft: 4 operations
+   - Label: 4 operations
+   - Message: 10 operations
+   - Thread: 8 operations
 3. **Select Operation**: Dropdown shows operations for selected resource
 4. **Configure fields**: n8n shows only relevant fields for your operation
    - Variables already mapped: `{{ $json.body.paramName }}`
@@ -51,26 +51,37 @@ This is a multi-operation connector that supports:
 
 ## Supported Operations
 
-### Draft (1 operations)
+### Draft (4 operations)
+- **Create**: Create a draft
 - **Delete**: Delete a draft
+- **Get**: Get a draft
+- **Get Many**: Get many drafts
 
-### Label (3 operations)
+### Label (4 operations)
+- **Create**: Create a label
 - **Delete**: Delete a label
 - **Get**: Get a label info
 - **Get Many**: Get many labels
 
-### Message (6 operations)
+### Message (10 operations)
 - **Add Label**: Add label to message
 - **Delete**: Delete a message
+- **Get**: Get a message
+- **Get Many**: Get many messages
 - **Mark as Read**: Mark a message as read
 - **Mark as Unread**: Mark a message as unread
 - **Remove Label**: Remove label from message
+- **Reply**: Reply to a message
+- **Send**: Send a message
 - **Send and Wait for Response**: Send message and wait for response
 
-### Thread (5 operations)
+### Thread (8 operations)
 - **Add Label**: Add label to thread
 - **Delete**: Delete a thread
+- **Get**: Get a thread
+- **Get Many**: Get many threads
 - **Remove Label**: Remove label from thread
+- **Reply**: Reply to a message
 - **Trash**: Trash a thread
 - **Untrash**: Untrash a thread
 

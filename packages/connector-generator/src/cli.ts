@@ -95,7 +95,7 @@ program
   .command('generate-multi <node>')
   .description('Generate multi-operation connector with all resources and operations')
   .option('-d, --output-dir <dir>', 'Output directory', '../../../connectors/generated')
-  .option('--tier <tier>', 'Max quality tier to include (1-3)', '2')
+  .option('--tier <tier>', 'Max quality tier to include (1-3)', '3')
   .option('--dry-run', 'Preview without writing files')
   .option('-v, --verbose', 'Verbose output')
   .action(async (node: string, options) => {

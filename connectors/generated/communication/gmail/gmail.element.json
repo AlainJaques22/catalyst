@@ -65,7 +65,7 @@
       "id": "operation",
       "label": "Operation",
       "type": "Dropdown",
-      "value": "draft:delete",
+      "value": "draft:create",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "operation"
@@ -73,8 +73,24 @@
       "group": "operation",
       "choices": [
         {
+          "name": "Draft - Create",
+          "value": "draft:create"
+        },
+        {
           "name": "Draft - Delete",
           "value": "draft:delete"
+        },
+        {
+          "name": "Draft - Get",
+          "value": "draft:get"
+        },
+        {
+          "name": "Draft - Get Many",
+          "value": "draft:getAll"
+        },
+        {
+          "name": "Label - Create",
+          "value": "label:create"
         },
         {
           "name": "Label - Delete",
@@ -97,6 +113,14 @@
           "value": "message:delete"
         },
         {
+          "name": "Message - Get",
+          "value": "message:get"
+        },
+        {
+          "name": "Message - Get Many",
+          "value": "message:getAll"
+        },
+        {
           "name": "Message - Mark as Read",
           "value": "message:markAsRead"
         },
@@ -107,6 +131,14 @@
         {
           "name": "Message - Remove Label",
           "value": "message:removeLabels"
+        },
+        {
+          "name": "Message - Reply",
+          "value": "message:reply"
+        },
+        {
+          "name": "Message - Send",
+          "value": "message:send"
         },
         {
           "name": "Message - Send and Wait for Response",
@@ -121,8 +153,20 @@
           "value": "thread:delete"
         },
         {
+          "name": "Thread - Get",
+          "value": "thread:get"
+        },
+        {
+          "name": "Thread - Get Many",
+          "value": "thread:getAll"
+        },
+        {
           "name": "Thread - Remove Label",
           "value": "thread:removeLabels"
+        },
+        {
+          "name": "Thread - Reply",
+          "value": "thread:reply"
         },
         {
           "name": "Thread - Trash",
@@ -138,7 +182,132 @@
       }
     },
     {
-      "id": "draft_delete_messageId",
+      "id": "subject",
+      "label": "Subject",
+      "type": "String",
+      "value": "${subject}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "subject"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "draft:create",
+          "message:send"
+        ]
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "threadNotice",
+      "label": "To reply to an existing thread, specify the exact subject title of that thread.",
+      "type": "String",
+      "value": "${threadNotice}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "threadNotice"
+      },
+      "group": "input",
+      "condition": {
+        "type": "simple",
+        "property": "operation",
+        "equals": "draft:create"
+      }
+    },
+    {
+      "id": "emailType",
+      "label": "Email Type",
+      "type": "Dropdown",
+      "value": "text",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "emailType"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "draft:create",
+          "message:reply",
+          "message:reply",
+          "message:send",
+          "message:send",
+          "thread:reply"
+        ]
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "choices": [
+        {
+          "name": "HTML",
+          "value": "html"
+        },
+        {
+          "name": "Text",
+          "value": "text"
+        }
+      ]
+    },
+    {
+      "id": "message",
+      "label": "Message",
+      "type": "String",
+      "value": "${message}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "message"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "draft:create",
+          "message:reply",
+          "message:send",
+          "thread:reply"
+        ]
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "options",
+      "label": "Options",
+      "type": "Text",
+      "value": "${options}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "options"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "draft:create",
+          "draft:get",
+          "draft:getAll",
+          "label:create",
+          "message:get",
+          "message:getAll",
+          "message:reply",
+          "message:send",
+          "thread:get",
+          "thread:reply"
+        ]
+      }
+    },
+    {
+      "id": "messageId",
       "label": "Draft ID",
       "type": "String",
       "value": "${messageId}",
@@ -148,56 +317,27 @@
       },
       "group": "input",
       "condition": {
-        "type": "simple",
+        "type": "oneOf",
         "property": "operation",
-        "equals": "draft:delete"
+        "oneOf": [
+          "draft:delete",
+          "draft:get",
+          "message:addLabels",
+          "message:delete",
+          "message:get",
+          "message:markAsRead",
+          "message:markAsUnread",
+          "message:removeLabels",
+          "message:reply",
+          "thread:reply"
+        ]
       },
       "constraints": {
         "notEmpty": true
       }
     },
     {
-      "id": "label_delete_labelId",
-      "label": "Label ID",
-      "type": "String",
-      "value": "${labelId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "labelId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "label:delete"
-      },
-      "description": "The ID of the label",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "label_get_labelId",
-      "label": "Label ID",
-      "type": "String",
-      "value": "${labelId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "labelId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "label:get"
-      },
-      "description": "The ID of the label",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "label_getAll_returnAll",
+      "id": "returnAll",
       "label": "Return All",
       "type": "Dropdown",
       "value": "false",
@@ -207,9 +347,14 @@
       },
       "group": "input",
       "condition": {
-        "type": "simple",
+        "type": "oneOf",
         "property": "operation",
-        "equals": "label:getAll"
+        "oneOf": [
+          "draft:getAll",
+          "label:getAll",
+          "message:getAll",
+          "thread:getAll"
+        ]
       },
       "description": "Whether to return all results or only up to a given limit",
       "choices": [
@@ -224,7 +369,7 @@
       ]
     },
     {
-      "id": "label_getAll_limit",
+      "id": "limit",
       "label": "Limit",
       "type": "String",
       "value": "${limit}",
@@ -234,33 +379,62 @@
       },
       "group": "input",
       "condition": {
-        "type": "simple",
+        "type": "oneOf",
         "property": "operation",
-        "equals": "label:getAll"
+        "oneOf": [
+          "draft:getAll",
+          "label:getAll",
+          "message:getAll",
+          "thread:getAll"
+        ]
       },
       "description": "Max number of results to return"
     },
     {
-      "id": "message_addLabels_messageId",
-      "label": "Message ID",
+      "id": "name",
+      "label": "Name",
       "type": "String",
-      "value": "${messageId}",
+      "value": "${name}",
       "binding": {
         "type": "camunda:inputParameter",
-        "name": "messageId"
+        "name": "name"
       },
       "group": "input",
       "condition": {
         "type": "simple",
         "property": "operation",
-        "equals": "message:addLabels"
+        "equals": "label:create"
       },
+      "description": "Label Name",
       "constraints": {
         "notEmpty": true
       }
     },
     {
-      "id": "message_addLabels_labelIds",
+      "id": "labelId",
+      "label": "Label ID",
+      "type": "String",
+      "value": "${labelId}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "labelId"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "label:delete",
+          "label:get"
+        ]
+      },
+      "description": "The ID of the label",
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "labelIds",
       "label": "Label Names or IDs",
       "type": "String",
       "value": "${labelIds}",
@@ -270,9 +444,14 @@
       },
       "group": "input",
       "condition": {
-        "type": "simple",
+        "type": "oneOf",
         "property": "operation",
-        "equals": "message:addLabels"
+        "oneOf": [
+          "message:addLabels",
+          "message:removeLabels",
+          "thread:addLabels",
+          "thread:removeLabels"
+        ]
       },
       "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
       "constraints": {
@@ -280,103 +459,96 @@
       }
     },
     {
-      "id": "message_delete_messageId",
-      "label": "Message ID",
-      "type": "String",
-      "value": "${messageId}",
+      "id": "simple",
+      "label": "Simplify",
+      "type": "Dropdown",
+      "value": "true",
       "binding": {
         "type": "camunda:inputParameter",
-        "name": "messageId"
+        "name": "simple"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "message:get",
+          "message:getAll",
+          "thread:get"
+        ]
+      },
+      "description": "Whether to return a simplified version of the response instead of the raw data",
+      "choices": [
+        {
+          "name": "True",
+          "value": "true"
+        },
+        {
+          "name": "False",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "id": "filtersNotice",
+      "label": "Fetching a lot of messages may take a long time. Consider using filters to speed things up",
+      "type": "String",
+      "value": "${filtersNotice}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "filtersNotice"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "message:getAll",
+          "thread:getAll"
+        ]
+      }
+    },
+    {
+      "id": "filters",
+      "label": "Filters",
+      "type": "Text",
+      "value": "${filters}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "filters"
+      },
+      "group": "input",
+      "condition": {
+        "type": "oneOf",
+        "property": "operation",
+        "oneOf": [
+          "message:getAll",
+          "thread:getAll"
+        ]
+      }
+    },
+    {
+      "id": "sendTo",
+      "label": "To",
+      "type": "String",
+      "value": "${sendTo}",
+      "binding": {
+        "type": "camunda:inputParameter",
+        "name": "sendTo"
       },
       "group": "input",
       "condition": {
         "type": "simple",
         "property": "operation",
-        "equals": "message:delete"
+        "equals": "message:send"
       },
+      "description": "The email addresses of the recipients. Multiple addresses can be separated by a comma. e.g. jay@getsby.com, jon@smith.com.",
       "constraints": {
         "notEmpty": true
       }
     },
     {
-      "id": "message_markAsRead_messageId",
-      "label": "Message ID",
-      "type": "String",
-      "value": "${messageId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "messageId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "message:markAsRead"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "message_markAsUnread_messageId",
-      "label": "Message ID",
-      "type": "String",
-      "value": "${messageId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "messageId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "message:markAsUnread"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "message_removeLabels_messageId",
-      "label": "Message ID",
-      "type": "String",
-      "value": "${messageId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "messageId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "message:removeLabels"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "message_removeLabels_labelIds",
-      "label": "Label Names or IDs",
-      "type": "String",
-      "value": "${labelIds}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "labelIds"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "message:removeLabels"
-      },
-      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_addLabels_threadId",
+      "id": "threadId",
       "label": "Thread ID",
       "type": "String",
       "value": "${threadId}",
@@ -386,129 +558,18 @@
       },
       "group": "input",
       "condition": {
-        "type": "simple",
+        "type": "oneOf",
         "property": "operation",
-        "equals": "thread:addLabels"
+        "oneOf": [
+          "thread:addLabels",
+          "thread:delete",
+          "thread:get",
+          "thread:removeLabels",
+          "thread:reply",
+          "thread:trash",
+          "thread:untrash"
+        ]
       },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_addLabels_labelIds",
-      "label": "Label Names or IDs",
-      "type": "String",
-      "value": "${labelIds}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "labelIds"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "thread:addLabels"
-      },
-      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_delete_threadId",
-      "label": "Thread ID",
-      "type": "String",
-      "value": "${threadId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "threadId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "thread:delete"
-      },
-      "description": "The ID of the thread you are operating on",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_removeLabels_threadId",
-      "label": "Thread ID",
-      "type": "String",
-      "value": "${threadId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "threadId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "thread:removeLabels"
-      },
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_removeLabels_labelIds",
-      "label": "Label Names or IDs",
-      "type": "String",
-      "value": "${labelIds}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "labelIds"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "thread:removeLabels"
-      },
-      "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_trash_threadId",
-      "label": "Thread ID",
-      "type": "String",
-      "value": "${threadId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "threadId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "thread:trash"
-      },
-      "description": "The ID of the thread you are operating on",
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "thread_untrash_threadId",
-      "label": "Thread ID",
-      "type": "String",
-      "value": "${threadId}",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "threadId"
-      },
-      "group": "input",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "thread:untrash"
-      },
-      "description": "The ID of the thread you are operating on",
       "constraints": {
         "notEmpty": true
       }
@@ -516,7 +577,7 @@
     {
       "label": "Payload",
       "type": "Text",
-      "value": "{\n  \"resource\": \"${operation.split(\\\":\\\")[0]}\",\n  \"operation\": \"${operation.split(\\\":\\\")[1]}\",\n  \"labelId\": \"${labelId}\",\n  \"labelIds\": \"${labelIds}\",\n  \"limit\": \"${limit}\",\n  \"messageId\": \"${messageId}\",\n  \"returnAll\": \"${returnAll}\",\n  \"threadId\": \"${threadId}\"\n}",
+      "value": "{\n  \"resource\": \"${operation.split(\\\":\\\")[0]}\",\n  \"operation\": \"${operation.split(\\\":\\\")[1]}\",\n  \"emailType\": \"${emailType}\",\n  \"filters\": \"${filters}\",\n  \"filtersNotice\": \"${filtersNotice}\",\n  \"labelId\": \"${labelId}\",\n  \"labelIds\": \"${labelIds}\",\n  \"limit\": \"${limit}\",\n  \"message\": \"${message}\",\n  \"messageId\": \"${messageId}\",\n  \"name\": \"${name}\",\n  \"options\": \"${options}\",\n  \"returnAll\": \"${returnAll}\",\n  \"sendTo\": \"${sendTo}\",\n  \"simple\": \"${simple}\",\n  \"subject\": \"${subject}\",\n  \"threadId\": \"${threadId}\",\n  \"threadNotice\": \"${threadNotice}\"\n}",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "payload"

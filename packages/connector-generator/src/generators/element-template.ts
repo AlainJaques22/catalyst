@@ -228,62 +228,88 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     }
   });
 
-  // Add parameters for each operation
+  // Collect and deduplicate parameters
+  // Map: paramName -> { param info, operations that use it }
+  const parameterMap = new Map<string, { param: any; operations: string[] }>();
+
   for (const resource of schema.resources) {
     for (const operation of resource.operations) {
       const operationValue = `${resource.value}:${operation.value}`;
 
       for (const param of operation.parameters) {
-        const elementType = mapN8nTypeToElementType(param.type);
-
-        const property: ElementTemplateProperty = {
-          id: `${resource.value}_${operation.value}_${param.name}`,
-          label: param.displayName,
-          type: elementType,
-          value: `\${${param.name}}`,
-          binding: {
-            type: 'camunda:inputParameter',
-            name: param.name
-          },
-          group: 'input',
-          condition: {
-            type: 'simple',
-            property: 'operation',
-            equals: operationValue
-          }
-        };
-
-        if (param.description) {
-          property.description = param.description;
+        if (!parameterMap.has(param.name)) {
+          parameterMap.set(param.name, {
+            param,
+            operations: []
+          });
         }
-
-        if (param.required) {
-          property.constraints = {
-            notEmpty: true
-          };
-        }
-
-        // Handle options/dropdown
-        if (param.type === 'options' && param.options) {
-          property.choices = param.options.map(opt => ({
-            name: opt.name,
-            value: opt.value
-          }));
-          property.value = param.default ?? param.options[0]?.value ?? '';
-        }
-
-        // Handle boolean as dropdown
-        if (param.type === 'boolean') {
-          property.choices = [
-            { name: 'True', value: 'true' },
-            { name: 'False', value: 'false' }
-          ];
-          property.value = param.default?.toString() ?? 'false';
-        }
-
-        properties.push(property);
+        parameterMap.get(param.name)!.operations.push(operationValue);
       }
     }
+  }
+
+  // Add ONE property per unique parameter name
+  for (const [paramName, { param, operations }] of parameterMap.entries()) {
+    const elementType = mapN8nTypeToElementType(param.type);
+
+    const property: ElementTemplateProperty = {
+      id: paramName,
+      label: param.displayName,
+      type: elementType,
+      value: `\${${param.name}}`,
+      binding: {
+        type: 'camunda:inputParameter',
+        name: param.name
+      },
+      group: 'input'
+    };
+
+    // Add condition based on number of operations
+    if (operations.length === 1) {
+      // Single operation uses this parameter
+      property.condition = {
+        type: 'simple',
+        property: 'operation',
+        equals: operations[0]
+      };
+    } else {
+      // Multiple operations use this parameter
+      property.condition = {
+        type: 'oneOf',
+        property: 'operation',
+        oneOf: operations
+      };
+    }
+
+    if (param.description) {
+      property.description = param.description;
+    }
+
+    if (param.required) {
+      property.constraints = {
+        notEmpty: true
+      };
+    }
+
+    // Handle options/dropdown
+    if (param.type === 'options' && param.options) {
+      property.choices = param.options.map((opt: any) => ({
+        name: opt.name,
+        value: opt.value
+      }));
+      property.value = param.default ?? param.options[0]?.value ?? '';
+    }
+
+    // Handle boolean as dropdown
+    if (param.type === 'boolean') {
+      property.choices = [
+        { name: 'True', value: 'true' },
+        { name: 'False', value: 'false' }
+      ];
+      property.value = param.default?.toString() ?? 'false';
+    }
+
+    properties.push(property);
   }
 
   // Add dynamic payload

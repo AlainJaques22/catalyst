@@ -7,7 +7,7 @@ Follow the user tasks to configure this connector step-by-step.
 Each task provides instructions for one setup milestone.
 
 Total resources: 4
-Total operations: 15
+Total operations: 26
     </bpmn:documentation>
 
     <!-- Start Event -->
@@ -33,7 +33,7 @@ Total operations: 15
 ## What This Does:
 The element template provides a user-friendly interface for configuring Gmail Connector operations in your BPMN diagrams. It includes:
 - 4 resources (Draft, Label, Message, Thread)
-- 15 operations
+- 26 operations
 - Dynamic fields that appear based on your selection
 
 Click **Complete** when done.
@@ -77,10 +77,10 @@ Click **Complete** when workflow is imported.
 ## Instructions:
 1. In n8n workflow editor, click on the **Gmail** node
 2. **Select Resource**: Choose from dropdown
-   Draft: 1 operations
-   - Label: 3 operations
-   - Message: 6 operations
-   - Thread: 5 operations
+   Draft: 4 operations
+   - Label: 4 operations
+   - Message: 10 operations
+   - Thread: 8 operations
 
 3. **Select Operation**: Dropdown shows operations for selected resource
 4. **Review Field Mappings**: Variables are already mapped
@@ -119,7 +119,7 @@ Click **Complete** when node is configured and workflow is active.
 3. Click **Apply Template** → "Gmail Connector"
 4. Configure task:
    - Resource: Draft
-   - Operation: Delete
+   - Operation: Create
    - Configure required parameters
 
 ## Deploy & Execute:
@@ -157,31 +157,36 @@ Your Gmail Connector is now ready to use.
 
 ### Available Resources:
 
-**Draft** (1 operations):
+**Draft** (4 operations):
+  - Create: Create a draft
   - Delete: Delete a draft
+  - Get: Get a draft
+  - Get Many: Get many drafts
 
 
-**Label** (3 operations):
+**Label** (4 operations):
+  - Create: Create a label
   - Delete: Delete a label
   - Get: Get a label info
   - Get Many: Get many labels
 
 
-**Message** (6 operations):
+**Message** (10 operations):
   - Add Label: Add label to message
   - Delete: Delete a message
+  - Get: Get a message
+  - Get Many: Get many messages
   - Mark as Read: Mark a message as read
-  - Mark as Unread: Mark a message as unread
-  - Remove Label: Remove label from message
-  ... and 1 more
+  ... and 5 more
 
 
-**Thread** (5 operations):
+**Thread** (8 operations):
   - Add Label: Add label to thread
   - Delete: Delete a thread
+  - Get: Get a thread
+  - Get Many: Get many threads
   - Remove Label: Remove label from thread
-  - Trash: Trash a thread
-  - Untrash: Untrash a thread
+  ... and 3 more
 
 
 ## Tips:

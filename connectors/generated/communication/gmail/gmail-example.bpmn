@@ -3,8 +3,8 @@
   <bpmn:process id="Process_gmail_example" name="Gmail Connector - Example Usage" isExecutable="true" camunda:historyTimeToLive="P1D">
     <bpmn:documentation>Example process showing how to use the Gmail Connector.
 
-This example demonstrates the "Draft - Delete" operation.
-The connector supports 4 resources with 15 total operations.
+This example demonstrates the "Draft - Create" operation.
+The connector supports 4 resources with 26 total operations.
 
 To use a different operation:
 1. Select the Service Task
@@ -20,10 +20,30 @@ Resources available: Draft, Label, Message, Thread
     <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Activity_Input" />
 
     <bpmn:userTask id="Activity_Input" name="Enter Input" camunda:assignee="demo">
-      <bpmn:documentation>Enter the parameters for Draft - Delete</bpmn:documentation>
+      <bpmn:documentation>Enter the parameters for Draft - Create</bpmn:documentation>
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="messageId" label="Draft ID" type="string" defaultValue="">
+          <camunda:formField id="subject" label="Subject" type="string" defaultValue="">
+            <camunda:properties>
+              <camunda:property id="description" value="" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="threadNotice" label="To reply to an existing thread, specify the exact subject title of that thread." type="string" defaultValue="">
+            <camunda:properties>
+              <camunda:property id="description" value="" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="emailType" label="Email Type" type="string" defaultValue="text">
+            <camunda:properties>
+              <camunda:property id="description" value="" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="message" label="Message" type="string" defaultValue="">
+            <camunda:properties>
+              <camunda:property id="description" value="" />
+            </camunda:properties>
+          </camunda:formField>
+          <camunda:formField id="options" label="Options" type="string" defaultValue="[object Object]">
             <camunda:properties>
               <camunda:property id="description" value="" />
             </camunda:properties>
@@ -36,20 +56,24 @@ Resources available: Draft, Label, Message, Thread
     <bpmn:sequenceFlow id="Flow_2" sourceRef="Activity_Input" targetRef="Activity_Service" />
 
     <bpmn:serviceTask id="Activity_Service" name="Gmail Connector" camunda:modelerTemplate="io.catalyst.template.gmail" camunda:modelerTemplateVersion="2" camunda:class="io.catalyst.bridge.CatalystBridge">
-      <bpmn:documentation>Executes Draft - Delete operation.
+      <bpmn:documentation>Executes Draft - Create operation.
 
 To change the operation:
 1. Select this task
 2. In Properties Panel → Operation section
 3. Choose Resource: Draft
-4. Choose Operation: Delete
+4. Choose Operation: Create
 5. Configure parameters (fields change based on operation)</bpmn:documentation>
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="timeout">30</camunda:inputParameter>
           <camunda:inputParameter name="resource">draft</camunda:inputParameter>
-          <camunda:inputParameter name="operation">delete</camunda:inputParameter>
-          <camunda:inputParameter name="messageId">${messageId}</camunda:inputParameter>
+          <camunda:inputParameter name="operation">create</camunda:inputParameter>
+          <camunda:inputParameter name="subject">${subject}</camunda:inputParameter>
+          <camunda:inputParameter name="threadNotice">${threadNotice}</camunda:inputParameter>
+          <camunda:inputParameter name="emailType">${emailType}</camunda:inputParameter>
+          <camunda:inputParameter name="message">${message}</camunda:inputParameter>
+          <camunda:inputParameter name="options">${options}</camunda:inputParameter>
           <camunda:inputParameter name="webhookUrl">http://catalyst-n8n:5678/webhook/catalyst-gmail</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
