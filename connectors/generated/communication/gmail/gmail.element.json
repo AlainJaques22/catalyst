@@ -979,35 +979,6 @@
       ]
     },
     {
-      "id": "message:reply_emailType",
-      "label": "Email Type",
-      "type": "Dropdown",
-      "value": "html",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "emailType"
-      },
-      "group": "group-message:reply",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "message:reply"
-      },
-      "constraints": {
-        "notEmpty": true
-      },
-      "choices": [
-        {
-          "name": "Text",
-          "value": "text"
-        },
-        {
-          "name": "HTML",
-          "value": "html"
-        }
-      ]
-    },
-    {
       "id": "message:reply_message",
       "label": "Message",
       "type": "String",
@@ -1080,35 +1051,6 @@
       "constraints": {
         "notEmpty": true
       }
-    },
-    {
-      "id": "message:send_emailType",
-      "label": "Email Type",
-      "type": "Dropdown",
-      "value": "html",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "emailType"
-      },
-      "group": "group-message:send",
-      "condition": {
-        "type": "simple",
-        "property": "operation",
-        "equals": "message:send"
-      },
-      "constraints": {
-        "notEmpty": true
-      },
-      "choices": [
-        {
-          "name": "Text",
-          "value": "text"
-        },
-        {
-          "name": "HTML",
-          "value": "html"
-        }
-      ]
     },
     {
       "id": "message:send_emailType",

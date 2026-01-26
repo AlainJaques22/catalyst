@@ -173,7 +173,7 @@ function parseOperations(operationsDef, fieldsDef, resourceName) {
  * Extract parameters for a specific operation
  */
 function extractOperationParameters(fieldsDef, resourceName, operationValue) {
-    return fieldsDef
+    const params = fieldsDef
         .filter(field => {
         // Check if field is visible for this resource/operation combination
         const show = field.displayOptions?.show;
@@ -196,6 +196,15 @@ function extractOperationParameters(fieldsDef, resourceName, operationValue) {
             value: opt.value,
         })),
     }));
+    // Deduplicate by parameter name (keep first occurrence)
+    const seen = new Set();
+    return params.filter(param => {
+        if (seen.has(param.name)) {
+            return false;
+        }
+        seen.add(param.name);
+        return true;
+    });
 }
 /**
  * Map n8n field type to generic type string

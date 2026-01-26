@@ -177,7 +177,7 @@ function extractOperationParameters(
   resourceName: string,
   operationValue: string
 ): OperationParameter[] {
-  return fieldsDef
+  const params = fieldsDef
     .filter(field => {
       // Check if field is visible for this resource/operation combination
       const show = field.displayOptions?.show;
@@ -201,6 +201,16 @@ function extractOperationParameters(
         value: opt.value,
       })),
     }));
+
+  // Deduplicate by parameter name (keep first occurrence)
+  const seen = new Set<string>();
+  return params.filter(param => {
+    if (seen.has(param.name)) {
+      return false;
+    }
+    seen.add(param.name);
+    return true;
+  });
 }
 
 /**
