@@ -62,42 +62,10 @@
       "group": "connection"
     },
     {
-      "id": "resource",
-      "label": "Resource",
-      "type": "Dropdown",
-      "value": "draft",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "resource"
-      },
-      "group": "operation",
-      "choices": [
-        {
-          "name": "Draft",
-          "value": "draft"
-        },
-        {
-          "name": "Label",
-          "value": "label"
-        },
-        {
-          "name": "Message",
-          "value": "message"
-        },
-        {
-          "name": "Thread",
-          "value": "thread"
-        }
-      ],
-      "constraints": {
-        "notEmpty": true
-      }
-    },
-    {
-      "id": "operation_draft",
+      "id": "operation",
       "label": "Operation",
       "type": "Dropdown",
-      "value": "create",
+      "value": "draft:create",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "operation"
@@ -105,28 +73,112 @@
       "group": "operation",
       "choices": [
         {
-          "name": "Create",
-          "value": "create"
+          "name": "Draft - Create",
+          "value": "draft:create"
         },
         {
-          "name": "Delete",
-          "value": "delete"
+          "name": "Draft - Delete",
+          "value": "draft:delete"
         },
         {
-          "name": "Get",
-          "value": "get"
+          "name": "Draft - Get",
+          "value": "draft:get"
         },
         {
-          "name": "Get Many",
-          "value": "getAll"
+          "name": "Draft - Get Many",
+          "value": "draft:getAll"
+        },
+        {
+          "name": "Label - Create",
+          "value": "label:create"
+        },
+        {
+          "name": "Label - Delete",
+          "value": "label:delete"
+        },
+        {
+          "name": "Label - Get",
+          "value": "label:get"
+        },
+        {
+          "name": "Label - Get Many",
+          "value": "label:getAll"
+        },
+        {
+          "name": "Message - Add Label",
+          "value": "message:addLabels"
+        },
+        {
+          "name": "Message - Delete",
+          "value": "message:delete"
+        },
+        {
+          "name": "Message - Get",
+          "value": "message:get"
+        },
+        {
+          "name": "Message - Get Many",
+          "value": "message:getAll"
+        },
+        {
+          "name": "Message - Mark as Read",
+          "value": "message:markAsRead"
+        },
+        {
+          "name": "Message - Mark as Unread",
+          "value": "message:markAsUnread"
+        },
+        {
+          "name": "Message - Remove Label",
+          "value": "message:removeLabels"
+        },
+        {
+          "name": "Message - Reply",
+          "value": "message:reply"
+        },
+        {
+          "name": "Message - Send",
+          "value": "message:send"
+        },
+        {
+          "name": "Message - Send and Wait for Response",
+          "value": "message:sendAndWait"
+        },
+        {
+          "name": "Thread - Add Label",
+          "value": "thread:addLabels"
+        },
+        {
+          "name": "Thread - Delete",
+          "value": "thread:delete"
+        },
+        {
+          "name": "Thread - Get",
+          "value": "thread:get"
+        },
+        {
+          "name": "Thread - Get Many",
+          "value": "thread:getAll"
+        },
+        {
+          "name": "Thread - Remove Label",
+          "value": "thread:removeLabels"
+        },
+        {
+          "name": "Thread - Reply",
+          "value": "thread:reply"
+        },
+        {
+          "name": "Thread - Trash",
+          "value": "thread:trash"
+        },
+        {
+          "name": "Thread - Untrash",
+          "value": "thread:untrash"
         }
       ],
       "constraints": {
         "notEmpty": true
-      },
-      "condition": {
-        "property": "resource",
-        "equals": "draft"
       }
     },
     {
@@ -140,8 +192,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "create"
+        "property": "operation",
+        "equals": "draft:create"
       },
       "constraints": {
         "notEmpty": true
@@ -158,8 +210,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "create"
+        "property": "operation",
+        "equals": "draft:create"
       }
     },
     {
@@ -173,8 +225,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "create"
+        "property": "operation",
+        "equals": "draft:create"
       },
       "constraints": {
         "notEmpty": true
@@ -201,8 +253,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "create"
+        "property": "operation",
+        "equals": "draft:create"
       },
       "constraints": {
         "notEmpty": true
@@ -219,8 +271,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "create"
+        "property": "operation",
+        "equals": "draft:create"
       }
     },
     {
@@ -234,8 +286,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "delete"
+        "property": "operation",
+        "equals": "draft:delete"
       },
       "constraints": {
         "notEmpty": true
@@ -252,8 +304,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "get"
+        "property": "operation",
+        "equals": "draft:get"
       },
       "constraints": {
         "notEmpty": true
@@ -270,8 +322,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "get"
+        "property": "operation",
+        "equals": "draft:get"
       }
     },
     {
@@ -285,8 +337,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "draft:getAll"
       },
       "description": "Whether to return all results or only up to a given limit",
       "choices": [
@@ -311,8 +363,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "draft:getAll"
       },
       "description": "Max number of results to return"
     },
@@ -327,44 +379,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_draft",
-        "equals": "getAll"
-      }
-    },
-    {
-      "id": "operation_label",
-      "label": "Operation",
-      "type": "Dropdown",
-      "value": "create",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "operation"
-      },
-      "group": "operation",
-      "choices": [
-        {
-          "name": "Create",
-          "value": "create"
-        },
-        {
-          "name": "Delete",
-          "value": "delete"
-        },
-        {
-          "name": "Get",
-          "value": "get"
-        },
-        {
-          "name": "Get Many",
-          "value": "getAll"
-        }
-      ],
-      "constraints": {
-        "notEmpty": true
-      },
-      "condition": {
-        "property": "resource",
-        "equals": "label"
+        "property": "operation",
+        "equals": "draft:getAll"
       }
     },
     {
@@ -378,8 +394,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_label",
-        "equals": "create"
+        "property": "operation",
+        "equals": "label:create"
       },
       "description": "Label Name",
       "constraints": {
@@ -397,8 +413,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_label",
-        "equals": "create"
+        "property": "operation",
+        "equals": "label:create"
       }
     },
     {
@@ -412,8 +428,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_label",
-        "equals": "delete"
+        "property": "operation",
+        "equals": "label:delete"
       },
       "description": "The ID of the label",
       "constraints": {
@@ -431,8 +447,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_label",
-        "equals": "get"
+        "property": "operation",
+        "equals": "label:get"
       },
       "description": "The ID of the label",
       "constraints": {
@@ -450,8 +466,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_label",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "label:getAll"
       },
       "description": "Whether to return all results or only up to a given limit",
       "choices": [
@@ -476,70 +492,10 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_label",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "label:getAll"
       },
       "description": "Max number of results to return"
-    },
-    {
-      "id": "operation_message",
-      "label": "Operation",
-      "type": "Dropdown",
-      "value": "addLabels",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "operation"
-      },
-      "group": "operation",
-      "choices": [
-        {
-          "name": "Add Label",
-          "value": "addLabels"
-        },
-        {
-          "name": "Delete",
-          "value": "delete"
-        },
-        {
-          "name": "Get",
-          "value": "get"
-        },
-        {
-          "name": "Get Many",
-          "value": "getAll"
-        },
-        {
-          "name": "Mark as Read",
-          "value": "markAsRead"
-        },
-        {
-          "name": "Mark as Unread",
-          "value": "markAsUnread"
-        },
-        {
-          "name": "Remove Label",
-          "value": "removeLabels"
-        },
-        {
-          "name": "Reply",
-          "value": "reply"
-        },
-        {
-          "name": "Send",
-          "value": "send"
-        },
-        {
-          "name": "Send and Wait for Response",
-          "value": "sendAndWait"
-        }
-      ],
-      "constraints": {
-        "notEmpty": true
-      },
-      "condition": {
-        "property": "resource",
-        "equals": "message"
-      }
     },
     {
       "id": "message_addLabels_messageId",
@@ -552,8 +508,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "addLabels"
+        "property": "operation",
+        "equals": "message:addLabels"
       },
       "constraints": {
         "notEmpty": true
@@ -570,8 +526,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "addLabels"
+        "property": "operation",
+        "equals": "message:addLabels"
       },
       "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
       "constraints": {
@@ -589,8 +545,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "delete"
+        "property": "operation",
+        "equals": "message:delete"
       },
       "constraints": {
         "notEmpty": true
@@ -607,8 +563,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "get"
+        "property": "operation",
+        "equals": "message:get"
       },
       "constraints": {
         "notEmpty": true
@@ -625,8 +581,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "get"
+        "property": "operation",
+        "equals": "message:get"
       },
       "description": "Whether to return a simplified version of the response instead of the raw data",
       "choices": [
@@ -651,8 +607,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "get"
+        "property": "operation",
+        "equals": "message:get"
       }
     },
     {
@@ -666,8 +622,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "message:getAll"
       },
       "description": "Whether to return all results or only up to a given limit",
       "choices": [
@@ -692,8 +648,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "message:getAll"
       },
       "description": "Max number of results to return"
     },
@@ -708,8 +664,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "message:getAll"
       },
       "description": "Whether to return a simplified version of the response instead of the raw data",
       "choices": [
@@ -734,8 +690,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "message:getAll"
       }
     },
     {
@@ -749,8 +705,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "message:getAll"
       }
     },
     {
@@ -764,8 +720,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "message:getAll"
       }
     },
     {
@@ -779,8 +735,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "markAsRead"
+        "property": "operation",
+        "equals": "message:markAsRead"
       },
       "constraints": {
         "notEmpty": true
@@ -797,8 +753,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "markAsUnread"
+        "property": "operation",
+        "equals": "message:markAsUnread"
       },
       "constraints": {
         "notEmpty": true
@@ -815,8 +771,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "removeLabels"
+        "property": "operation",
+        "equals": "message:removeLabels"
       },
       "constraints": {
         "notEmpty": true
@@ -833,8 +789,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "removeLabels"
+        "property": "operation",
+        "equals": "message:removeLabels"
       },
       "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
       "constraints": {
@@ -852,8 +808,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "message:reply"
       },
       "constraints": {
         "notEmpty": true
@@ -870,8 +826,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "message:reply"
       },
       "constraints": {
         "notEmpty": true
@@ -898,8 +854,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "message:reply"
       },
       "constraints": {
         "notEmpty": true
@@ -926,8 +882,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "message:reply"
       },
       "constraints": {
         "notEmpty": true
@@ -944,8 +900,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "message:reply"
       }
     },
     {
@@ -959,8 +915,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "send"
+        "property": "operation",
+        "equals": "message:send"
       },
       "description": "The email addresses of the recipients. Multiple addresses can be separated by a comma. e.g. jay@getsby.com, jon@smith.com.",
       "constraints": {
@@ -978,8 +934,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "send"
+        "property": "operation",
+        "equals": "message:send"
       },
       "constraints": {
         "notEmpty": true
@@ -996,8 +952,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "send"
+        "property": "operation",
+        "equals": "message:send"
       },
       "constraints": {
         "notEmpty": true
@@ -1024,8 +980,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "send"
+        "property": "operation",
+        "equals": "message:send"
       },
       "constraints": {
         "notEmpty": true
@@ -1052,8 +1008,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "send"
+        "property": "operation",
+        "equals": "message:send"
       },
       "constraints": {
         "notEmpty": true
@@ -1070,60 +1026,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_message",
-        "equals": "send"
-      }
-    },
-    {
-      "id": "operation_thread",
-      "label": "Operation",
-      "type": "Dropdown",
-      "value": "addLabels",
-      "binding": {
-        "type": "camunda:inputParameter",
-        "name": "operation"
-      },
-      "group": "operation",
-      "choices": [
-        {
-          "name": "Add Label",
-          "value": "addLabels"
-        },
-        {
-          "name": "Delete",
-          "value": "delete"
-        },
-        {
-          "name": "Get",
-          "value": "get"
-        },
-        {
-          "name": "Get Many",
-          "value": "getAll"
-        },
-        {
-          "name": "Remove Label",
-          "value": "removeLabels"
-        },
-        {
-          "name": "Reply",
-          "value": "reply"
-        },
-        {
-          "name": "Trash",
-          "value": "trash"
-        },
-        {
-          "name": "Untrash",
-          "value": "untrash"
-        }
-      ],
-      "constraints": {
-        "notEmpty": true
-      },
-      "condition": {
-        "property": "resource",
-        "equals": "thread"
+        "property": "operation",
+        "equals": "message:send"
       }
     },
     {
@@ -1137,8 +1041,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "addLabels"
+        "property": "operation",
+        "equals": "thread:addLabels"
       },
       "constraints": {
         "notEmpty": true
@@ -1155,8 +1059,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "addLabels"
+        "property": "operation",
+        "equals": "thread:addLabels"
       },
       "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
       "constraints": {
@@ -1174,8 +1078,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "delete"
+        "property": "operation",
+        "equals": "thread:delete"
       },
       "description": "The ID of the thread you are operating on",
       "constraints": {
@@ -1193,8 +1097,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "get"
+        "property": "operation",
+        "equals": "thread:get"
       },
       "description": "The ID of the thread you are operating on",
       "constraints": {
@@ -1212,8 +1116,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "get"
+        "property": "operation",
+        "equals": "thread:get"
       },
       "description": "Whether to return a simplified version of the response instead of the raw data",
       "choices": [
@@ -1238,8 +1142,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "get"
+        "property": "operation",
+        "equals": "thread:get"
       }
     },
     {
@@ -1253,8 +1157,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "thread:getAll"
       },
       "description": "Whether to return all results or only up to a given limit",
       "choices": [
@@ -1279,8 +1183,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "thread:getAll"
       },
       "description": "Max number of results to return"
     },
@@ -1295,8 +1199,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "thread:getAll"
       }
     },
     {
@@ -1310,8 +1214,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "getAll"
+        "property": "operation",
+        "equals": "thread:getAll"
       }
     },
     {
@@ -1325,8 +1229,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "removeLabels"
+        "property": "operation",
+        "equals": "thread:removeLabels"
       },
       "constraints": {
         "notEmpty": true
@@ -1343,8 +1247,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "removeLabels"
+        "property": "operation",
+        "equals": "thread:removeLabels"
       },
       "description": "Choose from the list, or specify IDs using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>",
       "constraints": {
@@ -1362,8 +1266,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "thread:reply"
       },
       "description": "The ID of the thread you are operating on",
       "constraints": {
@@ -1381,8 +1285,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "thread:reply"
       },
       "description": "Choose from the list, or specify an ID using an <a href=\"https://docs.n8n.io/code/expressions/\">expression</a>"
     },
@@ -1397,8 +1301,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "thread:reply"
       },
       "constraints": {
         "notEmpty": true
@@ -1425,8 +1329,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "thread:reply"
       },
       "constraints": {
         "notEmpty": true
@@ -1443,8 +1347,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "reply"
+        "property": "operation",
+        "equals": "thread:reply"
       }
     },
     {
@@ -1458,8 +1362,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "trash"
+        "property": "operation",
+        "equals": "thread:trash"
       },
       "description": "The ID of the thread you are operating on",
       "constraints": {
@@ -1477,8 +1381,8 @@
       },
       "group": "input",
       "condition": {
-        "property": "operation_thread",
-        "equals": "untrash"
+        "property": "operation",
+        "equals": "thread:untrash"
       },
       "description": "The ID of the thread you are operating on",
       "constraints": {
@@ -1488,7 +1392,7 @@
     {
       "label": "Payload",
       "type": "Text",
-      "value": "{\n  \"resource\": \"${resource}\",\n  \"operation\": \"${operation}\",\n  \"emailType\": \"${emailType}\",\n  \"filters\": \"${filters}\",\n  \"filtersNotice\": \"${filtersNotice}\",\n  \"labelId\": \"${labelId}\",\n  \"labelIds\": \"${labelIds}\",\n  \"limit\": \"${limit}\",\n  \"message\": \"${message}\",\n  \"messageId\": \"${messageId}\",\n  \"name\": \"${name}\",\n  \"options\": \"${options}\",\n  \"returnAll\": \"${returnAll}\",\n  \"sendTo\": \"${sendTo}\",\n  \"simple\": \"${simple}\",\n  \"subject\": \"${subject}\",\n  \"threadId\": \"${threadId}\",\n  \"threadNotice\": \"${threadNotice}\"\n}",
+      "value": "{\n  \"resource\": \"${operation.split(\\\":\\\")[0]}\",\n  \"operation\": \"${operation.split(\\\":\\\")[1]}\",\n  \"emailType\": \"${emailType}\",\n  \"filters\": \"${filters}\",\n  \"filtersNotice\": \"${filtersNotice}\",\n  \"labelId\": \"${labelId}\",\n  \"labelIds\": \"${labelIds}\",\n  \"limit\": \"${limit}\",\n  \"message\": \"${message}\",\n  \"messageId\": \"${messageId}\",\n  \"name\": \"${name}\",\n  \"options\": \"${options}\",\n  \"returnAll\": \"${returnAll}\",\n  \"sendTo\": \"${sendTo}\",\n  \"simple\": \"${simple}\",\n  \"subject\": \"${subject}\",\n  \"threadId\": \"${threadId}\",\n  \"threadNotice\": \"${threadNotice}\"\n}",
       "binding": {
         "type": "camunda:inputParameter",
         "name": "payload"

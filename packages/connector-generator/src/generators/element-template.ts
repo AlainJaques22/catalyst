@@ -193,62 +193,46 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
     }
   ];
 
-  // Add resource dropdown if multiple resources
-  if (schema.resources.length > 1) {
-    properties.push({
-      id: 'resource',
-      label: 'Resource',
-      type: 'Dropdown',
-      value: schema.resources[0].value,
-      binding: {
-        type: 'camunda:inputParameter',
-        name: 'resource'
-      },
-      group: 'operation',
-      choices: schema.resources.map(r => ({
-        name: r.name,
-        value: r.value
-      })),
-      constraints: {
-        notEmpty: true
-      }
-    });
+  // Build a single operation dropdown with all operations from all resources
+  // Format: "Resource - Operation" (e.g., "Message - Send", "Draft - Create")
+  const allOperations: Array<{ name: string; value: string; resource: string; operation: string }> = [];
+
+  for (const resource of schema.resources) {
+    for (const operation of resource.operations) {
+      allOperations.push({
+        name: `${resource.name} - ${operation.name}`,
+        value: `${resource.value}:${operation.value}`, // Format: "message:send"
+        resource: resource.value,
+        operation: operation.value
+      });
+    }
   }
 
-  // Add operation dropdowns and parameters for each resource
-  for (const resource of schema.resources) {
-    // Operation dropdown for this resource
-    const operationProperty: ElementTemplateProperty = {
-      id: `operation_${resource.value}`,
-      label: 'Operation',
-      type: 'Dropdown',
-      value: resource.operations[0]?.value || '',
-      binding: {
-        type: 'camunda:inputParameter',
-        name: 'operation'
-      },
-      group: 'operation',
-      choices: resource.operations.map(op => ({
-        name: op.name,
-        value: op.value
-      })),
-      constraints: {
-        notEmpty: true
-      }
-    };
-
-    // Add condition if multiple resources
-    if (schema.resources.length > 1) {
-      operationProperty.condition = {
-        property: 'resource',
-        equals: resource.value
-      };
+  // Single operation dropdown
+  properties.push({
+    id: 'operation',
+    label: 'Operation',
+    type: 'Dropdown',
+    value: allOperations[0]?.value || '',
+    binding: {
+      type: 'camunda:inputParameter',
+      name: 'operation'
+    },
+    group: 'operation',
+    choices: allOperations.map(op => ({
+      name: op.name,
+      value: op.value
+    })),
+    constraints: {
+      notEmpty: true
     }
+  });
 
-    properties.push(operationProperty);
-
-    // Add parameters for each operation
+  // Add parameters for each operation
+  for (const resource of schema.resources) {
     for (const operation of resource.operations) {
+      const operationValue = `${resource.value}:${operation.value}`;
+
       for (const param of operation.parameters) {
         const elementType = mapN8nTypeToElementType(param.type);
 
@@ -263,8 +247,8 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
           },
           group: 'input',
           condition: {
-            property: `operation_${resource.value}`,
-            equals: operation.value
+            property: 'operation',
+            equals: operationValue
           }
         };
 
@@ -349,6 +333,7 @@ export function generateMultiOperationElementTemplate(schema: MultiOperationSche
 /**
  * Generate dynamic payload template for multi-operation schema
  * Includes all possible parameters with variable substitution
+ * Operation format is "resource:operation", so we need to parse it
  */
 function generateMultiOperationPayload(schema: MultiOperationSchema): string {
   // Collect all unique parameter names across all operations
@@ -363,9 +348,10 @@ function generateMultiOperationPayload(schema: MultiOperationSchema): string {
   }
 
   // Build payload object
+  // The operation value is "resource:operation", so we parse it
   const payload: Record<string, string> = {
-    resource: '${resource}',
-    operation: '${operation}'
+    resource: '${operation.split(":")[0]}',
+    operation: '${operation.split(":")[1]}'
   };
 
   // Add all parameters as variables

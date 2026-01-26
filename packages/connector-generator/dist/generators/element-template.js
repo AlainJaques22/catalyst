@@ -172,58 +172,42 @@ function generateMultiOperationElementTemplate(schema) {
             group: 'connection'
         }
     ];
-    // Add resource dropdown if multiple resources
-    if (schema.resources.length > 1) {
-        properties.push({
-            id: 'resource',
-            label: 'Resource',
-            type: 'Dropdown',
-            value: schema.resources[0].value,
-            binding: {
-                type: 'camunda:inputParameter',
-                name: 'resource'
-            },
-            group: 'operation',
-            choices: schema.resources.map(r => ({
-                name: r.name,
-                value: r.value
-            })),
-            constraints: {
-                notEmpty: true
-            }
-        });
-    }
-    // Add operation dropdowns and parameters for each resource
+    // Build a single operation dropdown with all operations from all resources
+    // Format: "Resource - Operation" (e.g., "Message - Send", "Draft - Create")
+    const allOperations = [];
     for (const resource of schema.resources) {
-        // Operation dropdown for this resource
-        const operationProperty = {
-            id: `operation_${resource.value}`,
-            label: 'Operation',
-            type: 'Dropdown',
-            value: resource.operations[0]?.value || '',
-            binding: {
-                type: 'camunda:inputParameter',
-                name: 'operation'
-            },
-            group: 'operation',
-            choices: resource.operations.map(op => ({
-                name: op.name,
-                value: op.value
-            })),
-            constraints: {
-                notEmpty: true
-            }
-        };
-        // Add condition if multiple resources
-        if (schema.resources.length > 1) {
-            operationProperty.condition = {
-                property: 'resource',
-                equals: resource.value
-            };
-        }
-        properties.push(operationProperty);
-        // Add parameters for each operation
         for (const operation of resource.operations) {
+            allOperations.push({
+                name: `${resource.name} - ${operation.name}`,
+                value: `${resource.value}:${operation.value}`, // Format: "message:send"
+                resource: resource.value,
+                operation: operation.value
+            });
+        }
+    }
+    // Single operation dropdown
+    properties.push({
+        id: 'operation',
+        label: 'Operation',
+        type: 'Dropdown',
+        value: allOperations[0]?.value || '',
+        binding: {
+            type: 'camunda:inputParameter',
+            name: 'operation'
+        },
+        group: 'operation',
+        choices: allOperations.map(op => ({
+            name: op.name,
+            value: op.value
+        })),
+        constraints: {
+            notEmpty: true
+        }
+    });
+    // Add parameters for each operation
+    for (const resource of schema.resources) {
+        for (const operation of resource.operations) {
+            const operationValue = `${resource.value}:${operation.value}`;
             for (const param of operation.parameters) {
                 const elementType = (0, type_mapper_1.mapN8nTypeToElementType)(param.type);
                 const property = {
@@ -237,8 +221,8 @@ function generateMultiOperationElementTemplate(schema) {
                     },
                     group: 'input',
                     condition: {
-                        property: `operation_${resource.value}`,
-                        equals: operation.value
+                        property: 'operation',
+                        equals: operationValue
                     }
                 };
                 if (param.description) {
@@ -314,6 +298,7 @@ function generateMultiOperationElementTemplate(schema) {
 /**
  * Generate dynamic payload template for multi-operation schema
  * Includes all possible parameters with variable substitution
+ * Operation format is "resource:operation", so we need to parse it
  */
 function generateMultiOperationPayload(schema) {
     // Collect all unique parameter names across all operations
@@ -326,9 +311,10 @@ function generateMultiOperationPayload(schema) {
         }
     }
     // Build payload object
+    // The operation value is "resource:operation", so we parse it
     const payload = {
-        resource: '${resource}',
-        operation: '${operation}'
+        resource: '${operation.split(":")[0]}',
+        operation: '${operation.split(":")[1]}'
     };
     // Add all parameters as variables
     for (const paramName of Array.from(allParams).sort()) {
