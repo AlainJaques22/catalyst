@@ -1,0 +1,3 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, IHttpRequestMethods, ILoadOptionsFunctions, IPollFunctions, ITriggerFunctions } from 'n8n-workflow';
+export declare function togglApiRequest(this: ITriggerFunctions | IPollFunctions | IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, query?: IDataObject, uri?: string): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

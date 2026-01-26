@@ -1,0 +1,5 @@
+import type { INodeProperties, INodePropertyOptions } from 'n8n-workflow';
+export declare const resource: INodePropertyOptions;
+export declare const operations: INodeProperties[];
+export declare const fields: INodeProperties[];
+//# sourceMappingURL=LocaleDescription.d.ts.map

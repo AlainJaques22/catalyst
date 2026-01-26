@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class AwsSqs implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getQueues(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=AwsSqs.node.d.ts.map

@@ -1,0 +1,7 @@
+import type { ICredentialDataDecryptedObject, ICredentialTestFunctions, IDataObject, IExecuteFunctions, ILoadOptionsFunctions, IHookFunctions, IWebhookFunctions } from 'n8n-workflow';
+export declare function linearApiRequest(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions, body?: any, option?: IDataObject): Promise<any>;
+export declare function capitalizeFirstLetter(data: string): string;
+export declare function linearApiRequestAllItems(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions, propertyName: string, body?: any, limit?: number): Promise<any>;
+export declare function validateCredentials(this: ICredentialTestFunctions, decryptedCredentials: ICredentialDataDecryptedObject): Promise<any>;
+export declare const sort: (a: any, b: any) => 1 | 0 | -1;
+//# sourceMappingURL=GenericFunctions.d.ts.map

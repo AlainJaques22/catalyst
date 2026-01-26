@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const unsubscribeOperations: INodeProperties[];
+export declare const unsubscribeFields: INodeProperties[];
+//# sourceMappingURL=UnsubscribeDescription.d.ts.map

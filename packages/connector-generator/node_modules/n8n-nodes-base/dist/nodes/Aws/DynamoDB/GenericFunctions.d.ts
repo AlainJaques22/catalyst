@@ -1,0 +1,6 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, ILoadOptionsFunctions, IWebhookFunctions, INodeExecutionData, IHttpRequestMethods } from 'n8n-workflow';
+import type { IRequestBody } from './types';
+export declare function awsApiRequest(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions, service: string, method: IHttpRequestMethods, path: string, body?: object | IRequestBody, headers?: object): Promise<any>;
+export declare function awsApiRequestAllItems(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions, service: string, method: IHttpRequestMethods, path: string, body?: IRequestBody, headers?: object): Promise<any>;
+export declare function copyInputItem(item: INodeExecutionData, properties: string[]): IDataObject;
+//# sourceMappingURL=GenericFunctions.d.ts.map

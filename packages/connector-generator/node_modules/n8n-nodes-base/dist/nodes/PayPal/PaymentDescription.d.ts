@@ -1,0 +1,6 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const payoutOperations: INodeProperties[];
+export declare const payoutFields: INodeProperties[];
+export declare const payoutItemOperations: INodeProperties[];
+export declare const payoutItemFields: INodeProperties[];
+//# sourceMappingURL=PaymentDescription.d.ts.map

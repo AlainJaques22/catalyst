@@ -1,0 +1,9 @@
+import type { ILoadOptionsFunctions, INodePropertyOptions } from 'n8n-workflow';
+export declare function getTimeOffTypeID(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getCompanyFileCategories(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getEmployeeDocumentCategories(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getEmployeeLocations(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getDepartments(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getDivisions(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getEmployeeFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+//# sourceMappingURL=loadOptions.d.ts.map

@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const noticelistOperations: INodeProperties[];
+export declare const noticelistFields: INodeProperties[];
+//# sourceMappingURL=NoticelistDescription.d.ts.map

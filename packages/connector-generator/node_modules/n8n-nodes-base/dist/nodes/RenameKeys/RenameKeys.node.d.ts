@@ -1,0 +1,6 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class RenameKeys implements INodeType {
+    description: INodeTypeDescription;
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=RenameKeys.node.d.ts.map

@@ -1,0 +1,7 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+export declare class HttpRequestV2 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=HttpRequestV2.node.d.ts.map

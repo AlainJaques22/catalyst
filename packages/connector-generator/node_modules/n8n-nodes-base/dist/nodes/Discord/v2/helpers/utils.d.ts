@@ -1,0 +1,37 @@
+import FormData from 'form-data';
+import type { IDataObject, IExecuteFunctions, INode, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
+export declare const createSimplifyFunction: (includedFields: string[]) => (item: IDataObject) => IDataObject;
+export declare function parseDiscordError(this: IExecuteFunctions, error: any, itemIndex?: number): NodeOperationError;
+export declare function prepareErrorData(this: IExecuteFunctions, error: any, i: number): import("n8n-workflow").NodeExecutionWithMetadata[];
+export declare function prepareOptions(options: IDataObject, guildId?: string): IDataObject;
+export declare function prepareEmbeds(this: IExecuteFunctions, embeds: IDataObject[]): IDataObject[];
+export declare function prepareMultiPartForm(this: IExecuteFunctions, items: INodeExecutionData[], files: IDataObject[], jsonPayload: IDataObject, i: number): Promise<FormData>;
+export declare function checkAccessToGuild(node: INode, guildId: string, userGuilds: IDataObject[], itemIndex?: number): void;
+export declare function checkAccessToChannel(this: IExecuteFunctions, channelId: string, userGuilds: IDataObject[], itemIndex?: number): Promise<void>;
+export declare function setupChannelGetter(this: IExecuteFunctions, userGuilds: IDataObject[]): Promise<(i: number) => Promise<string>>;
+export declare function sendDiscordMessage(this: IExecuteFunctions, { guildId, userGuilds, isOAuth2, body, items, files, itemIndex, }: {
+    guildId: string;
+    userGuilds: IDataObject[];
+    isOAuth2: boolean;
+    body: IDataObject;
+    items: INodeExecutionData[];
+    files?: IDataObject[];
+    itemIndex?: number;
+}): Promise<import("n8n-workflow").NodeExecutionWithMetadata[]>;
+export declare function createSendAndWaitMessageBody(context: IExecuteFunctions): {
+    embeds: {
+        description: string;
+        color: number;
+    }[];
+    components: {
+        type: number;
+        components: {
+            type: number;
+            style: number;
+            label: string;
+            url: string;
+        }[];
+    }[];
+};
+//# sourceMappingURL=utils.d.ts.map

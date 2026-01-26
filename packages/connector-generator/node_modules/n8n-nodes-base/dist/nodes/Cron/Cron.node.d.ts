@@ -1,0 +1,6 @@
+import type { ITriggerFunctions, INodeType, INodeTypeDescription, ITriggerResponse } from 'n8n-workflow';
+export declare class Cron implements INodeType {
+    description: INodeTypeDescription;
+    trigger(this: ITriggerFunctions): Promise<ITriggerResponse>;
+}
+//# sourceMappingURL=Cron.node.d.ts.map

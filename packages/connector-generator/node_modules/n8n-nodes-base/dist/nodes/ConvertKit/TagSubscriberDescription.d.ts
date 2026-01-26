@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const tagSubscriberOperations: INodeProperties[];
+export declare const tagSubscriberFields: INodeProperties[];
+//# sourceMappingURL=TagSubscriberDescription.d.ts.map

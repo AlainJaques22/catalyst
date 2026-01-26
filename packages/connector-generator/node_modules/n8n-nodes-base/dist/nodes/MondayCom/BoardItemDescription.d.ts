@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const boardItemOperations: INodeProperties[];
+export declare const boardItemFields: INodeProperties[];
+//# sourceMappingURL=BoardItemDescription.d.ts.map

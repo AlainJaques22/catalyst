@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const endOfDayDataOperations: INodeProperties[];
+export declare const endOfDayDataFields: INodeProperties[];
+//# sourceMappingURL=EndOfDayDataDescription.d.ts.map

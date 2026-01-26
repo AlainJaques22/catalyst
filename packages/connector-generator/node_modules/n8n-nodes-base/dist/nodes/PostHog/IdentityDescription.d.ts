@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const identityOperations: INodeProperties[];
+export declare const identityFields: INodeProperties[];
+//# sourceMappingURL=IdentityDescription.d.ts.map

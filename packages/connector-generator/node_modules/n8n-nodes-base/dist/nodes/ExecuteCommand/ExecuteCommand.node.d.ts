@@ -1,0 +1,12 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export interface IExecReturnData {
+    exitCode: number;
+    error?: Error;
+    stderr: string;
+    stdout: string;
+}
+export declare class ExecuteCommand implements INodeType {
+    description: INodeTypeDescription;
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=ExecuteCommand.node.d.ts.map

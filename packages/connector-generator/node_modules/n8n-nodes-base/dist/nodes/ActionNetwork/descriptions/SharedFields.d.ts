@@ -1,0 +1,8 @@
+import type { INodeProperties } from 'n8n-workflow';
+import type { Operation, Resource, LanguageOptions } from '../types';
+export declare const languageOptions: LanguageOptions;
+export declare const eventAdditionalFieldsOptions: INodeProperties['options'];
+export declare const personAdditionalFieldsOptions: INodeProperties['options'];
+export declare const petitionAdditionalFieldsOptions: INodeProperties[];
+export declare const makeSimpleField: (resource: Resource, operation: Operation) => INodeProperties;
+//# sourceMappingURL=SharedFields.d.ts.map

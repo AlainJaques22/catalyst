@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const storyManagementOperations: INodeProperties[];
+export declare const storyManagementFields: INodeProperties[];
+//# sourceMappingURL=StoryManagementDescription.d.ts.map

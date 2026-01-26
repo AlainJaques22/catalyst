@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class LinkedIn implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getPersonUrn(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=LinkedIn.node.d.ts.map

@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const issueCommentOperations: INodeProperties[];
+export declare const issueCommentFields: INodeProperties[];
+//# sourceMappingURL=IssueCommentDescription.d.ts.map

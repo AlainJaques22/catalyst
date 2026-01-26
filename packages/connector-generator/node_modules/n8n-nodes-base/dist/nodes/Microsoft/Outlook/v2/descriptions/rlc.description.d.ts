@@ -1,0 +1,9 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const calendarRLC: INodeProperties;
+export declare const contactRLC: INodeProperties;
+export declare const draftRLC: INodeProperties;
+export declare const messageRLC: INodeProperties;
+export declare const eventRLC: INodeProperties;
+export declare const folderRLC: INodeProperties;
+export declare const attachmentRLC: INodeProperties;
+//# sourceMappingURL=rlc.description.d.ts.map

@@ -1,0 +1,2 @@
+export declare const BASE_URL = "https://public-api.lonescale.com";
+//# sourceMappingURL=constants.d.ts.map

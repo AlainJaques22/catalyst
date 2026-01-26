@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const contactJourneyOperations: INodeProperties[];
+export declare const contactJourneyFields: INodeProperties[];
+//# sourceMappingURL=ContactJourneyDescription.d.ts.map

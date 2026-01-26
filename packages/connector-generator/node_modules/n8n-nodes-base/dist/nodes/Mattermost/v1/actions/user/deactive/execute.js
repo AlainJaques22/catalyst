@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deactive = deactive;
+const transport_1 = require("../../../transport");
+async function deactive(index) {
+    const userId = this.getNodeParameter('userId', index);
+    const qs = {};
+    const requestMethod = 'DELETE';
+    const endpoint = `users/${userId}`;
+    const body = {};
+    const responseData = await transport_1.apiRequest.call(this, requestMethod, endpoint, body, qs);
+    return this.helpers.returnJsonArray(responseData);
+}
+//# sourceMappingURL=execute.js.map

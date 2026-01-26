@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const ecommerceProductOperations: INodeProperties[];
+export declare const ecommerceProductFields: INodeProperties[];
+//# sourceMappingURL=EcommerceProductDescription.d.ts.map

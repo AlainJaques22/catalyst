@@ -1,0 +1,8 @@
+import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class PostHogApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+}
+//# sourceMappingURL=PostHogApi.credentials.d.ts.map

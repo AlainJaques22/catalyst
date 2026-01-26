@@ -1,0 +1,24 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IDataObject, IHookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function mailjetApiRequest(this: IExecuteFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, path: string, body?: any, qs?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+export declare function mailjetApiRequestAllItems(this: IExecuteFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, endpoint: string, body?: any, query?: IDataObject): Promise<any>;
+export declare function validateJSON(json: string | undefined): IDataObject | undefined;
+export interface IMessage {
+    From?: {
+        Email?: string;
+        Name?: string;
+    };
+    Subject?: string;
+    To?: IDataObject[];
+    Cc?: IDataObject[];
+    Bcc?: IDataObject[];
+    Variables?: IDataObject;
+    TemplateLanguage?: boolean;
+    TemplateID?: number;
+    HTMLPart?: string;
+    TextPart?: string;
+    TrackOpens?: string;
+    ReplyTo?: IDataObject;
+    TrackClicks?: string;
+    Priority?: number;
+}
+//# sourceMappingURL=GenericFunctions.d.ts.map

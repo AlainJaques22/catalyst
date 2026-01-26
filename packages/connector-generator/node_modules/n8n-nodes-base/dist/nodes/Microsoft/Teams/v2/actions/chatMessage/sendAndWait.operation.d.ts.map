@@ -1,0 +1,1 @@
+{"version":3,"file":"sendAndWait.operation.d.ts","sourceRoot":"","sources":["../../../../../../../nodes/Microsoft/Teams/v2/actions/chatMessage/sendAndWait.operation.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,eAAe,EAAE,iBAAiB,EAAE,MAAM,cAAc,CAAC;AAUvE,eAAO,MAAM,WAAW,EAAE,eAAe,EASJ,CAAC;AAEtC,wBAAsB,OAAO,CAAC,IAAI,EAAE,iBAAiB,EAAE,CAAC,EAAE,MAAM,EAAE,UAAU,EAAE,MAAM,gBAuBnF"}

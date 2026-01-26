@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendErrorPostReceive = sendErrorPostReceive;
+const n8n_workflow_1 = require("n8n-workflow");
+async function sendErrorPostReceive(data, response) {
+    if (String(response.statusCode).startsWith('4') || String(response.statusCode).startsWith('5')) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), response);
+    }
+    return data;
+}
+//# sourceMappingURL=GenericFunctions.js.map

@@ -1,0 +1,8 @@
+import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class BaserowApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+}
+//# sourceMappingURL=BaserowApi.credentials.d.ts.map

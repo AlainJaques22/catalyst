@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const chargeOperations: INodeProperties[];
+export declare const chargeFields: INodeProperties[];
+//# sourceMappingURL=ChargeDescription.d.ts.map

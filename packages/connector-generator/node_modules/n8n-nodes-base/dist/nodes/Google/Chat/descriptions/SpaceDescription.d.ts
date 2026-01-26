@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const spaceOperations: INodeProperties[];
+export declare const spaceFields: INodeProperties[];
+//# sourceMappingURL=SpaceDescription.d.ts.map

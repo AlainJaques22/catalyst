@@ -1,0 +1,3 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, ILoadOptionsFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function lineApiRequest(this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions, method: IHttpRequestMethods, _resource: string, body?: any, qs?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

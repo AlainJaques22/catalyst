@@ -1,0 +1,8 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const returnAllOrLimit: INodeProperties[];
+export declare const folderFields: {
+    name: string;
+    value: string;
+}[];
+export declare const contactFields: INodeProperties[];
+//# sourceMappingURL=common.descriptions.d.ts.map

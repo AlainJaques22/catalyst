@@ -1,0 +1,33 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateGarbageMemory = exports.runGarbageCollector = void 0;
+const v8_1 = require("v8");
+const vm_1 = require("vm");
+const runGarbageCollector = () => {
+    try {
+        (0, v8_1.setFlagsFromString)('--expose_gc');
+        const gc = (0, vm_1.runInNewContext)('gc'); // nocommit
+        gc();
+    }
+    catch (error) {
+        console.error(error);
+    }
+};
+exports.runGarbageCollector = runGarbageCollector;
+const generateGarbageMemory = (sizeInMB, onHeap = true) => {
+    const divider = onHeap ? 8 : 1;
+    const size = Math.max(1, Math.floor((sizeInMB * 1024 * 1024) / divider));
+    if (onHeap) {
+        // arrays are allocated on the heap
+        // size in this case is only an approximation...
+        const array = Array(size);
+        array.fill(0);
+    }
+    else {
+        const array = new Uint8Array(size);
+        array.fill(0);
+    }
+    return { ...process.memoryUsage() };
+};
+exports.generateGarbageMemory = generateGarbageMemory;
+//# sourceMappingURL=functions.js.map

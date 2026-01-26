@@ -1,0 +1,38 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.moceanApiRequest = moceanApiRequest;
+const n8n_workflow_1 = require("n8n-workflow");
+/**
+ * Make an API request to Twilio
+ *
+ */
+async function moceanApiRequest(method, endpoint, body, query) {
+    const credentials = await this.getCredentials('moceanApi');
+    if (query === undefined) {
+        query = {};
+    }
+    if (method === 'POST') {
+        body['mocean-api-key'] = credentials['mocean-api-key'];
+        body['mocean-api-secret'] = credentials['mocean-api-secret'];
+        body['mocean-resp-format'] = 'JSON';
+    }
+    else if (method === 'GET') {
+        query['mocean-api-key'] = credentials['mocean-api-key'];
+        query['mocean-api-secret'] = credentials['mocean-api-secret'];
+        query['mocean-resp-format'] = 'JSON';
+    }
+    const options = {
+        method,
+        form: body,
+        qs: query,
+        uri: `https://rest.moceanapi.com${endpoint}`,
+        json: true,
+    };
+    try {
+        return await this.helpers.request(options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+//# sourceMappingURL=GenericFunctions.js.map

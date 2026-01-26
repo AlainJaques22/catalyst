@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const programAffiliateOperations: INodeProperties[];
+export declare const programAffiliateFields: INodeProperties[];
+//# sourceMappingURL=ProgramAffiliateDescription.d.ts.map

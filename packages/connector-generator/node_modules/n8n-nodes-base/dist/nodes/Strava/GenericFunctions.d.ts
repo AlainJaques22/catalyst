@@ -1,0 +1,4 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, IHttpRequestMethods, ILoadOptionsFunctions, IWebhookFunctions } from 'n8n-workflow';
+export declare function stravaApiRequest(this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions | IWebhookFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, qs?: IDataObject, uri?: string, headers?: IDataObject): Promise<any>;
+export declare function stravaApiRequestAllItems(this: IHookFunctions | ILoadOptionsFunctions | IExecuteFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, query?: IDataObject): Promise<IDataObject[]>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

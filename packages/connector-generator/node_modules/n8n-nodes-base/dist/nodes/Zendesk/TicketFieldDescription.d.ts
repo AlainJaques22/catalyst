@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const ticketFieldOperations: INodeProperties[];
+export declare const ticketFieldFields: INodeProperties[];
+//# sourceMappingURL=TicketFieldDescription.d.ts.map

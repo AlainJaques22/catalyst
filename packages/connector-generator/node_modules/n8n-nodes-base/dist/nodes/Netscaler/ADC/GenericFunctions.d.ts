@@ -1,0 +1,3 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IDataObject, IHookFunctions, IWebhookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function netscalerADCApiRequest(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, qs?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"fields.js","sourceRoot":"","sources":["../../../../nodes/DataTable/common/fields.ts"],"names":[],"mappings":";;;AAEa,QAAA,mBAAmB,GAAG,aAAa,CAAC;AAEpC,QAAA,OAAO,GAAG;IACtB,WAAW,EAAE,SAAS;IACtB,IAAI,EAAE,QAAQ;IACd,IAAI,EAAE,SAAS;IACf,OAAO,EAAE,KAAK;IACd,WAAW,EACV,gGAAgG;CACvE,CAAC"}

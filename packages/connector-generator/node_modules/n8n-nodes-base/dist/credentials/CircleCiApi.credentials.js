@@ -1,0 +1,19 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CircleCiApi = void 0;
+class CircleCiApi {
+    name = 'circleCiApi';
+    displayName = 'CircleCI API';
+    documentationUrl = 'circleci';
+    properties = [
+        {
+            displayName: 'Personal API Token',
+            name: 'apiKey',
+            type: 'string',
+            typeOptions: { password: true },
+            default: '',
+        },
+    ];
+}
+exports.CircleCiApi = CircleCiApi;
+//# sourceMappingURL=CircleCiApi.credentials.js.map

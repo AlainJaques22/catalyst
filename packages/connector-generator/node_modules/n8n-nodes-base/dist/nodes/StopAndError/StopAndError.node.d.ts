@@ -1,0 +1,6 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class StopAndError implements INodeType {
+    description: INodeTypeDescription;
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=StopAndError.node.d.ts.map

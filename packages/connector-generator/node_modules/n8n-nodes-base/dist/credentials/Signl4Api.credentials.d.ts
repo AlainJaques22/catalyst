@@ -1,0 +1,8 @@
+import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class Signl4Api implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+}
+//# sourceMappingURL=Signl4Api.credentials.d.ts.map

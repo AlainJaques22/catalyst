@@ -1,0 +1,3 @@
+import type { INodeProperties, INodePropertyCollection, INodePropertyOptions } from 'n8n-workflow';
+export declare const rabbitDefaultOptions: Array<INodePropertyOptions | INodeProperties | INodePropertyCollection>;
+//# sourceMappingURL=DefaultOptions.d.ts.map

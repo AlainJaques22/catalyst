@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const feedOperations: INodeProperties[];
+export declare const feedFields: INodeProperties[];
+//# sourceMappingURL=FeedDescription.d.ts.map

@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const hubOperations: INodeProperties[];
+export declare const hubFields: INodeProperties[];
+//# sourceMappingURL=HubDescription.d.ts.map

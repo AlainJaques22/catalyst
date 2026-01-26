@@ -1,0 +1,15 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export interface IGoogleAuthCredentials {
+    email: string;
+    privateKey: string;
+}
+export declare class GoogleTranslate implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getLanguages(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=GoogleTranslate.node.d.ts.map

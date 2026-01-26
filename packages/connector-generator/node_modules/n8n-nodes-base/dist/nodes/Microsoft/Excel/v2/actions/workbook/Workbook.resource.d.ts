@@ -1,0 +1,7 @@
+import type { INodeProperties } from 'n8n-workflow';
+import * as addWorksheet from './addWorksheet.operation';
+import * as deleteWorkbook from './deleteWorkbook.operation';
+import * as getAll from './getAll.operation';
+export { addWorksheet, deleteWorkbook, getAll };
+export declare const description: INodeProperties[];
+//# sourceMappingURL=Workbook.resource.d.ts.map

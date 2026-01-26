@@ -1,0 +1,1 @@
+{"version":3,"file":"Limit.node.d.ts","sourceRoot":"","sources":["../../../../nodes/Transform/Limit/Limit.node.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACX,iBAAiB,EACjB,kBAAkB,EAClB,SAAS,EACT,oBAAoB,EACpB,MAAM,cAAc,CAAC;AAGtB,qBAAa,KAAM,YAAW,SAAS;IACtC,WAAW,EAAE,oBAAoB,CA0C/B;IAEI,OAAO,CAAC,IAAI,EAAE,iBAAiB,GAAG,OAAO,CAAC,kBAAkB,EAAE,EAAE,CAAC;CAiBvE"}

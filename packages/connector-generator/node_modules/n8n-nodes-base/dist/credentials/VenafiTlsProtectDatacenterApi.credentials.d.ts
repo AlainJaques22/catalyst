@@ -1,0 +1,12 @@
+import type { IAuthenticateGeneric, ICredentialDataDecryptedObject, ICredentialType, IHttpRequestHelper, INodeProperties } from 'n8n-workflow';
+export declare class VenafiTlsProtectDatacenterApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+    preAuthentication(this: IHttpRequestHelper, credentials: ICredentialDataDecryptedObject): Promise<{
+        token: string;
+    }>;
+    authenticate: IAuthenticateGeneric;
+}
+//# sourceMappingURL=VenafiTlsProtectDatacenterApi.credentials.d.ts.map

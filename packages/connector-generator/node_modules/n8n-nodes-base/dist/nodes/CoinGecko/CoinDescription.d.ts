@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const coinOperations: INodeProperties[];
+export declare const coinFields: INodeProperties[];
+//# sourceMappingURL=CoinDescription.d.ts.map

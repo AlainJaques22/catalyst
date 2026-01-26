@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const eventDisplay: INodeProperties;
+export declare const eventNameField: INodeProperties;
+//# sourceMappingURL=OnfleetWebhookDescription.d.ts.map

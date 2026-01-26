@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const auditOperations: INodeProperties[];
+export declare const auditFields: INodeProperties[];
+//# sourceMappingURL=AuditDescription.d.ts.map

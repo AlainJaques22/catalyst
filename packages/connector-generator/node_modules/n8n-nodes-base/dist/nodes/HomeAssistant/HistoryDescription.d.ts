@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const historyOperations: INodeProperties[];
+export declare const historyFields: INodeProperties[];
+//# sourceMappingURL=HistoryDescription.d.ts.map

@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const exchangeOperations: INodeProperties[];
+export declare const exchangeFields: INodeProperties[];
+//# sourceMappingURL=ExchangeDescription.d.ts.map

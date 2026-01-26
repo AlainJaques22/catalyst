@@ -1,0 +1,1 @@
+{"version":3,"file":"PaymentInteface.js","sourceRoot":"","sources":["../../../nodes/PayPal/PaymentInteface.ts"],"names":[],"mappings":";;;AAAa,QAAA,cAAc,GAAG;IAC7B,KAAK,EAAE,OAAO;IACd,KAAK,EAAE,OAAO;IACd,QAAQ,EAAE,WAAW;CACZ,CAAC;AAIE,QAAA,gBAAgB,GAAG;IAC/B,MAAM,EAAE,QAAQ;IAChB,KAAK,EAAE,OAAO;CACL,CAAC"}

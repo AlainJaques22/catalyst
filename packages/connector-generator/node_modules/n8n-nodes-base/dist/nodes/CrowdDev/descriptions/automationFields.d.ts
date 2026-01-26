@@ -1,0 +1,5 @@
+import type { INodeProperties } from 'n8n-workflow';
+declare const automationOperations: INodeProperties;
+declare const automationFields: INodeProperties[];
+export { automationOperations, automationFields };
+//# sourceMappingURL=automationFields.d.ts.map

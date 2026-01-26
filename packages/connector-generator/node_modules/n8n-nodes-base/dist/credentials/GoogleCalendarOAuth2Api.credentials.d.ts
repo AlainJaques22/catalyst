@@ -1,0 +1,9 @@
+import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class GoogleCalendarOAuth2Api implements ICredentialType {
+    name: string;
+    extends: string[];
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+}
+//# sourceMappingURL=GoogleCalendarOAuth2Api.credentials.d.ts.map

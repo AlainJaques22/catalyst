@@ -1,0 +1,6 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class GraphQL implements INodeType {
+    description: INodeTypeDescription;
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=GraphQL.node.d.ts.map

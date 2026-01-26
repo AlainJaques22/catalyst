@@ -1,0 +1,7 @@
+import type { IDataObject, IExecuteFunctions, ILoadOptionsFunctions, IHookFunctions, IWebhookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+import type { IMessage } from './MessageInterface';
+import type { IStream } from './StreamInterface';
+import type { IUser } from './UserInterface';
+export declare function zulipApiRequest(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: IMessage | IStream | IUser, query?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+export declare function validateJSON(json: string | undefined): any;
+//# sourceMappingURL=GenericFunctions.d.ts.map

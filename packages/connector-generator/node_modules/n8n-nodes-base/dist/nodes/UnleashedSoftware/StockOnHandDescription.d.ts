@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const stockOnHandOperations: INodeProperties[];
+export declare const stockOnHandFields: INodeProperties[];
+//# sourceMappingURL=StockOnHandDescription.d.ts.map

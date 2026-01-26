@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.vonageApiRequest = vonageApiRequest;
+const n8n_workflow_1 = require("n8n-workflow");
+async function vonageApiRequest(method, path, body = {}, qs = {}, _option = {}) {
+    const credentials = await this.getCredentials('vonageApi');
+    body.api_key = credentials.apiKey;
+    body.api_secret = credentials.apiSecret;
+    const options = {
+        method,
+        form: body,
+        qs,
+        uri: `https://rest.nexmo.com${path}`,
+        json: true,
+    };
+    try {
+        if (Object.keys(body).length === 0) {
+            delete options.body;
+        }
+        return await this.helpers.request.call(this, options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+//# sourceMappingURL=GenericFunctions.js.map

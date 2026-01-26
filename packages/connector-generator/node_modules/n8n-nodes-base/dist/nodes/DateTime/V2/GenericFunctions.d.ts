@@ -1,0 +1,7 @@
+import { DateTime } from 'luxon';
+import type { IExecuteFunctions } from 'n8n-workflow';
+export declare function parseDate(this: IExecuteFunctions, date: string | number | DateTime, options?: Partial<{
+    timezone: string;
+    fromFormat: string;
+}>): DateTime;
+//# sourceMappingURL=GenericFunctions.d.ts.map

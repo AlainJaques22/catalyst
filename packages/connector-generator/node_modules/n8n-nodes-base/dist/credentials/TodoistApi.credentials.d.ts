@@ -1,0 +1,10 @@
+import type { IAuthenticateGeneric, ICredentialTestRequest, ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class TodoistApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+    authenticate: IAuthenticateGeneric;
+    test: ICredentialTestRequest;
+}
+//# sourceMappingURL=TodoistApi.credentials.d.ts.map

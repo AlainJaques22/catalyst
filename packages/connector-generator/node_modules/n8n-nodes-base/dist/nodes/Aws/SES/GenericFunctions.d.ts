@@ -1,0 +1,6 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, ILoadOptionsFunctions, IWebhookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function awsApiRequest(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions, service: string, method: IHttpRequestMethods, path: string, body?: string, headers?: object): Promise<any>;
+export declare function awsApiRequestREST(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions, service: string, method: IHttpRequestMethods, path: string, body?: string, headers?: object): Promise<any>;
+export declare function awsApiRequestSOAP(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions, service: string, method: IHttpRequestMethods, path: string, body?: string, headers?: object): Promise<any>;
+export declare function awsApiRequestSOAPAllItems(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions, propertyName: string, service: string, method: IHttpRequestMethods, path: string, body?: string, query?: IDataObject, _headers?: IDataObject, _option?: IDataObject, _region?: string): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

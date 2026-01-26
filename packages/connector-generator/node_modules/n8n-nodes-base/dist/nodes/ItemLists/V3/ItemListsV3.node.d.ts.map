@@ -1,0 +1,1 @@
+{"version":3,"file":"ItemListsV3.node.d.ts","sourceRoot":"","sources":["../../../../nodes/ItemLists/V3/ItemListsV3.node.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACX,iBAAiB,EACjB,SAAS,EACT,wBAAwB,EACxB,oBAAoB,EACpB,MAAM,cAAc,CAAC;AAKtB,qBAAa,WAAY,YAAW,SAAS;IAC5C,WAAW,EAAE,oBAAoB,CAAC;gBAEtB,eAAe,EAAE,wBAAwB;IAO/C,OAAO,CAAC,IAAI,EAAE,iBAAiB;CAGrC"}

@@ -1,0 +1,30 @@
+import type { IDataObject } from 'n8n-workflow';
+export type SetNodeOptions = {
+    dotNotation?: boolean;
+    ignoreConversionErrors?: boolean;
+    include?: IncludeMods;
+    includeBinary?: boolean;
+    stripBinary?: boolean;
+};
+export type SetField = {
+    name: string;
+    type: 'stringValue' | 'numberValue' | 'booleanValue' | 'arrayValue' | 'objectValue';
+    stringValue?: string;
+    numberValue?: number;
+    booleanValue?: boolean;
+    arrayValue?: string[] | string | IDataObject | IDataObject[];
+    objectValue?: string | IDataObject;
+};
+export type AssignmentSetField = {
+    name: string;
+    value: unknown;
+    type: string;
+};
+export declare const INCLUDE: {
+    readonly ALL: "all";
+    readonly NONE: "none";
+    readonly SELECTED: "selected";
+    readonly EXCEPT: "except";
+};
+export type IncludeMods = (typeof INCLUDE)[keyof typeof INCLUDE];
+//# sourceMappingURL=interfaces.d.ts.map

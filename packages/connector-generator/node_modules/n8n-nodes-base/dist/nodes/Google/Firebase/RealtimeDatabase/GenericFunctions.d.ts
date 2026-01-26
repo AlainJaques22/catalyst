@@ -1,0 +1,4 @@
+import type { IDataObject, IExecuteFunctions, IHttpRequestMethods, ILoadOptionsFunctions } from 'n8n-workflow';
+export declare function googleApiRequest(this: IExecuteFunctions | ILoadOptionsFunctions, projectId: string, method: IHttpRequestMethods, resource: string, body?: any, qs?: IDataObject, headers?: IDataObject, uri?: string | null): Promise<any>;
+export declare function googleApiRequestAllItems(this: IExecuteFunctions | ILoadOptionsFunctions, projectId: string, method: IHttpRequestMethods, resource: string, body?: any, qs?: IDataObject, _headers?: IDataObject, uri?: string | null): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

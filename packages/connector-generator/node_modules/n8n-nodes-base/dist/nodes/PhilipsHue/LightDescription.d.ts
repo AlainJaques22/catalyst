@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const lightOperations: INodeProperties[];
+export declare const lightFields: INodeProperties[];
+//# sourceMappingURL=LightDescription.d.ts.map

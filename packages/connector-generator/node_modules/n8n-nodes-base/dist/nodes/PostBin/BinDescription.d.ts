@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const binOperations: INodeProperties[];
+export declare const binFields: INodeProperties[];
+//# sourceMappingURL=BinDescription.d.ts.map

@@ -1,0 +1,7 @@
+import type { INodePropertyOptions } from 'n8n-workflow';
+export declare const CHART_TYPE_OPTIONS: INodePropertyOptions[];
+export declare const HORIZONTAL_CHARTS: string[];
+export declare const ITEM_STYLE_CHARTS: string[];
+export declare const Fill_CHARTS: string[];
+export declare const POINT_STYLE_CHARTS: string[];
+//# sourceMappingURL=constants.d.ts.map

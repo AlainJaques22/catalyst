@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class LoneScale implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getLists(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=LoneScale.node.d.ts.map

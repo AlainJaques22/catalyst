@@ -1,0 +1,1 @@
+{"version":3,"file":"sendAndWait.operation.d.ts","sourceRoot":"","sources":["../../../../nodes/EmailSend/v2/sendAndWait.operation.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAEX,iBAAiB,EACjB,kBAAkB,EAClB,eAAe,EACf,MAAM,cAAc,CAAC;AAetB,eAAO,MAAM,WAAW,EAAE,eAAe,EAGxC,CAAC;AAEF,wBAAsB,OAAO,CAAC,IAAI,EAAE,iBAAiB,GAAG,OAAO,CAAC,kBAAkB,EAAE,EAAE,CAAC,CAmCtF"}

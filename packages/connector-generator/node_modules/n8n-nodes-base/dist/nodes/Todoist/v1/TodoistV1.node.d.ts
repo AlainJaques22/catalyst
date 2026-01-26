@@ -1,0 +1,19 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodeListSearchResult, INodePropertyOptions, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+export declare class TodoistV1 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    methods: {
+        listSearch: {
+            searchProjects(this: ILoadOptionsFunctions): Promise<INodeListSearchResult>;
+            searchLabels(this: ILoadOptionsFunctions): Promise<INodeListSearchResult>;
+        };
+        loadOptions: {
+            getProjects(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getSections(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getItems(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getLabels(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=TodoistV1.node.d.ts.map

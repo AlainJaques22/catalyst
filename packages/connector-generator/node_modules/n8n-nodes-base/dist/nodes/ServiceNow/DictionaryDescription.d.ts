@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const dictionaryOperations: INodeProperties[];
+export declare const dictionaryFields: INodeProperties[];
+//# sourceMappingURL=DictionaryDescription.d.ts.map

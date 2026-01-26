@@ -1,0 +1,6 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const workbookRLC: INodeProperties;
+export declare const worksheetRLC: INodeProperties;
+export declare const tableRLC: INodeProperties;
+export declare const rawDataOutput: INodeProperties;
+//# sourceMappingURL=common.descriptions.d.ts.map

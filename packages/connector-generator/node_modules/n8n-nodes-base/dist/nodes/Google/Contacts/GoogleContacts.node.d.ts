@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class GoogleContacts implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getGroups(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=GoogleContacts.node.d.ts.map

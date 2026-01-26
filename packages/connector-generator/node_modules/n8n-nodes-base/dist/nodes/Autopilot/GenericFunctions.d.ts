@@ -1,0 +1,4 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IDataObject, IHookFunctions, IWebhookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function autopilotApiRequest(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: any, query?: IDataObject, uri?: string, _option?: IDataObject): Promise<any>;
+export declare function autopilotApiRequestAllItems(this: IExecuteFunctions | ILoadOptionsFunctions, propertyName: string, method: IHttpRequestMethods, endpoint: string, body?: any, query?: IDataObject): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

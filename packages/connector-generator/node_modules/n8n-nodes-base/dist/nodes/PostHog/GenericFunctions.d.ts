@@ -1,0 +1,41 @@
+import type { IDataObject, IExecuteFunctions, IHttpRequestMethods, ILoadOptionsFunctions } from 'n8n-workflow';
+export declare function posthogApiRequest(this: IExecuteFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, path: string, body?: any, qs?: IDataObject, _option?: {}): Promise<any>;
+export interface IEvent {
+    event: string;
+    properties: {
+        [key: string]: any;
+    };
+}
+export interface IAlias {
+    type: string;
+    event: string;
+    properties: {
+        [key: string]: any;
+    };
+    context: {
+        [key: string]: any;
+    };
+}
+export interface ITrack {
+    type: string;
+    event: string;
+    name: string;
+    messageId?: string;
+    distinct_id: string;
+    category?: string;
+    properties: {
+        [key: string]: any;
+    };
+    context: {
+        [key: string]: any;
+    };
+}
+export interface IIdentity {
+    event: string;
+    messageId?: string;
+    distinct_id: string;
+    properties: {
+        [key: string]: any;
+    };
+}
+//# sourceMappingURL=GenericFunctions.d.ts.map

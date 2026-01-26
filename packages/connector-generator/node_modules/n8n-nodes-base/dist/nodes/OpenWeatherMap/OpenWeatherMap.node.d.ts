@@ -1,0 +1,6 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class OpenWeatherMap implements INodeType {
+    description: INodeTypeDescription;
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=OpenWeatherMap.node.d.ts.map

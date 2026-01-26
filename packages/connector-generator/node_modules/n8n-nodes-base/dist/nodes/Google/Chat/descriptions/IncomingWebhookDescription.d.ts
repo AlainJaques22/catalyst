@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const incomingWebhookOperations: INodeProperties[];
+export declare const incomingWebhookFields: INodeProperties[];
+//# sourceMappingURL=IncomingWebhookDescription.d.ts.map

@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const videoOperations: INodeProperties[];
+export declare const videoFields: INodeProperties[];
+//# sourceMappingURL=VideoDescription.d.ts.map

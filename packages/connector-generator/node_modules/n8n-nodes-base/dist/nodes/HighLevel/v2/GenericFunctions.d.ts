@@ -1,0 +1,21 @@
+import type { DeclarativeRestApiSettings, IDataObject, IExecuteFunctions, IExecutePaginationFunctions, IExecuteSingleFunctions, IHookFunctions, IHttpRequestMethods, IHttpRequestOptions, ILoadOptionsFunctions, IN8nHttpFullResponse, INodeExecutionData, INodePropertyOptions, IPollFunctions, IWebhookFunctions } from 'n8n-workflow';
+export declare function isEmailValid(email: string): boolean;
+export declare function isPhoneValid(phone: string): boolean;
+export declare function dateToIsoSupressMillis(dateTime: string): string;
+export declare function taskPostReceiceAction(this: IExecuteSingleFunctions, items: INodeExecutionData[], _response: IN8nHttpFullResponse): Promise<INodeExecutionData[]>;
+export declare function dueDatePreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function contactIdentifierPreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function validEmailAndPhonePreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function dateTimeToEpochPreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function addLocationIdPreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function highLevelApiRequest(this: IExecuteFunctions | IExecuteSingleFunctions | IWebhookFunctions | IPollFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, qs?: IDataObject, url?: string, option?: IDataObject): Promise<any>;
+export declare const addNotePostReceiveAction: (this: IExecuteSingleFunctions, items: INodeExecutionData[], response: IN8nHttpFullResponse) => Promise<INodeExecutionData[]>;
+export declare function taskUpdatePreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function splitTagsPreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+export declare function highLevelApiPagination(this: IExecutePaginationFunctions, requestData: DeclarativeRestApiSettings.ResultOptions): Promise<INodeExecutionData[]>;
+export declare function getPipelineStages(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getPipelines(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getContacts(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+export declare function addCustomFieldsPreSendAction(this: IExecuteSingleFunctions, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

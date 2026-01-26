@@ -1,0 +1,15 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+import { driveSearch, fileSearch, folderSearch } from './SearchFunctions';
+export declare class GoogleDriveV1 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    methods: {
+        listSearch: {
+            fileSearch: typeof fileSearch;
+            folderSearch: typeof folderSearch;
+            driveSearch: typeof driveSearch;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=GoogleDriveV1.node.d.ts.map

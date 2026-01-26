@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendyApiRequest = sendyApiRequest;
+const n8n_workflow_1 = require("n8n-workflow");
+async function sendyApiRequest(method, path, body = {}, qs = {}, _option = {}) {
+    const credentials = await this.getCredentials('sendyApi');
+    body.api_key = credentials.apiKey;
+    body.boolean = true;
+    const options = {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        method,
+        form: body,
+        qs,
+        uri: `${credentials.url}${path}`,
+    };
+    try {
+        return await this.helpers.request.call(this, options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+//# sourceMappingURL=GenericFunctions.js.map

@@ -1,0 +1,13 @@
+import { type IExecuteFunctions, type ILoadOptionsFunctions, type INodeExecutionData, type INodePropertyOptions, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
+export declare class ConvertKit implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getTags(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getForms(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getSequences(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=ConvertKit.node.d.ts.map

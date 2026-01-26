@@ -1,0 +1,12 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class QuickBase implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getTableFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getUniqueTableFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=QuickBase.node.d.ts.map

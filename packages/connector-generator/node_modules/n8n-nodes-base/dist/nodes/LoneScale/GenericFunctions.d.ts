@@ -1,0 +1,3 @@
+import { type IHttpRequestMethods, type IDataObject, type IExecuteFunctions, type IHookFunctions, type ILoadOptionsFunctions, type IWebhookFunctions } from 'n8n-workflow';
+export declare function lonescaleApiRequest(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, query?: IDataObject, uri?: string): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

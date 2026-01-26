@@ -1,0 +1,7 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IDataObject, INodePropertyOptions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function serviceNowApiRequest(this: IExecuteFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: any, qs?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+export declare function serviceNowRequestAllItems(this: IExecuteFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: any, query?: IDataObject): Promise<any>;
+export declare function serviceNowDownloadAttachment(this: IExecuteFunctions, endpoint: string, fileName: string, contentType: string): Promise<import("n8n-workflow").IBinaryData>;
+export declare const mapEndpoint: (resource: string, _operation: string) => string | undefined;
+export declare const sortData: (returnData: INodePropertyOptions[]) => INodePropertyOptions[];
+//# sourceMappingURL=GenericFunctions.d.ts.map

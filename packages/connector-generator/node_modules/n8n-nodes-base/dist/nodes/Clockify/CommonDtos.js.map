@@ -1,0 +1,1 @@
+{"version":3,"file":"CommonDtos.js","sourceRoot":"","sources":["../../../nodes/Clockify/CommonDtos.ts"],"names":[],"mappings":";;AAKA,MAAM,kBAAkB,GAAG;IAC1B,OAAO,EAAE,SAAS;IAClB,MAAM,EAAE,QAAQ;IAChB,QAAQ,EAAE,UAAU;IACpB,QAAQ,EAAE,UAAU;CACX,CAAC;AAIX,MAAM,YAAY,GAAG;IACpB,MAAM,EAAE,QAAQ;IAChB,IAAI,EAAE,MAAM;CACH,CAAC"}

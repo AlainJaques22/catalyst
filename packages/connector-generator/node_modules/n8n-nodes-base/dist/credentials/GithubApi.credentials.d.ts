@@ -1,0 +1,10 @@
+import type { IAuthenticateGeneric, ICredentialTestRequest, ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class GithubApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+    authenticate: IAuthenticateGeneric;
+    test: ICredentialTestRequest;
+}
+//# sourceMappingURL=GithubApi.credentials.d.ts.map

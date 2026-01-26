@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const folderMessageOperations: INodeProperties[];
+export declare const folderMessageFields: INodeProperties[];
+//# sourceMappingURL=FolderMessageDecription.d.ts.map

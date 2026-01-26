@@ -1,0 +1,17 @@
+export type DocumentProperties = {
+    customProperty: Array<{
+        field: string;
+        value: string;
+    }>;
+};
+type DocFields = Array<{
+    name: string;
+    value: string;
+}>;
+export declare const processNames: (docFields: DocFields) => {
+    name: string;
+    value: string;
+}[];
+export declare const toSQL: (operator: string) => string;
+export {};
+//# sourceMappingURL=utils.d.ts.map

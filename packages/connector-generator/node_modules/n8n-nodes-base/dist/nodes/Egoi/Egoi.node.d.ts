@@ -1,0 +1,13 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Egoi implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getLists(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getExtraFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getListTags(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Egoi.node.d.ts.map

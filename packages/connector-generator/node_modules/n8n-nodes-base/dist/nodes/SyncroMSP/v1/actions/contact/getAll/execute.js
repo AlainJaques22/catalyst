@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAll = getAll;
+const transport_1 = require("../../../transport");
+async function getAll(index) {
+    const returnAll = this.getNodeParameter('returnAll', index);
+    const qs = {};
+    const requestMethod = 'GET';
+    const endpoint = 'contacts';
+    const body = {};
+    let responseData;
+    if (returnAll) {
+        responseData = await transport_1.apiRequestAllItems.call(this, requestMethod, endpoint, body, qs);
+        return this.helpers.returnJsonArray(responseData);
+    }
+    else {
+        const limit = this.getNodeParameter('limit', index);
+        responseData = await transport_1.apiRequest.call(this, requestMethod, endpoint, body, qs);
+        return this.helpers.returnJsonArray(responseData.contacts.splice(0, limit));
+    }
+}
+//# sourceMappingURL=execute.js.map

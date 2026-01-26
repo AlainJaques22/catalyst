@@ -1,0 +1,5 @@
+import type { INodeProperties } from 'n8n-workflow';
+import * as search from './search.operation';
+export { search };
+export declare const description: INodeProperties[];
+//# sourceMappingURL=UserActivity.resource.d.ts.map

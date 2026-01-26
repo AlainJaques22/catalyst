@@ -1,0 +1,7 @@
+import type { INodeProperties } from 'n8n-workflow';
+import * as del from './del';
+import * as post from './post';
+import * as postEphemeral from './postEphemeral';
+export { del as delete, post, postEphemeral };
+export declare const descriptions: INodeProperties[];
+//# sourceMappingURL=index.d.ts.map

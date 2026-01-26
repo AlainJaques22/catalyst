@@ -1,0 +1,11 @@
+import type { IWebhookFunctions, INodeTypeDescription, IWebhookResponseData } from 'n8n-workflow';
+import { Node } from 'n8n-workflow';
+export declare class Webhook extends Node {
+    authPropertyName: string;
+    description: INodeTypeDescription;
+    webhook(context: IWebhookFunctions): Promise<IWebhookResponseData>;
+    private validateAuth;
+    private handleFormData;
+    private handleBinaryData;
+}
+//# sourceMappingURL=Webhook.node.d.ts.map

@@ -1,0 +1,18 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+import { getWorkspaces } from './GenericFunctions';
+export declare class Asana implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getWorkspaces: typeof getWorkspaces;
+            getProjects(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getSections(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTeams(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTags(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTaskFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Asana.node.d.ts.map

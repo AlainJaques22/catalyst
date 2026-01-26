@@ -1,0 +1,7 @@
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+export declare class MergeV1 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=MergeV1.node.d.ts.map

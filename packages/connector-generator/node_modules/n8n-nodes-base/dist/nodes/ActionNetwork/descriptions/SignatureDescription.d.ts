@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const signatureOperations: INodeProperties[];
+export declare const signatureFields: INodeProperties[];
+//# sourceMappingURL=SignatureDescription.d.ts.map

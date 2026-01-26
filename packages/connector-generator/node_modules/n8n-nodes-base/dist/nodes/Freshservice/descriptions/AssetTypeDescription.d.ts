@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const assetTypeOperations: INodeProperties[];
+export declare const assetTypeFields: INodeProperties[];
+//# sourceMappingURL=AssetTypeDescription.d.ts.map

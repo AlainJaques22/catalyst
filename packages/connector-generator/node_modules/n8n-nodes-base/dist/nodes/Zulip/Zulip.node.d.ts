@@ -1,0 +1,13 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Zulip implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getStreams(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTopics(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Zulip.node.d.ts.map

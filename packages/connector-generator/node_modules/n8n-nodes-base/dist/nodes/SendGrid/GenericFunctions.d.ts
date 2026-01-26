@@ -1,0 +1,4 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, IHttpRequestMethods, ILoadOptionsFunctions } from 'n8n-workflow';
+export declare function sendGridApiRequest(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions, endpoint: string, method: IHttpRequestMethods, body?: any, qs?: IDataObject, option?: IDataObject): Promise<any>;
+export declare function sendGridApiRequestAllItems(this: IExecuteFunctions | ILoadOptionsFunctions, endpoint: string, method: IHttpRequestMethods, propertyName: string, body?: any, query?: IDataObject): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

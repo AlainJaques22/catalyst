@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.figmaApiRequest = figmaApiRequest;
+const n8n_workflow_1 = require("n8n-workflow");
+async function figmaApiRequest(method, resource, body = {}, _qs = {}, uri, option = {}) {
+    const credentials = await this.getCredentials('figmaApi');
+    let options = {
+        headers: { 'X-FIGMA-TOKEN': credentials.accessToken },
+        method,
+        body,
+        uri: uri || `https://api.figma.com${resource}`,
+        json: true,
+    };
+    options = Object.assign({}, options, option);
+    if (Object.keys(options.body).length === 0) {
+        delete options.body;
+    }
+    try {
+        return await this.helpers.request(options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+//# sourceMappingURL=GenericFunctions.js.map

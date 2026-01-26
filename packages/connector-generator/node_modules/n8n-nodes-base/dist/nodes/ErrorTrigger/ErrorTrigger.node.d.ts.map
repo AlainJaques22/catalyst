@@ -1,0 +1,1 @@
+{"version":3,"file":"ErrorTrigger.node.d.ts","sourceRoot":"","sources":["../../../nodes/ErrorTrigger/ErrorTrigger.node.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACX,iBAAiB,EACjB,kBAAkB,EAClB,SAAS,EACT,oBAAoB,EACpB,MAAM,cAAc,CAAC;AAGtB,qBAAa,YAAa,YAAW,SAAS;IAC7C,WAAW,EAAE,oBAAoB,CA0B/B;IAEI,OAAO,CAAC,IAAI,EAAE,iBAAiB,GAAG,OAAO,CAAC,kBAAkB,EAAE,EAAE,CAAC;CA2CvE"}

@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Cloudflare implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getZones(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Cloudflare.node.d.ts.map

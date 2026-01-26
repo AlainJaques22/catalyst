@@ -1,0 +1,3 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IDataObject } from 'n8n-workflow';
+export declare function submitForm(this: IExecuteFunctions | ILoadOptionsFunctions, resourceName: string, form: IDataObject): Promise<any>;
+//# sourceMappingURL=FormFunctions.d.ts.map

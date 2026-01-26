@@ -1,0 +1,3 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const javascriptCodeDescription: INodeProperties[];
+//# sourceMappingURL=JavascriptCodeDescription.d.ts.map

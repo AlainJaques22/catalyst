@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const timeEntryTagOperations: INodeProperties[];
+export declare const timeEntryTagFields: INodeProperties[];
+//# sourceMappingURL=TimeEntryTagDescription.d.ts.map

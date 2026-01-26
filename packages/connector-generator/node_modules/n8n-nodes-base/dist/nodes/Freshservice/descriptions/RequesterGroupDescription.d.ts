@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const requesterGroupOperations: INodeProperties[];
+export declare const requesterGroupFields: INodeProperties[];
+//# sourceMappingURL=RequesterGroupDescription.d.ts.map

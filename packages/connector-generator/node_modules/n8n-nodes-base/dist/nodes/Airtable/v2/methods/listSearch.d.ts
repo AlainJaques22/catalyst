@@ -1,0 +1,5 @@
+import type { ILoadOptionsFunctions, INodeListSearchResult } from 'n8n-workflow';
+export declare function baseSearch(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function tableSearch(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function viewSearch(this: ILoadOptionsFunctions, filter?: string): Promise<INodeListSearchResult>;
+//# sourceMappingURL=listSearch.d.ts.map

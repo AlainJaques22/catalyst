@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const certificateRequestOperations: INodeProperties[];
+export declare const certificateRequestFields: INodeProperties[];
+//# sourceMappingURL=CertificateRequestDescription.d.ts.map

@@ -1,0 +1,13 @@
+import { type IExecuteFunctions, type ILoadOptionsFunctions, type INodeExecutionData, type INodePropertyOptions, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
+export declare class SendGrid implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getCustomFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getListIds(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTemplateIds(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=SendGrid.node.d.ts.map

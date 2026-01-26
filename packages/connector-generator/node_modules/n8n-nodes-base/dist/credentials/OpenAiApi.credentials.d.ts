@@ -1,0 +1,10 @@
+import type { ICredentialDataDecryptedObject, ICredentialTestRequest, ICredentialType, IHttpRequestOptions, INodeProperties } from 'n8n-workflow';
+export declare class OpenAiApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+    test: ICredentialTestRequest;
+    authenticate(credentials: ICredentialDataDecryptedObject, requestOptions: IHttpRequestOptions): Promise<IHttpRequestOptions>;
+}
+//# sourceMappingURL=OpenAiApi.credentials.d.ts.map

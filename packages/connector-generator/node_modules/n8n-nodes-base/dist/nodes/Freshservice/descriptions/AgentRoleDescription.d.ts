@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const agentRoleOperations: INodeProperties[];
+export declare const agentRoleFields: INodeProperties[];
+//# sourceMappingURL=AgentRoleDescription.d.ts.map

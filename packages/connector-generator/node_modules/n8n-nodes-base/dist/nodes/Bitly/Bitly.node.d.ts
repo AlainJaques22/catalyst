@@ -1,0 +1,12 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Bitly implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getGroups(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTags(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Bitly.node.d.ts.map

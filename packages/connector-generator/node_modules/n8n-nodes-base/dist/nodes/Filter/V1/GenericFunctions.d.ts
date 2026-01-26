@@ -1,0 +1,6 @@
+import type { INode, NodeParameterValue } from 'n8n-workflow';
+export declare const compareOperationFunctions: {
+    [key: string]: (value1: NodeParameterValue, value2: NodeParameterValue) => boolean;
+};
+export declare const convertDateTime: (node: INode, value: NodeParameterValue) => number;
+//# sourceMappingURL=GenericFunctions.d.ts.map

@@ -1,0 +1,4 @@
+import type { IDisplayOptions, INodeProperties } from 'n8n-workflow';
+export declare const text: (displayOptions: IDisplayOptions) => INodeProperties[];
+export declare const blocks: (resource: string, operation: string) => INodeProperties[];
+//# sourceMappingURL=Blocks.d.ts.map

@@ -1,0 +1,14 @@
+import type { IExecuteFunctions, ICredentialsDecrypted, ICredentialTestFunctions, INodeCredentialTestResult, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+import { loadOptions } from './methods';
+export declare class SyncroMspV1 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    methods: {
+        loadOptions: typeof loadOptions;
+        credentialTest: {
+            syncroMspApiCredentialTest(this: ICredentialTestFunctions, credential: ICredentialsDecrypted): Promise<INodeCredentialTestResult>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<import("n8n-workflow").INodeExecutionData[][]>;
+}
+//# sourceMappingURL=SyncroMspV1.node.d.ts.map

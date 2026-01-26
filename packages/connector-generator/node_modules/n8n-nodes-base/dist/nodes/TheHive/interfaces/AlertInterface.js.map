@@ -1,0 +1,1 @@
+{"version":3,"file":"AlertInterface.js","sourceRoot":"","sources":["../../../../nodes/TheHive/interfaces/AlertInterface.ts"],"names":[],"mappings":";;;AAEa,QAAA,aAAa,GAAG;IAC5B,GAAG,EAAE,KAAK;IACV,OAAO,EAAE,SAAS;IAClB,OAAO,EAAE,SAAS;IAClB,QAAQ,EAAE,UAAU;CACX,CAAC;AAIE,QAAA,IAAI,GAAG;IACnB,KAAK,EAAE,CAAC;IACR,KAAK,EAAE,CAAC;IACR,KAAK,EAAE,CAAC;IACR,GAAG,EAAE,CAAC;CACG,CAAC"}

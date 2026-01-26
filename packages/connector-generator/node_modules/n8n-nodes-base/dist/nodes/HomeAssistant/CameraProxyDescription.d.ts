@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const cameraProxyOperations: INodeProperties[];
+export declare const cameraProxyFields: INodeProperties[];
+//# sourceMappingURL=CameraProxyDescription.d.ts.map

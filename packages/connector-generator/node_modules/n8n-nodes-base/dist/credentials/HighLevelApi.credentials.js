@@ -1,0 +1,33 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HighLevelApi = void 0;
+class HighLevelApi {
+    name = 'highLevelApi';
+    displayName = 'HighLevel API';
+    documentationUrl = 'highlevel';
+    properties = [
+        {
+            displayName: 'API Key',
+            name: 'apiKey',
+            type: 'string',
+            typeOptions: { password: true },
+            default: '',
+        },
+    ];
+    authenticate = {
+        type: 'generic',
+        properties: {
+            headers: {
+                Authorization: '=Bearer {{$credentials.apiKey}}',
+            },
+        },
+    };
+    test = {
+        request: {
+            baseURL: 'https://rest.gohighlevel.com/v1',
+            url: '/custom-values/',
+        },
+    };
+}
+exports.HighLevelApi = HighLevelApi;
+//# sourceMappingURL=HighLevelApi.credentials.js.map

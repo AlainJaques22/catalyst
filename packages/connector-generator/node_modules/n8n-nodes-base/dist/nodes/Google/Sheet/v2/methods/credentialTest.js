@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.googleApiCredentialTest = googleApiCredentialTest;
+const GenericFunctions_1 = require("../../../GenericFunctions");
+async function googleApiCredentialTest(credential) {
+    try {
+        const tokenRequest = await GenericFunctions_1.getGoogleAccessToken.call(this, credential.data, 'sheetV2');
+        if (!tokenRequest.access_token) {
+            return {
+                status: 'Error',
+                message: 'Could not generate a token from your private key.',
+            };
+        }
+    }
+    catch (err) {
+        return {
+            status: 'Error',
+            message: `Private key validation failed: ${err.message}`,
+        };
+    }
+    return {
+        status: 'OK',
+        message: 'Connection successful!',
+    };
+}
+//# sourceMappingURL=credentialTest.js.map

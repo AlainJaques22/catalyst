@@ -1,0 +1,35 @@
+import type { IExecuteFunctions, IHookFunctions, IDataObject, ILoadOptionsFunctions, IHttpRequestMethods } from 'n8n-workflow';
+import type { AddressFixedCollection, LoadedResource, LoadedUser, RolesParameter } from './types';
+export declare function freshserviceApiRequest(this: IExecuteFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, endpoint: string, body?: IDataObject, qs?: IDataObject): Promise<any>;
+export declare function freshserviceApiRequestAllItems(this: IExecuteFunctions | IHookFunctions, method: IHttpRequestMethods, endpoint: string, body?: IDataObject, qs?: IDataObject): Promise<IDataObject[]>;
+export declare function handleListing(this: IExecuteFunctions, method: IHttpRequestMethods, endpoint: string, body?: IDataObject, qs?: IDataObject): Promise<IDataObject[]>;
+export declare const toOptions: (loadedResources: LoadedResource[]) => {
+    value: string;
+    name: string;
+}[];
+export declare const toUserOptions: (loadedUsers: LoadedUser[]) => {
+    value: string;
+    name: string;
+}[];
+/**
+ * Ensure at least one role has been specified.
+ */
+export declare function validateAssignmentScopeGroup(this: IExecuteFunctions, roles: RolesParameter): void;
+export declare function sanitizeAssignmentScopeGroup(this: IExecuteFunctions, roles: RolesParameter): void;
+/**
+ * Adjust a roles fixed collection into the format expected by Freshservice API.
+ */
+export declare function adjustAgentRoles(roles: RolesParameter): {
+    roles: {
+        role_id: number;
+        assignment_scope: "entire_helpdesk" | "member_groups" | "specified_groups" | "assigned_items";
+        groups: number[] | undefined;
+    }[];
+};
+export declare function formatFilters(filters: IDataObject): {
+    query: string;
+};
+export declare function validateUpdateFields(this: IExecuteFunctions, updateFields: IDataObject, resource: string): void;
+export declare const toArray: (str: string) => string[];
+export declare function adjustAddress(fixedCollection: IDataObject & AddressFixedCollection): import("lodash").Omit<IDataObject & AddressFixedCollection, "address">;
+//# sourceMappingURL=GenericFunctions.d.ts.map

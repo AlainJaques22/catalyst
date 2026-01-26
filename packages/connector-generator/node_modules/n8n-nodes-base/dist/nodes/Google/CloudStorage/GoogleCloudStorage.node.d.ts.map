@@ -1,0 +1,1 @@
+{"version":3,"file":"GoogleCloudStorage.node.d.ts","sourceRoot":"","sources":["../../../../nodes/Google/CloudStorage/GoogleCloudStorage.node.ts"],"names":[],"mappings":"AAAA,OAAO,EAAuB,KAAK,SAAS,EAAE,KAAK,oBAAoB,EAAE,MAAM,cAAc,CAAC;AAK9F,qBAAa,kBAAmB,YAAW,SAAS;IACnD,WAAW,EAAE,oBAAoB,CAyD/B;CACF"}

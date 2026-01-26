@@ -1,0 +1,7 @@
+import type { INodeExecutionData, IExecuteFunctions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare const capitalizeHeader: (header: string, capitalize?: boolean) => string;
+export declare class Html implements INodeType {
+    description: INodeTypeDescription;
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Html.node.d.ts.map

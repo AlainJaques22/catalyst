@@ -1,0 +1,7 @@
+import type { ILoadOptionsFunctions, INodeListSearchResult } from 'n8n-workflow';
+export declare function fileSearch(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function driveSearch(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function driveSearchWithDefault(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function folderSearch(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function folderSearchWithDefault(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+//# sourceMappingURL=listSearch.d.ts.map

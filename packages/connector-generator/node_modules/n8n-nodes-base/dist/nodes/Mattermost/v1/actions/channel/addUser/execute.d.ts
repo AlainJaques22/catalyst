@@ -1,0 +1,3 @@
+import type { IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+export declare function addUser(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]>;
+//# sourceMappingURL=execute.d.ts.map

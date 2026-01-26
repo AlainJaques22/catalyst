@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const estimateOperations: INodeProperties[];
+export declare const estimateFields: INodeProperties[];
+//# sourceMappingURL=EstimateDescription.d.ts.map

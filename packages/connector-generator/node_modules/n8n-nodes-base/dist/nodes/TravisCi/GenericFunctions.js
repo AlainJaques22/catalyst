@@ -1,0 +1,54 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.travisciApiRequest = travisciApiRequest;
+exports.travisciApiRequestAllItems = travisciApiRequestAllItems;
+const get_1 = __importDefault(require("lodash/get"));
+const n8n_workflow_1 = require("n8n-workflow");
+async function travisciApiRequest(method, resource, body = {}, qs = {}, uri, option = {}) {
+    const credentials = await this.getCredentials('travisCiApi');
+    let options = {
+        headers: {
+            'Travis-API-Version': '3',
+            Accept: 'application/json',
+            'Content-Type': 'application.json',
+            Authorization: `token ${credentials.apiToken}`,
+        },
+        method,
+        qs,
+        body,
+        uri: uri || `https://api.travis-ci.com${resource}`,
+        json: true,
+    };
+    options = Object.assign({}, options, option);
+    if (Object.keys(options.body).length === 0) {
+        delete options.body;
+    }
+    try {
+        return await this.helpers.request(options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+/**
+ * Make an API request to paginated TravisCI endpoint
+ * and return all results
+ */
+async function travisciApiRequestAllItems(propertyName, method, resource, body = {}, query = {}) {
+    const returnData = [];
+    let responseData;
+    do {
+        responseData = await travisciApiRequest.call(this, method, resource, body, query);
+        const path = (0, get_1.default)(responseData, '@pagination.next.@href');
+        if (path !== undefined) {
+            const parsedPath = new URLSearchParams(path);
+            query = Object.fromEntries(parsedPath);
+        }
+        returnData.push.apply(returnData, responseData[propertyName]);
+    } while (responseData['@pagination'].is_last !== true);
+    return returnData;
+}
+//# sourceMappingURL=GenericFunctions.js.map

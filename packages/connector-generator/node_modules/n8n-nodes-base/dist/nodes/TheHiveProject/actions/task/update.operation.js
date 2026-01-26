@@ -1,0 +1,105 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.description = void 0;
+exports.execute = execute;
+const set_1 = __importDefault(require("lodash/set"));
+const n8n_workflow_1 = require("n8n-workflow");
+const utilities_1 = require("../../../../utils/utilities");
+const utils_1 = require("../../helpers/utils");
+const transport_1 = require("../../transport");
+const properties = [
+    {
+        displayName: 'Fields',
+        name: 'taskUpdateFields',
+        type: 'resourceMapper',
+        default: {
+            mappingMode: 'defineBelow',
+            value: null,
+        },
+        noDataExpression: true,
+        required: true,
+        typeOptions: {
+            resourceMapper: {
+                resourceMapperMethod: 'getTaskUpdateFields',
+                mode: 'update',
+                valuesLabel: 'Fields',
+                addAllFields: true,
+                multiKeyMatch: true,
+            },
+        },
+    },
+];
+const displayOptions = {
+    show: {
+        resource: ['task'],
+        operation: ['update'],
+    },
+};
+exports.description = (0, utilities_1.updateDisplayOptions)(displayOptions, properties);
+async function execute(i, item) {
+    let body = {};
+    let updated = 1;
+    const dataMode = this.getNodeParameter('taskUpdateFields.mappingMode', i);
+    if (dataMode === 'autoMapInputData') {
+        const schema = this.getNodeParameter('taskUpdateFields.schema', i);
+        body = (0, utils_1.prepareInputItem)(item.json, schema, i);
+    }
+    if (dataMode === 'defineBelow') {
+        const taskUpdateFields = this.getNodeParameter('taskUpdateFields.value', i, []);
+        body = taskUpdateFields;
+    }
+    body = (0, utils_1.fixFieldType)(body);
+    const fieldsToMatchOn = this.getNodeParameter('taskUpdateFields.matchingColumns', i);
+    const updateBody = {};
+    const matchFields = {};
+    const { id } = body; // id would be used if matching on id, also we need to remove it from the body
+    for (const field of Object.keys(body)) {
+        if (fieldsToMatchOn.includes(field)) {
+            // if field is in fieldsToMatchOn, we need to exclude it from the updateBody, as values used for matching should not be updated
+            matchFields[field] = body[field];
+        }
+        else {
+            // use set to construct the updateBody, as it allows to process customFields.fieldName
+            // if customFields provided under customFields property, it will be send as is
+            (0, set_1.default)(updateBody, field, body[field]);
+        }
+    }
+    if (fieldsToMatchOn.includes('id')) {
+        await transport_1.theHiveApiRequest.call(this, 'PATCH', `/v1/task/${id}`, body);
+    }
+    else {
+        const filter = {
+            _name: 'filter',
+            _and: fieldsToMatchOn.map((field) => ({
+                _eq: {
+                    _field: field,
+                    _value: matchFields[field],
+                },
+            })),
+        };
+        const queryBody = {
+            query: [
+                {
+                    _name: 'listTask',
+                },
+                filter,
+            ],
+        };
+        const matches = (await transport_1.theHiveApiRequest.call(this, 'POST', '/v1/query', queryBody));
+        if (!matches.length) {
+            throw new n8n_workflow_1.NodeOperationError(this.getNode(), 'No matching alerts found');
+        }
+        const ids = matches.map((match) => match._id);
+        updated = ids.length;
+        updateBody.ids = ids;
+        await transport_1.theHiveApiRequest.call(this, 'PATCH', '/v1/task/_bulk', updateBody);
+    }
+    const executionData = this.helpers.constructExecutionMetaData((0, utilities_1.wrapData)({ success: true, updated }), {
+        itemData: { item: i },
+    });
+    return executionData;
+}
+//# sourceMappingURL=update.operation.js.map

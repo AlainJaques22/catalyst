@@ -1,0 +1,6 @@
+import type { ITriggerFunctions, INodeType, INodeTypeDescription, ITriggerResponse } from 'n8n-workflow';
+export declare class AmqpTrigger implements INodeType {
+    description: INodeTypeDescription;
+    trigger(this: ITriggerFunctions): Promise<ITriggerResponse>;
+}
+//# sourceMappingURL=AmqpTrigger.node.d.ts.map

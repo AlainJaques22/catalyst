@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const segmentOperations: INodeProperties[];
+export declare const segmentFields: INodeProperties[];
+//# sourceMappingURL=SegmentDescription.d.ts.map

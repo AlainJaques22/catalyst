@@ -1,0 +1,1 @@
+{"version":3,"file":"Snowflake.node.d.ts","sourceRoot":"","sources":["../../../nodes/Snowflake/Snowflake.node.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACX,iBAAiB,EAEjB,kBAAkB,EAClB,SAAS,EACT,oBAAoB,EACpB,MAAM,cAAc,CAAC;AActB,qBAAa,SAAU,YAAW,SAAS;IAC1C,WAAW,EAAE,oBAAoB,CAoJ/B;IAEI,OAAO,CAAC,IAAI,EAAE,iBAAiB,GAAG,OAAO,CAAC,kBAAkB,EAAE,EAAE,CAAC;CA0FvE"}

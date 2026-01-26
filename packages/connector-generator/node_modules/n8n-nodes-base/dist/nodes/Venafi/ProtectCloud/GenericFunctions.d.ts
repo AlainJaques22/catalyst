@@ -1,0 +1,5 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IDataObject, IHookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function venafiApiRequest(this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions, method: IHttpRequestMethods, resource: string, body?: {}, qs?: IDataObject, option?: IDataObject): Promise<any>;
+export declare function venafiApiRequestAllItems(this: IExecuteFunctions | ILoadOptionsFunctions, propertyName: string, method: IHttpRequestMethods, endpoint: string, body?: IDataObject, query?: IDataObject): Promise<IDataObject[]>;
+export declare function encryptPassphrase(this: IExecuteFunctions | ILoadOptionsFunctions, certificateId: string, passphrase: string, storePassphrase: string): Promise<unknown>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

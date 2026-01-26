@@ -1,0 +1,9 @@
+export declare const idExtractionRegexp = "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})";
+export declare const idValidationRegexp = "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}).*";
+export declare const databaseUrlExtractionRegexp = "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})";
+export declare const databaseUrlValidationRegexp = "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}).*";
+export declare const databasePageUrlExtractionRegexp = "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?(?:[a-zA-Z0-9-]{1,}-)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})";
+export declare const databasePageUrlValidationRegexp = "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?(?:[a-zA-Z0-9-]{1,}-)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}).*";
+export declare const blockUrlExtractionRegexp = "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?(?:[a-zA-Z0-9-]{2,}-)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})";
+export declare const blockUrlValidationRegexp = "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?(?:[a-zA-Z0-9-]{2,}-)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}).*";
+//# sourceMappingURL=constants.d.ts.map

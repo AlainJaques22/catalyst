@@ -1,0 +1,31 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.POINT_STYLE_CHARTS = exports.Fill_CHARTS = exports.ITEM_STYLE_CHARTS = exports.HORIZONTAL_CHARTS = exports.CHART_TYPE_OPTIONS = void 0;
+// Disable some charts that use different datasets for now
+exports.CHART_TYPE_OPTIONS = [
+    {
+        name: 'Bar Chart',
+        value: 'bar',
+    },
+    {
+        name: 'Doughnut Chart',
+        value: 'doughnut',
+    },
+    {
+        name: 'Line Chart',
+        value: 'line',
+    },
+    {
+        name: 'Pie Chart',
+        value: 'pie',
+    },
+    {
+        name: 'Polar Chart',
+        value: 'polarArea',
+    },
+];
+exports.HORIZONTAL_CHARTS = ['bar', 'boxplot', 'violin'];
+exports.ITEM_STYLE_CHARTS = ['boxplot', 'horizontalBoxplot', 'violin', 'horizontalViolin'];
+exports.Fill_CHARTS = ['line'];
+exports.POINT_STYLE_CHARTS = ['line'];
+//# sourceMappingURL=constants.js.map

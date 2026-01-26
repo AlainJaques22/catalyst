@@ -1,0 +1,13 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Wordpress implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getCategories(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTags(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getAuthors(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Wordpress.node.d.ts.map

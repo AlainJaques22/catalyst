@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const caseCommentOperations: INodeProperties[];
+export declare const caseCommentFields: INodeProperties[];
+//# sourceMappingURL=CaseCommentDescription.d.ts.map

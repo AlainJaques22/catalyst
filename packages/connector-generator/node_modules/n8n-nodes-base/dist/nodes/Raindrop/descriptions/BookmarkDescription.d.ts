@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const bookmarkOperations: INodeProperties[];
+export declare const bookmarkFields: INodeProperties[];
+//# sourceMappingURL=BookmarkDescription.d.ts.map

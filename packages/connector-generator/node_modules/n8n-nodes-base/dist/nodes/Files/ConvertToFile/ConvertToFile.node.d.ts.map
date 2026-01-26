@@ -1,0 +1,1 @@
+{"version":3,"file":"ConvertToFile.node.d.ts","sourceRoot":"","sources":["../../../../nodes/Files/ConvertToFile/ConvertToFile.node.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACX,iBAAiB,EACjB,kBAAkB,EAClB,SAAS,EACT,oBAAoB,EACpB,MAAM,cAAc,CAAC;AAStB,qBAAa,aAAc,YAAW,SAAS;IAC9C,WAAW,EAAE,oBAAoB,CAwF/B;IAEI,OAAO,CAAC,IAAI,EAAE,iBAAiB;CA2BrC"}

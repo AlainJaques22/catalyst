@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const starOperations: INodeProperties[];
+export declare const starFields: INodeProperties[];
+//# sourceMappingURL=StarDescription.d.ts.map

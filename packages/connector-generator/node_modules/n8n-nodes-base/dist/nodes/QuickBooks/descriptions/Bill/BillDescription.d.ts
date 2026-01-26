@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const billOperations: INodeProperties[];
+export declare const billFields: INodeProperties[];
+//# sourceMappingURL=BillDescription.d.ts.map

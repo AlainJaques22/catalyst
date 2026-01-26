@@ -1,0 +1,9 @@
+import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class BeeminderOAuth2Api implements ICredentialType {
+    name: string;
+    extends: string[];
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+}
+//# sourceMappingURL=BeeminderOAuth2Api.credentials.d.ts.map

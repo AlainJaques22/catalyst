@@ -1,0 +1,1 @@
+{"version":3,"file":"error.d.ts","sourceRoot":"","sources":["../../../nodes/Webhook/error.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,gBAAgB,EAAE,MAAM,aAAa,CAAC;AAE/C,qBAAa,yBAA0B,SAAQ,gBAAgB;IAE7D,QAAQ,CAAC,YAAY,EAAE,MAAM;gBAApB,YAAY,EAAE,MAAM,EAC7B,OAAO,CAAC,EAAE,MAAM;CAYjB"}

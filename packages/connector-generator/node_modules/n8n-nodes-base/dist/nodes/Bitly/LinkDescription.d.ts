@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const linkOperations: INodeProperties[];
+export declare const linkFields: INodeProperties[];
+//# sourceMappingURL=LinkDescription.d.ts.map

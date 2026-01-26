@@ -1,0 +1,5 @@
+import { VersionedNodeType } from 'n8n-workflow';
+export declare class EmailSend extends VersionedNodeType {
+    constructor();
+}
+//# sourceMappingURL=EmailSend.node.d.ts.map

@@ -1,0 +1,4 @@
+import type { IDataObject, IExecuteFunctions, IHookFunctions, IHttpRequestMethods, ILoadOptionsFunctions, INodeExecutionData } from 'n8n-workflow';
+export declare function brandfetchApiRequest(this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: any, qs?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+export declare function fetchAndPrepareBinaryData(this: IExecuteFunctions, imageType: string, imageFormat: string, logoFormats: IDataObject, domain: string, newItem: INodeExecutionData): Promise<void>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

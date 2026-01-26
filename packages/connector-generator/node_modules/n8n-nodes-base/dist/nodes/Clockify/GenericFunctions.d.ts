@@ -1,0 +1,4 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, IPollFunctions, IDataObject, IHttpRequestMethods } from 'n8n-workflow';
+export declare function clockifyApiRequest(this: ILoadOptionsFunctions | IPollFunctions | IExecuteFunctions, method: IHttpRequestMethods, resource: string, body?: any, qs?: IDataObject, _uri?: string, _option?: IDataObject): Promise<any>;
+export declare function clockifyApiRequestAllItems(this: IExecuteFunctions | IPollFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, endpoint: string, body?: any, query?: IDataObject): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

@@ -1,0 +1,1104 @@
+{
+  "actionNetwork": [
+    "getTags",
+    "getTaggings"
+  ],
+  "activeCampaign": [
+    "getTags",
+    "getAccountCustomFields",
+    "getContactCustomFields"
+  ],
+  "activeCampaignTrigger": [
+    "getEvents"
+  ],
+  "affinity": [
+    "getLists",
+    "getPersons",
+    "getOrganizations"
+  ],
+  "airtable": [
+    "getAttachmentColumns",
+    "getColumns"
+  ],
+  "apiTemplateIo": [
+    "getImageTemplates",
+    "getPdfTemplates"
+  ],
+  "asana": [
+    "getUsers",
+    "getWorkspaces",
+    "getTaskFields",
+    "getProjects",
+    "getSections",
+    "getTags",
+    "getTeams"
+  ],
+  "asanaTrigger": [
+    "getWorkspaces"
+  ],
+  "automizy": [
+    "getLists",
+    "getCustomFields",
+    "getTags"
+  ],
+  "autopilot": [
+    "getCustomFields",
+    "getLists",
+    "getTriggers"
+  ],
+  "awsLambda": [
+    "getFunctions"
+  ],
+  "awsDynamoDb": [
+    "getTables"
+  ],
+  "awsElb": [
+    "getSubnets",
+    "getSecurityGroups",
+    "getLoadBalancers",
+    "getLoadBalancerListeners"
+  ],
+  "awsSes": [
+    "getTemplates"
+  ],
+  "awsSqs": [
+    "getQueues"
+  ],
+  "bambooHr": [
+    "getDepartments",
+    "getDivisions",
+    "getEmployeeLocations",
+    "getEmployeeFields",
+    "getEmployeeDocumentCategories",
+    "getCompanyFileCategories"
+  ],
+  "bannerbear": [
+    "getTemplates",
+    "getModificationNames"
+  ],
+  "baserow": [
+    "getDatabaseIds",
+    "getTableIds",
+    "getTableFields"
+  ],
+  "beeminder": [
+    "getGoals"
+  ],
+  "bitbucketTrigger": [
+    "getWorkspaces",
+    "getWorkspaceEvents",
+    "getRepositories",
+    "getRepositoriesEvents"
+  ],
+  "bitly": [
+    "getGroups",
+    "getTags"
+  ],
+  "bitwarden": [
+    "getGroups",
+    "getCollections"
+  ],
+  "calTrigger": [
+    "getEventTypes"
+  ],
+  "ciscoWebex": [
+    "getSites",
+    "getRooms"
+  ],
+  "cloudflare": [
+    "getZones"
+  ],
+  "clickUp": [
+    "getTeams",
+    "getSpaces",
+    "getFolders",
+    "getTags",
+    "getFolderlessLists",
+    "getLists",
+    "getAssignees",
+    "getStatuses",
+    "getCustomFields",
+    "getTasks",
+    "getTimeEntryTags"
+  ],
+  "clickUpTrigger": [
+    "getTeams"
+  ],
+  "clockify": [
+    "listWorkspaces",
+    "loadClientsForWorkspace",
+    "loadUsersForWorkspace",
+    "loadProjectsForWorkspace",
+    "loadCustomFieldsForWorkspace",
+    "loadTagsForWorkspace"
+  ],
+  "clockifyTrigger": [
+    "listWorkspaces"
+  ],
+  "cockpit": [
+    "getCollections",
+    "getSingletons"
+  ],
+  "coda": [
+    "getDocs",
+    "getTables",
+    "getColumns",
+    "getViews",
+    "getViewRows",
+    "getViewColumns"
+  ],
+  "coinGecko": [
+    "getCoins",
+    "getCurrencies",
+    "getExchanges",
+    "getEventCountryCodes",
+    "getEventTypes"
+  ],
+  "convertKit": [
+    "getForms",
+    "getSequences",
+    "getTags"
+  ],
+  "convertKitTrigger": [
+    "getForms",
+    "getSequences",
+    "getTags"
+  ],
+  "cortex": [
+    "loadActiveAnalyzers",
+    "loadObservableOptions",
+    "loadActiveResponders",
+    "loadDataTypeOptions"
+  ],
+  "dataTable": [
+    "getDataTableColumns",
+    "getConditionsForColumn"
+  ],
+  "dateTime": [
+    "getTimezones"
+  ],
+  "deepL": [
+    "getLanguages"
+  ],
+  "demio": [
+    "getEvents",
+    "getEventSessions"
+  ],
+  "discord": [
+    "getRoles"
+  ],
+  "discourse": [
+    "getCategories"
+  ],
+  "editImage": [
+    "getFonts"
+  ],
+  "e2eTest": [
+    "getOptions"
+  ],
+  "egoi": [
+    "getLists",
+    "getExtraFields",
+    "getListTags"
+  ],
+  "elasticSecurity": [
+    "getConnectors",
+    "getTags"
+  ],
+  "emelia": [
+    "getCampaigns",
+    "getContactLists"
+  ],
+  "emeliaTrigger": [
+    "getCampaigns"
+  ],
+  "erpNext": [
+    "getDocTypes",
+    "getDocFilters",
+    "getDocFields"
+  ],
+  "evaluationTrigger": [
+    "getSheetHeaderRowWithGeneratedColumnNames",
+    "getDataTableColumns",
+    "getConditionsForColumn"
+  ],
+  "eventbriteTrigger": [
+    "getOrganizations",
+    "getEvents"
+  ],
+  "facebookTrigger": [
+    "getObjectFields"
+  ],
+  "filemaker": [
+    "getLayouts",
+    "getPortals",
+    "getResponseLayouts",
+    "getFields",
+    "getScripts"
+  ],
+  "formIoTrigger": [
+    "getProjects",
+    "getForms"
+  ],
+  "formstackTrigger": [
+    "getForms"
+  ],
+  "freshdesk": [
+    "getAgents",
+    "getCompanies",
+    "getGroups",
+    "getProducts"
+  ],
+  "freshservice": [
+    "getAgentRoles",
+    "getAgentGroups",
+    "getDepartments",
+    "getLocations",
+    "getAgents",
+    "getAssetTypes",
+    "getRequesters"
+  ],
+  "freshworksCrm": [
+    "getBusinessTypes",
+    "getIndustryTypes",
+    "getUsers",
+    "getTerritories",
+    "getAccountViews",
+    "getOutcomes",
+    "getCampaigns",
+    "getContactStatuses",
+    "getLifecycleStages",
+    "getAccounts",
+    "getContactViews",
+    "getCurrencies",
+    "getDealPaymentStatuses",
+    "getDealPipelines",
+    "getDealProducts",
+    "getDealReasons",
+    "getDealStages",
+    "getDealTypes",
+    "getDealViews",
+    "getSalesActivityTypes"
+  ],
+  "getResponse": [
+    "getCampaigns",
+    "getCustomFields",
+    "getTags"
+  ],
+  "getResponseTrigger": [
+    "getLists"
+  ],
+  "ghost": [
+    "getAuthors",
+    "getTags"
+  ],
+  "googleAnalytics": [
+    "getMetricsGA4",
+    "getDimensionsGA4",
+    "getMetrics",
+    "getDimensions",
+    "getViews"
+  ],
+  "googleBigQuery": [
+    "getDatasets",
+    "getSchema",
+    "getProjects",
+    "getTables"
+  ],
+  "googleCalendar": [
+    "getColors",
+    "getConferenceSolutions"
+  ],
+  "googleChat": [
+    "getSpaces"
+  ],
+  "googleContacts": [
+    "getGroups"
+  ],
+  "googleDocs": [
+    "getDrives",
+    "getFolders"
+  ],
+  "googleDriveTrigger": [
+    "getDrives"
+  ],
+  "googleFirebaseCloudFirestore": [
+    "getProjects"
+  ],
+  "googleFirebaseRealtimeDatabase": [
+    "getProjects"
+  ],
+  "gmail": [
+    "getGmailAliases",
+    "getLabels",
+    "getThreadMessages"
+  ],
+  "gmailTrigger": [
+    "getLabels"
+  ],
+  "gSuiteAdmin": [
+    "getOrgUnits",
+    "getDomains",
+    "getSchemas"
+  ],
+  "googlePerspective": [
+    "getLanguages"
+  ],
+  "googleSheets": [
+    "getSheetHeaderRowAndSkipEmpty",
+    "getSheetHeaderRowWithGeneratedColumnNames",
+    "getSheetHeaderRowAndAddColumn",
+    "getSheets"
+  ],
+  "googleSheetsTrigger": [
+    "getSheetHeaderRowAndSkipEmpty"
+  ],
+  "googleSlides": [
+    "getPages"
+  ],
+  "googleTasks": [
+    "getTasks"
+  ],
+  "googleTranslate": [
+    "getLanguages"
+  ],
+  "youTube": [
+    "getLanguages",
+    "getPlaylists",
+    "getCountriesCodes",
+    "getVideoCategories"
+  ],
+  "goToWebinar": [
+    "getWebinars",
+    "getWebinarSessions",
+    "getRegistranMultiChoiceQuestions",
+    "getRegistranSimpleQuestions",
+    "getTimezones"
+  ],
+  "grafana": [
+    "getFolders",
+    "getUsers",
+    "getTeams"
+  ],
+  "grist": [
+    "getTableColumns"
+  ],
+  "haloPSA": [
+    "getHaloPSATicketsTypes",
+    "getHaloPSAAgents",
+    "getHaloPSAClients",
+    "getHaloPSASites"
+  ],
+  "harvest": [
+    "getAccounts"
+  ],
+  "helpScout": [
+    "getMailboxes",
+    "getTags",
+    "getCountriesCodes"
+  ],
+  "highLevel": [
+    "getPipelines",
+    "getContacts",
+    "getUsers",
+    "getPipelineStages",
+    "getTimezones"
+  ],
+  "homeAssistant": [
+    "getCameraEntities",
+    "getDomains",
+    "getDomainServices",
+    "getAllEntities"
+  ],
+  "hubspot": [
+    "getCompanies",
+    "getOwners",
+    "getContactProperties",
+    "getContactCustomProperties",
+    "getContactLeadStatuses",
+    "getContactLealBasics",
+    "getContactLifeCycleStages",
+    "getContactNumberOfEmployees",
+    "getContactOriginalSources",
+    "getContactPrefferedLanguages",
+    "getContactStatuses",
+    "getContactPropertiesWithType",
+    "getCompanyCustomProperties",
+    "getCompanyIndustries",
+    "getCompanyleadStatuses",
+    "getCompanylifecycleStages",
+    "getCompanySourceTypes",
+    "getCompanyTargetAccounts",
+    "getCompanyTypes",
+    "getCompanyWebTechnologies",
+    "getCompanyProperties",
+    "getDealStages",
+    "getContacts",
+    "getDealCustomProperties",
+    "getDealTypes",
+    "getDealPipelines",
+    "getDealProperties",
+    "getTicketPipelines",
+    "getTicketStages",
+    "getTicketCategories",
+    "getTicketPriorities",
+    "getTicketResolutions",
+    "getTicketSources",
+    "getTicketProperties",
+    "getForms",
+    "getSubscriptionTypes"
+  ],
+  "hubspotTrigger": [
+    "getContactProperties",
+    "getCompanyProperties",
+    "getDealProperties"
+  ],
+  "intercom": [
+    "getCompanies"
+  ],
+  "invoiceNinja": [
+    "getCountryCodes",
+    "getClients",
+    "getProjects",
+    "getInvoices",
+    "getExpenseCategories",
+    "getVendors",
+    "getBankIntegrations",
+    "getCurrencies",
+    "getPayments"
+  ],
+  "iterable": [
+    "getLists"
+  ],
+  "jenkins": [
+    "getJobs",
+    "getJobParameters"
+  ],
+  "jira": [
+    "getProjectComponents",
+    "getLabels",
+    "getUsers",
+    "getGroups"
+  ],
+  "jotFormTrigger": [
+    "getForms"
+  ],
+  "keap": [
+    "getContactTypes",
+    "getUsers",
+    "getTimezones",
+    "getCountries",
+    "getTags"
+  ],
+  "keapTrigger": [
+    "getEvents"
+  ],
+  "kitemaker": [
+    "getSpaces",
+    "getStatuses",
+    "getLabels",
+    "getUsers"
+  ],
+  "koBoToolbox": [
+    "loadForms"
+  ],
+  "koBoToolboxTrigger": [
+    "loadForms"
+  ],
+  "ldap": [
+    "getAttributesForDn",
+    "getObjectClasses",
+    "getAttributes"
+  ],
+  "lemlist": [
+    "getCampaigns"
+  ],
+  "lemlistTrigger": [
+    "getCampaigns"
+  ],
+  "linear": [
+    "getTeams",
+    "getUsers",
+    "getStates"
+  ],
+  "linearTrigger": [
+    "getTeams"
+  ],
+  "lingvaNex": [
+    "getLanguages"
+  ],
+  "linkedIn": [
+    "getPersonUrn"
+  ],
+  "loneScaleTrigger": [
+    "getWorkflows"
+  ],
+  "loneScale": [
+    "getLists"
+  ],
+  "magento2": [
+    "getCountries",
+    "getCustomAttributes",
+    "getGroups",
+    "getStores",
+    "getWebsites",
+    "getSystemAttributes",
+    "getOrderAttributes",
+    "getAttributeSets",
+    "getProductTypes",
+    "getFilterableProductAttributes",
+    "getSortableProductAttributes"
+  ],
+  "mailchimp": [
+    "getLists",
+    "getMergeFields",
+    "getGroupCategories",
+    "getCampaignsFields"
+  ],
+  "mailchimpTrigger": [
+    "getLists"
+  ],
+  "mailerLite": [
+    "getCustomFields"
+  ],
+  "mailjet": [
+    "getTemplates"
+  ],
+  "mandrill": [
+    "getTemplates"
+  ],
+  "matrix": [
+    "getChannels"
+  ],
+  "mattermost": [
+    "getTeams",
+    "getChannels",
+    "getChannelsInTeam",
+    "getUsers"
+  ],
+  "mautic": [
+    "getCompanyFields",
+    "getIndustries",
+    "getCompanies",
+    "getContactFields",
+    "getStages",
+    "getTags",
+    "getCampaignEmails",
+    "getSegments",
+    "getCampaigns",
+    "getSegmentEmails"
+  ],
+  "mauticTrigger": [
+    "getEvents"
+  ],
+  "medium": [
+    "getPublications"
+  ],
+  "merge": [
+    "getResolveClashOptions",
+    "getInputs"
+  ],
+  "microsoftDynamicsCrm": [
+    "getAccountCategories",
+    "getAccountRatingCodes",
+    "getAddressTypes",
+    "getBusinessTypes",
+    "getCustomerSizeCodes",
+    "getCustomerTypeCodes",
+    "getIndustryCodes",
+    "getPaymentTermsCodes",
+    "getPreferredAppointmentDayCodes",
+    "getPreferredAppointmentTimeCodes",
+    "getPreferredContactMethodCodes",
+    "getShippingMethodCodes",
+    "getTerritoryCodes",
+    "getAccountFields",
+    "getExpandableAccountFields"
+  ],
+  "microsoftEntra": [
+    "getGroupProperties",
+    "getGroupPropertiesGetAll",
+    "getUserProperties",
+    "getUserPropertiesGetAll"
+  ],
+  "microsoftExcel": [
+    "getTableColumns",
+    "getWorksheetColumnRow",
+    "getWorksheetColumnRowSkipColumnToMatchOn",
+    "getWorkbooks",
+    "getworksheets",
+    "getTables"
+  ],
+  "microsoftOutlook": [
+    "getCalendarGroups",
+    "getCategoriesNames",
+    "getFolders",
+    "getCategories"
+  ],
+  "microsoftOutlookTrigger": [
+    "getFolders"
+  ],
+  "microsoftTeams": [
+    "getTeams",
+    "getChannels",
+    "getChats",
+    "getGroups",
+    "getPlans",
+    "getBuckets",
+    "getMembers",
+    "getLabels"
+  ],
+  "microsoftToDo": [
+    "getTaskLists"
+  ],
+  "misp": [
+    "getSharingGroups",
+    "getOrgs",
+    "getTags",
+    "getUsers"
+  ],
+  "mondayCom": [
+    "getBoards",
+    "getGroups",
+    "getColumns"
+  ],
+  "monicaCrm": [
+    "getActivityTypes",
+    "getGenders",
+    "getContactFieldTypes",
+    "getTagsToAdd",
+    "getTagsToRemove"
+  ],
+  "mySql": [
+    "getColumns",
+    "getColumnsMultiOptions",
+    "getColumnsWithoutColumnToMatchOn"
+  ],
+  "netlify": [
+    "getSites"
+  ],
+  "netlifyTrigger": [
+    "getSites",
+    "getForms"
+  ],
+  "nocoDb": [
+    "getWorkspaces",
+    "getBases",
+    "getTables"
+  ],
+  "onfleet": [
+    "getTeams",
+    "getWorkers",
+    "getAdmins",
+    "getHubs",
+    "getTimezones"
+  ],
+  "notion": [
+    "getBlockTypes",
+    "getUsers",
+    "getDatabaseProperties",
+    "getPropertySelectValues",
+    "getTimezones",
+    "getDatabaseIdFromPage",
+    "getDatabaseOptionsFromPage",
+    "getFilterProperties"
+  ],
+  "odoo": [
+    "getModels",
+    "getModelFields",
+    "getCountries",
+    "getStates"
+  ],
+  "oracleDatabase": [
+    "getColumns",
+    "getColumnsMultiOptions"
+  ],
+  "orbit": [
+    "getWorkspaces",
+    "getActivityTypes"
+  ],
+  "paddle": [
+    "getProducts",
+    "getPayments"
+  ],
+  "pagerDuty": [
+    "getServices",
+    "getEscalationPolicies",
+    "getPriorities",
+    "getTimezones"
+  ],
+  "payPalTrigger": [
+    "getEvents"
+  ],
+  "phantombuster": [
+    "getAgents"
+  ],
+  "philipsHue": [
+    "getLights"
+  ],
+  "pipedrive": [
+    "getOrganizationIds",
+    "getUserIds",
+    "getDealCustomFields",
+    "getDealLabels",
+    "getStageIds",
+    "getDeals",
+    "getProducts",
+    "getProductsDeal",
+    "getLeadLabels",
+    "getPersons",
+    "getOrganizationLabels",
+    "getPersonCustomFields",
+    "getPersonLabels",
+    "getFilters",
+    "getActivityTypes"
+  ],
+  "postgres": [
+    "getColumns",
+    "getColumnsMultiOptions",
+    "getColumnsWithoutColumnToMatchOn"
+  ],
+  "profitWell": [
+    "getPlanIds"
+  ],
+  "pushbullet": [
+    "getDevices"
+  ],
+  "pushcut": [
+    "getNotifications",
+    "getDevices"
+  ],
+  "pushover": [
+    "getSounds"
+  ],
+  "quickbase": [
+    "getTableFields",
+    "getUniqueTableFields"
+  ],
+  "quickbooks": [
+    "getVendors",
+    "getItems",
+    "getCustomers",
+    "getTaxCodeRefs",
+    "getCustomFields",
+    "getDepartments",
+    "getMemos",
+    "getTerms"
+  ],
+  "raindrop": [
+    "getCollections"
+  ],
+  "salesforce": [
+    "getExternalIdFields",
+    "getCustomFields",
+    "getLeadSources",
+    "getLeadOwners",
+    "getRecordTypes",
+    "getLeadStatuses",
+    "getLeadFields",
+    "getCampaigns",
+    "getUsers",
+    "getAccounts",
+    "getContactFields",
+    "getCustomObjects",
+    "getCustomObjectFields",
+    "getStages",
+    "getOpportunityFields",
+    "getAccountSources",
+    "getAccountTypes",
+    "getAccountFields",
+    "getCaseTypes",
+    "getCaseOrigins",
+    "getCaseOwners",
+    "getCasePriorities",
+    "getCaseReasons",
+    "getCaseStatuses",
+    "getCaseFields",
+    "getTaskStatuses",
+    "getTaskCallTypes",
+    "getTaskPriorities",
+    "getTaskRecurrenceTypes",
+    "getTaskRecurrenceInstances",
+    "getTaskSubjects",
+    "getTaskTypes",
+    "getTaskFields",
+    "getAtachmentFields",
+    "getUserFields"
+  ],
+  "salesforceTrigger": [
+    "getCustomObjects"
+  ],
+  "salesmate": [
+    "getUsers",
+    "getContacts",
+    "getCompanies"
+  ],
+  "seaTable": [
+    "getTableNames",
+    "getRowIds",
+    "getTableUpdateAbleColumns",
+    "getTableViews",
+    "getSearchableColumns",
+    "getTableNameAndId",
+    "getLinkColumns",
+    "getLinkColumnsWithColumnKey",
+    "getAssetColumns",
+    "getTableIds",
+    "getViews",
+    "getAllSortableColumns"
+  ],
+  "seaTableTrigger": [
+    "getTableNames",
+    "getTableViews",
+    "getSignatureColumns"
+  ],
+  "sendGrid": [
+    "getListIds",
+    "getCustomFields",
+    "getTemplateIds"
+  ],
+  "sentryIo": [
+    "getOrganizations",
+    "getProjects",
+    "getTeams"
+  ],
+  "serviceNow": [
+    "getTables",
+    "getColumns",
+    "getUsers",
+    "getAssignmentGroups",
+    "getBusinessServices",
+    "getIncidentCategories",
+    "getConfigurationItems",
+    "getIncidentResolutionCodes",
+    "getIncidentStates",
+    "getIncidentSubcategories",
+    "getIncidentHoldReasons",
+    "getUserRoles"
+  ],
+  "shopify": [
+    "getLocations",
+    "getProducts"
+  ],
+  "simulate": [
+    "getNodeTypes"
+  ],
+  "simulateTrigger": [
+    "getNodeTypes"
+  ],
+  "slack": [
+    "getUsers",
+    "getChannelsName",
+    "getChannels",
+    "getTeamFields"
+  ],
+  "slackTrigger": [
+    "getUsers"
+  ],
+  "splunk": [
+    "getRoles"
+  ],
+  "storyblok": [
+    "getSpaces"
+  ],
+  "stripe": [
+    "getCurrencies"
+  ],
+  "supabase": [
+    "getTables",
+    "getTableColumns"
+  ],
+  "surveyMonkeyTrigger": [
+    "getSurveys",
+    "getCollectors"
+  ],
+  "switch": [
+    "getFallbackOutputOptions"
+  ],
+  "taiga": [
+    "getProjects",
+    "getUsers",
+    "getTags",
+    "getMilestones",
+    "getPriorities",
+    "getSeverities",
+    "getIssueStatuses",
+    "getTypes",
+    "getRoles",
+    "getTaskStatuses",
+    "getUserStories",
+    "getUserStoryStatuses",
+    "getEpics"
+  ],
+  "taigaTrigger": [
+    "getUserProjects"
+  ],
+  "tapfiliate": [
+    "getPrograms"
+  ],
+  "theHiveProject": [
+    "loadObservableTypes",
+    "loadResponders",
+    "loadAlertFields",
+    "loadCaseFields",
+    "loadTaskFields",
+    "loadObservableFields",
+    "loadAlertStatus",
+    "loadCaseTemplate",
+    "loadCaseAttachments",
+    "loadLogAttachments",
+    "loadAnalyzers"
+  ],
+  "theHive": [
+    "loadAlertOptions",
+    "loadObservableTypes",
+    "loadResponders",
+    "loadCustomFields",
+    "loadObservableOptions",
+    "loadAnalyzers",
+    "loadCaseOptions",
+    "loadTaskOptions"
+  ],
+  "todoist": [
+    "getSections",
+    "getItems",
+    "getLabels",
+    "getProjects"
+  ],
+  "twake": [
+    "getChannels"
+  ],
+  "twist": [
+    "getWorkspaces",
+    "getUsers",
+    "getConversations"
+  ],
+  "twitter": [
+    "getLanguages"
+  ],
+  "typeformTrigger": [
+    "getForms"
+  ],
+  "venafiTlsProtectCloud": [
+    "getApplications",
+    "getCertificateIssuingTemplates"
+  ],
+  "venafiTlsProtectCloudTrigger": [
+    "getActivityTypes",
+    "getActivitySubTypes"
+  ],
+  "webflow": [
+    "getSites",
+    "getCollections",
+    "getFields"
+  ],
+  "webflowTrigger": [
+    "getSites"
+  ],
+  "wekan": [
+    "getUsers",
+    "getBoards",
+    "getLists",
+    "getSwimlanes",
+    "getCards",
+    "getComments",
+    "getChecklists",
+    "getChecklistItems"
+  ],
+  "wise": [
+    "getProfiles",
+    "getBorderlessAccounts",
+    "getRecipients"
+  ],
+  "wiseTrigger": [
+    "getProfiles"
+  ],
+  "wooCommerce": [
+    "getCategories",
+    "getTags"
+  ],
+  "wordpress": [
+    "getAuthors",
+    "getCategories",
+    "getTags"
+  ],
+  "workableTrigger": [
+    "getJobs",
+    "getStages"
+  ],
+  "wufooTrigger": [
+    "getForms"
+  ],
+  "xero": [
+    "getTenants",
+    "getAccountCodes",
+    "getItemCodes",
+    "getBrandingThemes",
+    "getCurrencies"
+  ],
+  "zammad": [
+    "loadGroupCustomFields",
+    "loadOrganizationCustomFields",
+    "loadGroupNames",
+    "loadCustomerEmails",
+    "loadTicketCustomFields",
+    "loadUserCustomFields",
+    "loadOrganizations",
+    "loadOrganizationNames",
+    "loadUserFields"
+  ],
+  "zendesk": [
+    "getCustomFields",
+    "getGroups",
+    "getTags",
+    "getLocales",
+    "getOrganizations",
+    "getUserFields",
+    "getOrganizationFields"
+  ],
+  "zendeskTrigger": [
+    "getFields",
+    "getGroups",
+    "getUsers"
+  ],
+  "zohoCrm": [
+    "getAccountType",
+    "getCustomAccountFields",
+    "getAccountFields",
+    "getCustomContactFields",
+    "getContactFields",
+    "getDealStage",
+    "getCustomDealFields",
+    "getDealFields",
+    "getProducts",
+    "getAccounts",
+    "getCustomInvoiceFields",
+    "getInvoiceFields",
+    "getCustomLeadFields",
+    "getLeadFields",
+    "getCustomProductFields",
+    "getProductFields",
+    "getVendors",
+    "getCustomPurchaseOrderFields",
+    "getPurchaseOrderStatus",
+    "getPurchaseOrderFields",
+    "getCustomQuoteFields",
+    "getQuoteStage",
+    "getQuoteFields",
+    "getContacts",
+    "getCustomSalesOrderFields",
+    "getDeals",
+    "getSalesOrderStatus",
+    "getSalesOrderFields",
+    "getCustomVendorFields",
+    "getVendorFields"
+  ],
+  "zoom": [
+    "getTimezones"
+  ],
+  "zulip": [
+    "getUsers",
+    "getStreams",
+    "getTopics"
+  ]
+}

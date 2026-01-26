@@ -1,0 +1,29 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.lingvaNexApiRequest = lingvaNexApiRequest;
+const n8n_workflow_1 = require("n8n-workflow");
+async function lingvaNexApiRequest(method, resource, body = {}, qs = {}, uri, option = {}) {
+    try {
+        const credentials = await this.getCredentials('lingvaNexApi');
+        let options = {
+            headers: {
+                Authorization: `Bearer ${credentials.apiKey}`,
+            },
+            method,
+            qs,
+            body,
+            uri: uri || `https://api-b2b.backenster.com/b1/api/v3${resource}`,
+            json: true,
+        };
+        options = Object.assign({}, options, option);
+        const response = await this.helpers.request(options);
+        if (response.err !== null) {
+            throw new n8n_workflow_1.NodeApiError(this.getNode(), response);
+        }
+        return response;
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+//# sourceMappingURL=GenericFunctions.js.map

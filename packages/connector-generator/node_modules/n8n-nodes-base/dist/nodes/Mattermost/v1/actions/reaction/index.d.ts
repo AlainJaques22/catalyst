@@ -1,0 +1,7 @@
+import type { INodeProperties } from 'n8n-workflow';
+import * as create from './create';
+import * as del from './del';
+import * as getAll from './getAll';
+export { create, del as delete, getAll };
+export declare const descriptions: INodeProperties[];
+//# sourceMappingURL=index.d.ts.map

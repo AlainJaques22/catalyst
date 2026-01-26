@@ -1,0 +1,1 @@
+{"version":3,"file":"Compression.node.d.ts","sourceRoot":"","sources":["../../../nodes/Compression/Compression.node.ts"],"names":[],"mappings":"AAEA,OAAO,EAIN,KAAK,iBAAiB,EACtB,KAAK,kBAAkB,EACvB,KAAK,SAAS,EACd,KAAK,oBAAoB,EACzB,MAAM,cAAc,CAAC;AAmCtB,qBAAa,WAAY,YAAW,SAAS;IAC5C,WAAW,EAAE,oBAAoB,CAgN/B;IAEI,OAAO,CAAC,IAAI,EAAE,iBAAiB,GAAG,OAAO,CAAC,kBAAkB,EAAE,EAAE,CAAC;CAiNvE"}

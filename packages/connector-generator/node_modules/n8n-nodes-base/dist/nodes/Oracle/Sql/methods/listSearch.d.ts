@@ -1,0 +1,4 @@
+import type { ILoadOptionsFunctions, INodeListSearchResult } from 'n8n-workflow';
+export declare function schemaSearch(this: ILoadOptionsFunctions): Promise<INodeListSearchResult>;
+export declare function tableSearch(this: ILoadOptionsFunctions): Promise<INodeListSearchResult>;
+//# sourceMappingURL=listSearch.d.ts.map

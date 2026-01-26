@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const channelMessageOperations: INodeProperties[];
+export declare const channelMessageFields: INodeProperties[];
+//# sourceMappingURL=ChannelMessageDescription.d.ts.map

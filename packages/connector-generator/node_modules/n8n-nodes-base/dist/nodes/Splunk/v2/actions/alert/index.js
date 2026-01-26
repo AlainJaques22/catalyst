@@ -1,0 +1,71 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.description = exports.getMetrics = exports.getReport = void 0;
+const getMetrics = __importStar(require("./getMetrics.operation"));
+exports.getMetrics = getMetrics;
+const getReport = __importStar(require("./getReport.operation"));
+exports.getReport = getReport;
+exports.description = [
+    {
+        displayName: 'Operation',
+        name: 'operation',
+        type: 'options',
+        noDataExpression: true,
+        displayOptions: {
+            show: {
+                resource: ['alert'],
+            },
+        },
+        options: [
+            {
+                name: 'Get Fired Alerts',
+                value: 'getReport',
+                description: 'Retrieve a fired alerts report',
+                action: 'Get a fired alerts report',
+            },
+            {
+                name: 'Get Metrics',
+                value: 'getMetrics',
+                description: 'Retrieve metrics',
+                action: 'Get metrics',
+            },
+        ],
+        default: 'getReport',
+    },
+    ...getReport.description,
+    ...getMetrics.description,
+];
+//# sourceMappingURL=index.js.map

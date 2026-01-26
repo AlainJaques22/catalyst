@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const monitorOperations: INodeProperties[];
+export declare const monitorFields: INodeProperties[];
+//# sourceMappingURL=MonitorDescription.d.ts.map

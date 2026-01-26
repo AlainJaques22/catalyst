@@ -1,0 +1,56 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RundeckApi = void 0;
+const n8n_workflow_1 = require("n8n-workflow");
+class RundeckApi {
+    credentials;
+    executeFunctions;
+    constructor(executeFunctions) {
+        this.executeFunctions = executeFunctions;
+    }
+    async request(method, endpoint, body, query) {
+        const credentialType = 'rundeckApi';
+        const options = {
+            rejectUnauthorized: false,
+            method,
+            qs: query,
+            uri: this.credentials?.url + endpoint,
+            body,
+            json: true,
+        };
+        try {
+            return await this.executeFunctions.helpers.requestWithAuthentication.call(this.executeFunctions, credentialType, options);
+        }
+        catch (error) {
+            throw new n8n_workflow_1.NodeApiError(this.executeFunctions.getNode(), error);
+        }
+    }
+    async init() {
+        const credentials = await this.executeFunctions.getCredentials('rundeckApi');
+        if (credentials === undefined) {
+            throw new n8n_workflow_1.NodeOperationError(this.executeFunctions.getNode(), 'No credentials got returned!');
+        }
+        this.credentials = credentials;
+    }
+    async executeJob(jobId, args, filter) {
+        let params = '';
+        if (args) {
+            for (const arg of args) {
+                params += '-' + arg.name + ' ' + arg.value + ' ';
+            }
+        }
+        const body = {
+            argString: params,
+        };
+        const query = {};
+        if (filter) {
+            query.filter = filter;
+        }
+        return await this.request('POST', `/api/14/job/${jobId}/run`, body, query);
+    }
+    async getJobMetadata(jobId) {
+        return await this.request('GET', `/api/18/job/${jobId}/info`, {}, {});
+    }
+}
+exports.RundeckApi = RundeckApi;
+//# sourceMappingURL=RundeckApi.js.map

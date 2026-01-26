@@ -1,0 +1,9 @@
+export declare const runGarbageCollector: () => void;
+export declare const generateGarbageMemory: (sizeInMB: number, onHeap?: boolean) => {
+    rss: number;
+    heapTotal: number;
+    heapUsed: number;
+    external: number;
+    arrayBuffers: number;
+};
+//# sourceMappingURL=functions.d.ts.map

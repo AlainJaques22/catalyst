@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const metricsOperations: INodeProperties[];
+export declare const metricsFields: INodeProperties[];
+//# sourceMappingURL=MetricsDescription.d.ts.map

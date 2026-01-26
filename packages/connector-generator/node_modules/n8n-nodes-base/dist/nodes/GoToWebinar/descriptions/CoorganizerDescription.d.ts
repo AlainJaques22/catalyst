@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const coorganizerOperations: INodeProperties[];
+export declare const coorganizerFields: INodeProperties[];
+//# sourceMappingURL=CoorganizerDescription.d.ts.map

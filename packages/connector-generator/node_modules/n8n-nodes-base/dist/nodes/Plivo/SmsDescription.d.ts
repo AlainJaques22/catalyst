@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const smsOperations: INodeProperties[];
+export declare const smsFields: INodeProperties[];
+//# sourceMappingURL=SmsDescription.d.ts.map

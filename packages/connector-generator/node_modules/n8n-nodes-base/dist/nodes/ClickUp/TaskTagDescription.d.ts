@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const taskTagOperations: INodeProperties[];
+export declare const taskTagFields: INodeProperties[];
+//# sourceMappingURL=TaskTagDescription.d.ts.map

@@ -1,0 +1,9 @@
+import type { IAuthenticateGeneric, ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class LinearApi implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+    authenticate: IAuthenticateGeneric;
+}
+//# sourceMappingURL=LinearApi.credentials.d.ts.map

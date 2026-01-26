@@ -1,11 +1,10 @@
 /**
  * N8n Schema Extractor
  *
- * Dynamically extracts operation schemas from n8n node TypeScript definitions
- * using TypeScript AST parsing with ts-morph.
+ * Dynamically extracts operation schemas from n8n node definitions
+ * by loading compiled JavaScript modules at runtime.
  */
 
-import { Project, SyntaxKind, Node as TsNode } from 'ts-morph';
 import * as path from 'path';
 import * as fs from 'fs';
 import { MultiOperationSchema, OperationParameter } from '../types';
@@ -19,51 +18,31 @@ import { MultiOperationSchema, OperationParameter } from '../types';
 export async function extractN8nNodeSchema(nodeId: string): Promise<MultiOperationSchema> {
   console.log(`Extracting schema for node: ${nodeId}`);
 
-  // 1. Locate the .node.ts file
-  const nodePath = findNodeFile(nodeId);
-  console.log(`Found node file: ${nodePath}`);
+  // 1. Locate node directory
+  const nodeBasePath = findNodeDirectory(nodeId);
+  console.log(`Found node directory: ${nodeBasePath}`);
 
-  // 2. Parse TypeScript AST
-  const project = new Project({
-    skipAddingFilesFromTsConfig: true,
-    skipFileDependencyResolution: true,
-  });
-  const sourceFile = project.addSourceFileAtPath(nodePath);
+  // 2. Detect node version
+  const version = detectNodeVersion(nodeBasePath);
+  console.log(`Using node version: ${version}`);
 
-  // 3. Find the INodeType class
-  const nodeClass = sourceFile.getClass((cls) =>
-    cls.getImplements().some((i) => i.getText().includes('INodeType'))
-  );
-
-  if (!nodeClass) {
-    throw new Error(`Could not find INodeType class in ${nodePath}`);
-  }
-
-  // 4. Extract basic metadata
-  const description = extractDescription(nodeClass);
-  const displayName = extractPropertyValue(nodeClass, 'displayName') || capitalize(nodeId);
-  const icon = extractPropertyValue(nodeClass, 'icon');
-  const color = extractColor(nodeId);
-
-  // 5. Extract properties array (contains resources, operations, parameters)
-  const properties = extractProperties(nodeClass);
-
-  // 6. Parse resource/operation hierarchy
-  const resources = parseResourceOperationHierarchy(properties, nodeId);
-
-  // 7. Extract credentials
-  const credentials = extractCredentials(nodeClass);
-
+  // 3. Load resource descriptions
+  const resources = loadResourceDescriptions(nodeBasePath, version);
   console.log(`Extracted ${resources.length} resources with ${countTotalOperations(resources)} total operations`);
+
+  // 4. Extract metadata
+  const metadata = loadNodeMetadata(nodeBasePath, nodeId);
+  const icon = loadNodeIcon(nodeBasePath);
+  const color = extractColor(nodeId);
 
   return {
     nodeId,
     nodeName: capitalize(nodeId),
-    displayName: `${capitalize(nodeId)} Connector`,
-    description: description || `${capitalize(nodeId)} integration connector`,
+    displayName: metadata.displayName || `${capitalize(nodeId)} Connector`,
+    description: metadata.description || `${capitalize(nodeId)} integration connector`,
     icon,
     color,
-    credentials,
+    credentials: metadata.credentials || ['oAuth2'],
     category: determineCategory(nodeId),
     tags: generateTags(nodeId),
     resources,
@@ -71,125 +50,208 @@ export async function extractN8nNodeSchema(nodeId: string): Promise<MultiOperati
 }
 
 /**
- * Find n8n node .node.ts file in node_modules
+ * Find n8n node directory in node_modules
  */
-function findNodeFile(nodeId: string): string {
+function findNodeDirectory(nodeId: string): string {
   const basePath = path.join(process.cwd(), 'node_modules', 'n8n-nodes-base', 'dist', 'nodes');
-
-  // Common patterns:
-  // - Gmail: nodes/Google/Gmail/Gmail.node.js (in dist)
-  // - Slack: nodes/Slack/Slack.node.js (in dist)
   const capitalized = capitalize(nodeId);
 
   // Try direct path first
-  let nodePath = path.join(basePath, capitalized, `${capitalized}.node.js`);
+  let nodePath = path.join(basePath, capitalized);
   if (fs.existsSync(nodePath)) {
     return nodePath;
   }
 
   // Try Google services path
-  nodePath = path.join(basePath, 'Google', capitalized, `${capitalized}.node.js`);
+  nodePath = path.join(basePath, 'Google', capitalized);
   if (fs.existsSync(nodePath)) {
     return nodePath;
   }
 
-  throw new Error(`Could not find node file for: ${nodeId}. Tried:\n- ${basePath}/${capitalized}/${capitalized}.node.js\n- ${basePath}/Google/${capitalized}/${capitalized}.node.js`);
+  throw new Error(
+    `Could not find node directory for: ${nodeId}. Tried:\n` +
+    `- ${basePath}/${capitalized}\n` +
+    `- ${basePath}/Google/${capitalized}`
+  );
 }
 
 /**
- * Extract description from node class
+ * Detect which version directory to use (v1, v2, etc.)
  */
-function extractDescription(nodeClass: any): string {
-  const descProp = nodeClass.getProperty('description');
-  if (descProp) {
-    const initializer = descProp.getInitializer();
-    if (initializer) {
-      return initializer.getText().replace(/['"]/g, '');
+function detectNodeVersion(nodeBasePath: string): string {
+  // Check for version directories
+  const versions = ['v2', 'v1'];
+  for (const version of versions) {
+    const versionPath = path.join(nodeBasePath, version);
+    if (fs.existsSync(versionPath)) {
+      return version;
     }
   }
+  // No version subdirectory means files are in root
   return '';
 }
 
 /**
- * Extract a simple property value from node class
+ * Load resource descriptions from node directory
  */
-function extractPropertyValue(nodeClass: any, propertyName: string): string | undefined {
-  const prop = nodeClass.getProperty(propertyName);
-  if (prop) {
-    const initializer = prop.getInitializer();
-    if (initializer) {
-      return initializer.getText().replace(/['"]/g, '');
+function loadResourceDescriptions(nodeBasePath: string, version: string): any[] {
+  const versionPath = version ? path.join(nodeBasePath, version) : nodeBasePath;
+
+  // Find all *Description.js files
+  const files = fs.readdirSync(versionPath);
+  const descriptionFiles = files.filter(f => f.endsWith('Description.js'));
+
+  if (descriptionFiles.length === 0) {
+    console.warn(`No description files found in ${versionPath}`);
+    return [];
+  }
+
+  const resources: any[] = [];
+
+  for (const file of descriptionFiles) {
+    const resourceName = file.replace('Description.js', '').toLowerCase();
+    const descriptionPath = path.join(versionPath, file);
+
+    try {
+      // Dynamically require the compiled JavaScript module
+      const description = require(descriptionPath);
+
+      // Extract operations from exports like 'messageOperations', 'draftOperations', etc.
+      const operationsKey = `${resourceName}Operations`;
+      const fieldsKey = `${resourceName}Fields`;
+
+      if (!description[operationsKey]) {
+        console.warn(`No ${operationsKey} found in ${file}`);
+        continue;
+      }
+
+      const operations = parseOperations(
+        description[operationsKey],
+        description[fieldsKey] || [],
+        resourceName
+      );
+
+      resources.push({
+        value: resourceName,
+        name: capitalize(resourceName),
+        operations,
+      });
+    } catch (error) {
+      console.error(`Error loading ${file}:`, error);
     }
   }
+
+  return resources;
+}
+
+/**
+ * Parse operations from n8n operation definitions
+ */
+function parseOperations(
+  operationsDef: any[],
+  fieldsDef: any[],
+  resourceName: string
+): any[] {
+  // The operationsDef is typically an array with one element containing the operations options
+  const operationOptions = operationsDef[0]?.options || [];
+
+  return operationOptions.map((op: any) => {
+    // Extract parameters for this specific operation
+    const parameters = extractOperationParameters(fieldsDef, resourceName, op.value);
+
+    return {
+      value: op.value,
+      name: op.name,
+      description: op.action || op.description || `${op.name} operation`,
+      parameters,
+      tier: classifyOperationTier(parameters),
+    };
+  });
+}
+
+/**
+ * Extract parameters for a specific operation
+ */
+function extractOperationParameters(
+  fieldsDef: any[],
+  resourceName: string,
+  operationValue: string
+): OperationParameter[] {
+  return fieldsDef
+    .filter(field => {
+      // Check if field is visible for this resource/operation combination
+      const show = field.displayOptions?.show;
+      if (!show) return false;
+
+      const matchesResource = !show.resource || show.resource.includes(resourceName);
+      const matchesOperation = !show.operation || show.operation.includes(operationValue);
+
+      return matchesResource && matchesOperation;
+    })
+    .map(field => ({
+      name: field.name,
+      displayName: field.displayName,
+      type: mapN8nTypeToGeneric(field.type),
+      required: field.required ?? false,
+      default: field.default,
+      description: field.description,
+      placeholder: field.placeholder,
+      options: field.options?.map((opt: any) => ({
+        name: opt.name,
+        value: opt.value,
+      })),
+    }));
+}
+
+/**
+ * Map n8n field type to generic type string
+ */
+function mapN8nTypeToGeneric(n8nType: string): string {
+  const typeMap: Record<string, string> = {
+    'string': 'string',
+    'number': 'number',
+    'boolean': 'boolean',
+    'options': 'options',
+    'multiOptions': 'multiOptions',
+    'dateTime': 'dateTime',
+    'json': 'json',
+    'fixedCollection': 'fixedCollection',
+    'collection': 'collection',
+  };
+  return typeMap[n8nType] || 'string';
+}
+
+/**
+ * Load node metadata from .node.json file
+ */
+function loadNodeMetadata(nodeBasePath: string, nodeId: string): any {
+  const capitalized = capitalize(nodeId);
+  const jsonPath = path.join(nodeBasePath, `${capitalized}.node.json`);
+
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const content = fs.readFileSync(jsonPath, 'utf-8');
+      return JSON.parse(content);
+    } catch (error) {
+      console.warn(`Could not parse node metadata from ${jsonPath}`);
+    }
+  }
+
+  return {};
+}
+
+/**
+ * Load node icon from SVG file
+ */
+function loadNodeIcon(nodeBasePath: string): string | undefined {
+  const files = fs.readdirSync(nodeBasePath);
+  const svgFile = files.find(f => f.endsWith('.svg'));
+
+  if (svgFile) {
+    return `icons/${svgFile}`;
+  }
+
   return undefined;
-}
-
-/**
- * Extract properties array from node class
- * This contains all resources, operations, and parameters
- */
-function extractProperties(nodeClass: any): any[] {
-  const propertiesProp = nodeClass.getProperty('properties');
-  if (!propertiesProp) {
-    return [];
-  }
-
-  const initializer = propertiesProp.getInitializer();
-  if (!initializer) {
-    return [];
-  }
-
-  // The properties initializer is an array
-  try {
-    // Since we're working with compiled JavaScript, we need to actually evaluate it
-    // This is safe because it's n8n's own code
-    const text = initializer.getText();
-    // For now, return empty array - we'll need to enhance this with proper parsing
-    console.warn('Property extraction from compiled code not yet implemented');
-    return [];
-  } catch (error) {
-    console.error('Error parsing properties:', error);
-    return [];
-  }
-}
-
-/**
- * Parse resource/operation hierarchy from properties
- * Groups parameters by resource and operation
- */
-function parseResourceOperationHierarchy(properties: any[], nodeId: string): any[] {
-  // Placeholder implementation - needs to be enhanced
-  // This would parse the displayOptions.show to determine resource/operation structure
-
-  // For MVP, return a simple structure
-  return [
-    {
-      value: 'message',
-      name: 'Message',
-      operations: [
-        {
-          value: 'send',
-          name: 'Send',
-          description: 'Send a message',
-          parameters: [],
-          tier: 1 as 1 | 2 | 3,
-        },
-      ],
-    },
-  ];
-}
-
-/**
- * Extract credentials from node class
- */
-function extractCredentials(nodeClass: any): string[] {
-  const credentialsProp = nodeClass.getProperty('credentials');
-  if (!credentialsProp) {
-    return [];
-  }
-
-  // Placeholder - would need to parse the credentials array
-  return ['oAuth2'];
 }
 
 /**

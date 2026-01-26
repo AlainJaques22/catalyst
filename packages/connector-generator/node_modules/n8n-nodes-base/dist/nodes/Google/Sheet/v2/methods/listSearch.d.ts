@@ -1,0 +1,4 @@
+import type { ILoadOptionsFunctions, INodeListSearchResult } from 'n8n-workflow';
+export declare function spreadSheetsSearch(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+export declare function sheetsSearch(this: ILoadOptionsFunctions, _filter?: string): Promise<INodeListSearchResult>;
+//# sourceMappingURL=listSearch.d.ts.map

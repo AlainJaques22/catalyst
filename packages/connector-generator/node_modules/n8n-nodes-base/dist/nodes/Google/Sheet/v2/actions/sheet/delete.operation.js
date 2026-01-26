@@ -1,0 +1,169 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.description = void 0;
+exports.execute = execute;
+const utilities_1 = require("../../../../../../utils/utilities");
+const GoogleSheets_utils_1 = require("../../helpers/GoogleSheets.utils");
+exports.description = [
+    {
+        displayName: 'To Delete',
+        name: 'toDelete',
+        type: 'options',
+        options: [
+            {
+                name: 'Rows',
+                value: 'rows',
+                description: 'Rows to delete',
+            },
+            {
+                name: 'Columns',
+                value: 'columns',
+                description: 'Columns to delete',
+            },
+        ],
+        displayOptions: {
+            show: {
+                resource: ['sheet'],
+                operation: ['delete'],
+            },
+            hide: {
+                ...GoogleSheets_utils_1.untilSheetSelected,
+            },
+        },
+        default: 'rows',
+        description: 'What to delete',
+    },
+    {
+        displayName: 'Start Row Number',
+        name: 'startIndex',
+        type: 'number',
+        typeOptions: {
+            minValue: 1,
+        },
+        default: 2,
+        description: 'The row number to delete from, The first row is 2',
+        displayOptions: {
+            show: {
+                resource: ['sheet'],
+                operation: ['delete'],
+                toDelete: ['rows'],
+            },
+            hide: {
+                ...GoogleSheets_utils_1.untilSheetSelected,
+            },
+        },
+    },
+    {
+        displayName: 'Number of Rows to Delete',
+        name: 'numberToDelete',
+        type: 'number',
+        typeOptions: {
+            minValue: 1,
+        },
+        default: 1,
+        displayOptions: {
+            show: {
+                resource: ['sheet'],
+                operation: ['delete'],
+                toDelete: ['rows'],
+            },
+            hide: {
+                ...GoogleSheets_utils_1.untilSheetSelected,
+            },
+        },
+    },
+    {
+        displayName: 'Start Column',
+        name: 'startIndex',
+        type: 'string',
+        default: 'A',
+        description: 'The column to delete',
+        displayOptions: {
+            show: {
+                resource: ['sheet'],
+                operation: ['delete'],
+                toDelete: ['columns'],
+            },
+            hide: {
+                ...GoogleSheets_utils_1.untilSheetSelected,
+            },
+        },
+    },
+    {
+        displayName: 'Number of Columns to Delete',
+        name: 'numberToDelete',
+        type: 'number',
+        typeOptions: {
+            minValue: 1,
+        },
+        default: 1,
+        displayOptions: {
+            show: {
+                resource: ['sheet'],
+                operation: ['delete'],
+                toDelete: ['columns'],
+            },
+            hide: {
+                ...GoogleSheets_utils_1.untilSheetSelected,
+            },
+        },
+    },
+];
+async function execute(sheet, sheetName) {
+    const items = this.getInputData();
+    for (let i = 0; i < items.length; i++) {
+        const requests = [];
+        let startIndex, endIndex, numberToDelete;
+        const deleteType = this.getNodeParameter('toDelete', i);
+        if (deleteType === 'rows') {
+            startIndex = this.getNodeParameter('startIndex', i);
+            // We start from 1 now...
+            startIndex--;
+            numberToDelete = this.getNodeParameter('numberToDelete', i);
+            if (numberToDelete === 1) {
+                endIndex = startIndex + 1;
+            }
+            else {
+                endIndex = startIndex + numberToDelete;
+            }
+            requests.push({
+                deleteDimension: {
+                    range: {
+                        sheetId: sheetName,
+                        dimension: 'ROWS',
+                        startIndex,
+                        endIndex,
+                    },
+                },
+            });
+        }
+        else if (deleteType === 'columns') {
+            startIndex = this.getNodeParameter('startIndex', i);
+            numberToDelete = this.getNodeParameter('numberToDelete', i);
+            startIndex = (0, GoogleSheets_utils_1.getColumnNumber)(startIndex) - 1;
+            if (numberToDelete === 1) {
+                endIndex = startIndex + 1;
+            }
+            else {
+                endIndex = startIndex + numberToDelete;
+            }
+            requests.push({
+                deleteDimension: {
+                    range: {
+                        sheetId: sheetName,
+                        dimension: 'COLUMNS',
+                        startIndex,
+                        endIndex,
+                    },
+                },
+            });
+        }
+        await sheet.spreadsheetBatchUpdate(requests);
+    }
+    const itemData = (0, utilities_1.generatePairedItemData)(this.getInputData().length);
+    const returnData = this.helpers.constructExecutionMetaData((0, utilities_1.wrapData)({ success: true }), {
+        itemData,
+    });
+    return returnData;
+}
+//# sourceMappingURL=delete.operation.js.map

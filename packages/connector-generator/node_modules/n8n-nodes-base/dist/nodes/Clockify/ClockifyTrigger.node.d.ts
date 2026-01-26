@@ -1,0 +1,11 @@
+import type { IPollFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class ClockifyTrigger implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            listWorkspaces(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    poll(this: IPollFunctions): Promise<INodeExecutionData[][] | null>;
+}
+//# sourceMappingURL=ClockifyTrigger.node.d.ts.map

@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.create = create;
+const transport_1 = require("../../../transport");
+async function create(index) {
+    const body = {};
+    const qs = {};
+    const requestMethod = 'POST';
+    const endpoint = 'channels';
+    const type = this.getNodeParameter('type', index);
+    body.team_id = this.getNodeParameter('teamId', index);
+    body.display_name = this.getNodeParameter('displayName', index);
+    body.name = this.getNodeParameter('channel', index);
+    body.type = type === 'public' ? 'O' : 'P';
+    const responseData = await transport_1.apiRequest.call(this, requestMethod, endpoint, body, qs);
+    return this.helpers.returnJsonArray(responseData);
+}
+//# sourceMappingURL=execute.js.map

@@ -1,0 +1,3 @@
+import type { INodePropertyOptions } from 'n8n-workflow';
+export declare const triggerPlaceholders: INodePropertyOptions[];
+//# sourceMappingURL=TriggerPlaceholders.d.ts.map

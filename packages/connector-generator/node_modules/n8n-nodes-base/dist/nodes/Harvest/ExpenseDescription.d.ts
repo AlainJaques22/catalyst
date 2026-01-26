@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const expenseOperations: INodeProperties[];
+export declare const expenseFields: INodeProperties[];
+//# sourceMappingURL=ExpenseDescription.d.ts.map

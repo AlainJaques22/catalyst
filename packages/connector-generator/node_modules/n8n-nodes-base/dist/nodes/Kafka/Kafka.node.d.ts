@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ICredentialsDecrypted, ICredentialTestFunctions, INodeCredentialTestResult, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Kafka implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        credentialTest: {
+            kafkaConnectionTest(this: ICredentialTestFunctions, credential: ICredentialsDecrypted): Promise<INodeCredentialTestResult>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Kafka.node.d.ts.map

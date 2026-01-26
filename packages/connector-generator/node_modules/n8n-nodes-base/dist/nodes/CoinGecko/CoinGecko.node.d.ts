@@ -1,0 +1,15 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class CoinGecko implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getCurrencies(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getCoins(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getExchanges(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getEventCountryCodes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getEventTypes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=CoinGecko.node.d.ts.map

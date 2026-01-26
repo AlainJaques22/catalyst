@@ -1,0 +1,12 @@
+import type { INodeExecutionData, INodeType, INodeTypeDescription, IPollFunctions } from 'n8n-workflow';
+import { getCalendars } from './GenericFunctions';
+export declare class GoogleCalendarTrigger implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        listSearch: {
+            getCalendars: typeof getCalendars;
+        };
+    };
+    poll(this: IPollFunctions): Promise<INodeExecutionData[][] | null>;
+}
+//# sourceMappingURL=GoogleCalendarTrigger.node.d.ts.map

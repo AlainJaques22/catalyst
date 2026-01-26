@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const incidentOperations: INodeProperties[];
+export declare const incidentFields: INodeProperties[];
+//# sourceMappingURL=IncidentDescription.d.ts.map

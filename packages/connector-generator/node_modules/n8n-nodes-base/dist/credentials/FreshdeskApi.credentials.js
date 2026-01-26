@@ -1,0 +1,27 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FreshdeskApi = void 0;
+class FreshdeskApi {
+    name = 'freshdeskApi';
+    displayName = 'Freshdesk API';
+    documentationUrl = 'freshdesk';
+    properties = [
+        {
+            displayName: 'API Key',
+            name: 'apiKey',
+            type: 'string',
+            typeOptions: { password: true },
+            default: '',
+        },
+        {
+            displayName: 'Domain',
+            name: 'domain',
+            type: 'string',
+            placeholder: 'company',
+            description: 'If the URL you get displayed on Freshdesk is "https://company.freshdesk.com" enter "company"',
+            default: '',
+        },
+    ];
+}
+exports.FreshdeskApi = FreshdeskApi;
+//# sourceMappingURL=FreshdeskApi.credentials.js.map

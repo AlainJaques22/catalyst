@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const inviteOperations: INodeProperties[];
+export declare const inviteFields: INodeProperties[];
+//# sourceMappingURL=InviteDescription.d.ts.map

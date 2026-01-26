@@ -1,0 +1,11 @@
+import type { IExecuteFunctions, ICredentialsDecrypted, ICredentialTestFunctions, INodeCredentialTestResult, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class Mocean implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        credentialTest: {
+            moceanApiTest(this: ICredentialTestFunctions, credential: ICredentialsDecrypted): Promise<INodeCredentialTestResult>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=Mocean.node.d.ts.map

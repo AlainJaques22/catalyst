@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAlert = getAlert;
+const transport_1 = require("../../../transport");
+async function getAlert(index) {
+    const id = this.getNodeParameter('alertId', index);
+    const qs = {};
+    const requestMethod = 'GET';
+    const endpoint = `rmm_alerts/${id}`;
+    const body = {};
+    const responseData = await transport_1.apiRequest.call(this, requestMethod, endpoint, body, qs);
+    return this.helpers.returnJsonArray(responseData.rmm_alert);
+}
+//# sourceMappingURL=execute.js.map

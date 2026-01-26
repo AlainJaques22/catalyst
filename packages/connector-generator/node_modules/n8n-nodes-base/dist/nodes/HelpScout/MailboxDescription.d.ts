@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const mailboxOperations: INodeProperties[];
+export declare const mailboxFields: INodeProperties[];
+//# sourceMappingURL=MailboxDescription.d.ts.map

@@ -1,0 +1,14 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+export declare class SlackV1 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    methods: {
+        loadOptions: {
+            getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getChannels(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getTeamFields(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=SlackV1.node.d.ts.map

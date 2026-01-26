@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const messageLabelOperations: INodeProperties[];
+export declare const messageLabelFields: INodeProperties[];
+//# sourceMappingURL=MessageLabelDescription.d.ts.map

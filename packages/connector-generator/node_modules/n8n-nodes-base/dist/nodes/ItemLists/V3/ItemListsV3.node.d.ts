@@ -1,0 +1,7 @@
+import type { IExecuteFunctions, INodeType, INodeTypeBaseDescription, INodeTypeDescription } from 'n8n-workflow';
+export declare class ItemListsV3 implements INodeType {
+    description: INodeTypeDescription;
+    constructor(baseDescription: INodeTypeBaseDescription);
+    execute(this: IExecuteFunctions): Promise<import("n8n-workflow").INodeExecutionData[][]>;
+}
+//# sourceMappingURL=ItemListsV3.node.d.ts.map

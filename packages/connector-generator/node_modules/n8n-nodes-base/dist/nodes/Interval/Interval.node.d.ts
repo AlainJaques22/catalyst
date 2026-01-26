@@ -1,0 +1,6 @@
+import type { ITriggerFunctions, INodeType, INodeTypeDescription, ITriggerResponse } from 'n8n-workflow';
+export declare class Interval implements INodeType {
+    description: INodeTypeDescription;
+    trigger(this: ITriggerFunctions): Promise<ITriggerResponse>;
+}
+//# sourceMappingURL=Interval.node.d.ts.map

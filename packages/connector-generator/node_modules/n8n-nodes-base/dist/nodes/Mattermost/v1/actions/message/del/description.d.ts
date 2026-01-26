@@ -1,0 +1,3 @@
+import type { MessageProperties } from '../../Interfaces';
+export declare const messageDeleteDescription: MessageProperties;
+//# sourceMappingURL=description.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"AmqpTrigger.node.d.ts","sourceRoot":"","sources":["../../../nodes/Amqp/AmqpTrigger.node.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACX,iBAAiB,EAEjB,SAAS,EACT,oBAAoB,EACpB,gBAAgB,EAGhB,MAAM,cAAc,CAAC;AAOtB,qBAAa,WAAY,YAAW,SAAS;IAC5C,WAAW,EAAE,oBAAoB,CAyH/B;IAEI,OAAO,CAAC,IAAI,EAAE,iBAAiB,GAAG,OAAO,CAAC,gBAAgB,CAAC;CA8KjE"}

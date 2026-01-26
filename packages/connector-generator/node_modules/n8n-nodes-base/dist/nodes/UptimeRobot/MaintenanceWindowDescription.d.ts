@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const maintenanceWindowOperations: INodeProperties[];
+export declare const maintenanceWindowFields: INodeProperties[];
+//# sourceMappingURL=MaintenanceWindowDescription.d.ts.map

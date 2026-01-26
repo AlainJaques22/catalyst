@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const containerOperations: INodeProperties[];
+export declare const containerFields: INodeProperties[];
+//# sourceMappingURL=ContainerDescription.d.ts.map

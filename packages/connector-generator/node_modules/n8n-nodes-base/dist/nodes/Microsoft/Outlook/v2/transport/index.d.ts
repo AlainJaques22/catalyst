@@ -1,0 +1,7 @@
+import type { IHttpRequestMethods, IDataObject, IExecuteFunctions, IExecuteSingleFunctions, ILoadOptionsFunctions, INodeExecutionData, IPollFunctions } from 'n8n-workflow';
+export declare function microsoftApiRequest(this: IExecuteFunctions | IExecuteSingleFunctions | ILoadOptionsFunctions | IPollFunctions, method: IHttpRequestMethods, resource: string, body?: IDataObject, qs?: IDataObject, uri?: string, headers?: IDataObject, option?: IDataObject): Promise<any>;
+export declare function microsoftApiRequestAllItems(this: IExecuteFunctions | ILoadOptionsFunctions | IPollFunctions, propertyName: string, method: IHttpRequestMethods, endpoint: string, body?: IDataObject, query?: IDataObject, headers?: IDataObject): Promise<IDataObject[]>;
+export declare function downloadAttachments(this: IExecuteFunctions | IPollFunctions, messages: IDataObject[] | IDataObject, prefix: string): Promise<INodeExecutionData[]>;
+export declare function getMimeContent(this: IExecuteFunctions, messageId: string, binaryPropertyName: string, outputFileName?: string): Promise<IDataObject>;
+export declare function getSubfolders(this: IExecuteFunctions | ILoadOptionsFunctions, folders: IDataObject[], addPathToDisplayName?: boolean): Promise<IDataObject[]>;
+//# sourceMappingURL=index.d.ts.map

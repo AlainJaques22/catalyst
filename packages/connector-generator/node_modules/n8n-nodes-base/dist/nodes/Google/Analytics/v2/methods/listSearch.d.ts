@@ -1,0 +1,4 @@
+import type { ILoadOptionsFunctions, INodeListSearchResult } from 'n8n-workflow';
+export declare function searchProperties(this: ILoadOptionsFunctions): Promise<INodeListSearchResult>;
+export declare function searchViews(this: ILoadOptionsFunctions): Promise<INodeListSearchResult>;
+//# sourceMappingURL=listSearch.d.ts.map

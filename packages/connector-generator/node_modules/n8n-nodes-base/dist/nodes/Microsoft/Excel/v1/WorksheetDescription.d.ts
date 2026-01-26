@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const worksheetOperations: INodeProperties[];
+export declare const worksheetFields: INodeProperties[];
+//# sourceMappingURL=WorksheetDescription.d.ts.map

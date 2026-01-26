@@ -1,0 +1,9 @@
+import type { IAuthenticateGeneric, ICredentialType, INodeProperties } from 'n8n-workflow';
+export declare class NocoDb implements ICredentialType {
+    name: string;
+    displayName: string;
+    documentationUrl: string;
+    properties: INodeProperties[];
+    authenticate: IAuthenticateGeneric;
+}
+//# sourceMappingURL=NocoDb.credentials.d.ts.map

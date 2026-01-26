@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const agentGroupOperations: INodeProperties[];
+export declare const agentGroupFields: INodeProperties[];
+//# sourceMappingURL=AgentGroupDescription.d.ts.map

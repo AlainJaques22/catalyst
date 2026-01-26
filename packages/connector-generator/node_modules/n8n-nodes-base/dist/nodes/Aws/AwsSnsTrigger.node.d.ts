@@ -1,0 +1,18 @@
+import type { IHookFunctions, IWebhookFunctions, ILoadOptionsFunctions, INodeListSearchResult, INodeType, INodeTypeDescription, IWebhookResponseData } from 'n8n-workflow';
+export declare class AwsSnsTrigger implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        listSearch: {
+            listTopics(this: ILoadOptionsFunctions, filter?: string, paginationToken?: string): Promise<INodeListSearchResult>;
+        };
+    };
+    webhookMethods: {
+        default: {
+            checkExists(this: IHookFunctions): Promise<boolean>;
+            create(this: IHookFunctions): Promise<boolean>;
+            delete(this: IHookFunctions): Promise<boolean>;
+        };
+    };
+    webhook(this: IWebhookFunctions): Promise<IWebhookResponseData>;
+}
+//# sourceMappingURL=AwsSnsTrigger.node.d.ts.map

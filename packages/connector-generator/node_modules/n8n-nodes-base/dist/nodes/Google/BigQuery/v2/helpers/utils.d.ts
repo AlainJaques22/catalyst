@@ -1,0 +1,9 @@
+import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import type { SchemaField, TableRawData, TableSchema } from './interfaces';
+export declare function wrapData(data: IDataObject | IDataObject[]): INodeExecutionData[];
+export declare function simplify(data: TableRawData[], schema: SchemaField[], includeSchema?: boolean, parseTimestamps?: boolean): IDataObject[];
+export declare function prepareOutput(this: IExecuteFunctions, response: IDataObject, itemIndex: number, rawOutput: boolean, includeSchema?: boolean): import("n8n-workflow").NodeExecutionWithMetadata[];
+export declare function checkSchema(this: IExecuteFunctions, schema: TableSchema, record: IDataObject, i: number): {
+    [key: string]: IDataObject | import("n8n-workflow").GenericValue | import("n8n-workflow").GenericValue[] | IDataObject[];
+};
+//# sourceMappingURL=utils.d.ts.map

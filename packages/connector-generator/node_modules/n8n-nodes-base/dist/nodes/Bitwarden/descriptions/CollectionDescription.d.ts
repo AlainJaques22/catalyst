@@ -1,0 +1,8 @@
+import type { IDataObject, INodeProperties } from 'n8n-workflow';
+export declare const collectionOperations: INodeProperties[];
+export declare const collectionFields: INodeProperties[];
+export type CollectionUpdateFields = IDataObject & {
+    groups: string[];
+    externalId: string;
+};
+//# sourceMappingURL=CollectionDescription.d.ts.map

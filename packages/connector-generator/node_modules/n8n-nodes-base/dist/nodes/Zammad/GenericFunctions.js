@@ -1,0 +1,108 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.doesNotBelongToZammad = exports.isNotZammadFoundation = exports.getTicketCustomFields = exports.getUserCustomFields = exports.getOrganizationCustomFields = exports.getGroupCustomFields = exports.getTicketFields = exports.getUserFields = exports.getOrganizationFields = exports.getGroupFields = exports.isCustomer = exports.fieldToLoadOption = exports.prettifyDisplayName = void 0;
+exports.tolerateTrailingSlash = tolerateTrailingSlash;
+exports.zammadApiRequest = zammadApiRequest;
+exports.zammadApiRequestAllItems = zammadApiRequestAllItems;
+exports.throwOnEmptyUpdate = throwOnEmptyUpdate;
+exports.getAllFields = getAllFields;
+const flow_1 = __importDefault(require("lodash/flow"));
+const n8n_workflow_1 = require("n8n-workflow");
+function tolerateTrailingSlash(url) {
+    return url.endsWith('/') ? url.substr(0, url.length - 1) : url;
+}
+async function zammadApiRequest(method, endpoint, body = {}, qs = {}) {
+    const options = {
+        method,
+        body,
+        qs,
+        uri: '',
+        json: true,
+    };
+    const authentication = this.getNodeParameter('authentication', 0);
+    if (authentication === 'basicAuth') {
+        const credentials = await this.getCredentials('zammadBasicAuthApi');
+        const baseUrl = tolerateTrailingSlash(credentials.baseUrl);
+        options.uri = `${baseUrl}/api/v1${endpoint}`;
+        options.auth = {
+            user: credentials.username,
+            pass: credentials.password,
+        };
+        options.rejectUnauthorized = !credentials.allowUnauthorizedCerts;
+    }
+    else {
+        const credentials = await this.getCredentials('zammadTokenAuthApi');
+        const baseUrl = tolerateTrailingSlash(credentials.baseUrl);
+        options.uri = `${baseUrl}/api/v1${endpoint}`;
+        options.headers = {
+            Authorization: `Token token=${credentials.accessToken}`,
+        };
+        options.rejectUnauthorized = !credentials.allowUnauthorizedCerts;
+    }
+    if (!Object.keys(body).length) {
+        delete options.body;
+    }
+    if (!Object.keys(qs).length) {
+        delete options.qs;
+    }
+    try {
+        return await this.helpers.request(options);
+    }
+    catch (error) {
+        if (error.error.error === 'Object already exists!') {
+            error.error.error = 'An entity with this name already exists.';
+        }
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+async function zammadApiRequestAllItems(method, endpoint, body = {}, qs = {}, limit = 0) {
+    // https://docs.zammad.org/en/latest/api/intro.html#pagination
+    const returnData = [];
+    let responseData;
+    qs.per_page = 20;
+    qs.page = 1;
+    do {
+        responseData = await zammadApiRequest.call(this, method, endpoint, body, qs);
+        returnData.push(...responseData);
+        if (limit && returnData.length > limit) {
+            return returnData.slice(0, limit);
+        }
+        qs.page++;
+    } while (responseData.length);
+    return returnData;
+}
+function throwOnEmptyUpdate(resource) {
+    throw new n8n_workflow_1.NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}`);
+}
+// ----------------------------------
+//        loadOptions utils
+// ----------------------------------
+const prettifyDisplayName = (fieldName) => fieldName.replace('name', ' Name');
+exports.prettifyDisplayName = prettifyDisplayName;
+const fieldToLoadOption = (i) => {
+    return { name: i.display ? (0, exports.prettifyDisplayName)(i.display) : i.name, value: i.name };
+};
+exports.fieldToLoadOption = fieldToLoadOption;
+const isCustomer = (user) => user.role_ids.includes(3) && !user.email.endsWith('@zammad.org');
+exports.isCustomer = isCustomer;
+async function getAllFields() {
+    return (await zammadApiRequest.call(this, 'GET', '/object_manager_attributes'));
+}
+const isTypeField = (resource) => (arr) => arr.filter((i) => i.object === resource);
+exports.getGroupFields = isTypeField('Group');
+exports.getOrganizationFields = isTypeField('Organization');
+exports.getUserFields = isTypeField('User');
+exports.getTicketFields = isTypeField('Ticket');
+const getCustomFields = (arr) => arr.filter((i) => i.created_by_id !== 1);
+exports.getGroupCustomFields = (0, flow_1.default)(exports.getGroupFields, getCustomFields);
+exports.getOrganizationCustomFields = (0, flow_1.default)(exports.getOrganizationFields, getCustomFields);
+exports.getUserCustomFields = (0, flow_1.default)(exports.getUserFields, getCustomFields);
+exports.getTicketCustomFields = (0, flow_1.default)(exports.getTicketFields, getCustomFields);
+const isNotZammadFoundation = (i) => i.name !== 'Zammad Foundation';
+exports.isNotZammadFoundation = isNotZammadFoundation;
+const doesNotBelongToZammad = (i) => !i.email.endsWith('@zammad.org') && i.login !== '-';
+exports.doesNotBelongToZammad = doesNotBelongToZammad;
+//# sourceMappingURL=GenericFunctions.js.map

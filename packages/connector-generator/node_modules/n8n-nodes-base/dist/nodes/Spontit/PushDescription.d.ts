@@ -1,0 +1,4 @@
+import type { INodeProperties } from 'n8n-workflow';
+export declare const pushOperations: INodeProperties[];
+export declare const pushFields: INodeProperties[];
+//# sourceMappingURL=PushDescription.d.ts.map

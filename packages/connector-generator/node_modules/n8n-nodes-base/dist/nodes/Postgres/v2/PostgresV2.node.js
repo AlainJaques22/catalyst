@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PostgresV2 = void 0;
+const router_1 = require("./actions/router");
+const versionDescription_1 = require("./actions/versionDescription");
+const methods_1 = require("./methods");
+class PostgresV2 {
+    description;
+    constructor(baseDescription) {
+        this.description = {
+            ...baseDescription,
+            ...versionDescription_1.versionDescription,
+        };
+    }
+    methods = { credentialTest: methods_1.credentialTest, listSearch: methods_1.listSearch, loadOptions: methods_1.loadOptions, resourceMapping: methods_1.resourceMapping };
+    async execute() {
+        return await router_1.router.call(this);
+    }
+}
+exports.PostgresV2 = PostgresV2;
+//# sourceMappingURL=PostgresV2.node.js.map

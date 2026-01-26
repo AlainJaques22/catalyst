@@ -1,0 +1,14 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodePropertyOptions, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class YouTube implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getLanguages(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getCountriesCodes(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getVideoCategories(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+            getPlaylists(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=YouTube.node.d.ts.map

@@ -1,0 +1,4 @@
+import type { IDataObject, IExecuteFunctions, ILoadOptionsFunctions, IHookFunctions, IWebhookFunctions, IHttpRequestMethods } from 'n8n-workflow';
+export declare function getAuthenticationType(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions): Promise<'accessToken' | 'apiKey'>;
+export declare function calendlyApiRequest(this: IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions, method: IHttpRequestMethods, resource: string, body?: any, query?: IDataObject, uri?: string, option?: IDataObject): Promise<any>;
+//# sourceMappingURL=GenericFunctions.d.ts.map

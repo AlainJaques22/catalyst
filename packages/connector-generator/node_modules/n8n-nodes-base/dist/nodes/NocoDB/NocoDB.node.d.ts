@@ -1,0 +1,13 @@
+import type { IExecuteFunctions, ILoadOptionsFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+export declare class NocoDB implements INodeType {
+    description: INodeTypeDescription;
+    methods: {
+        loadOptions: {
+            getWorkspaces(this: ILoadOptionsFunctions): Promise<any>;
+            getBases(this: ILoadOptionsFunctions): Promise<any>;
+            getTables(this: ILoadOptionsFunctions): Promise<any>;
+        };
+    };
+    execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]>;
+}
+//# sourceMappingURL=NocoDB.node.d.ts.map

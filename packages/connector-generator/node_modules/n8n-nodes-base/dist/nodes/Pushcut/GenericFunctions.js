@@ -1,0 +1,30 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.pushcutApiRequest = pushcutApiRequest;
+const n8n_workflow_1 = require("n8n-workflow");
+async function pushcutApiRequest(method, path, body = {}, qs = {}, uri, option = {}) {
+    const credentials = await this.getCredentials('pushcutApi');
+    const options = {
+        headers: {
+            'API-Key': credentials.apiKey,
+        },
+        method,
+        body,
+        qs,
+        uri: uri || `https://api.pushcut.io/v1${path}`,
+        json: true,
+    };
+    try {
+        if (Object.keys(body).length === 0) {
+            delete options.body;
+        }
+        if (Object.keys(option).length !== 0) {
+            Object.assign(options, option);
+        }
+        return await this.helpers.request.call(this, options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+//# sourceMappingURL=GenericFunctions.js.map

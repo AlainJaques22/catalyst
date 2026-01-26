@@ -1,0 +1,124 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.s3ApiRequest = s3ApiRequest;
+exports.s3ApiRequestREST = s3ApiRequestREST;
+exports.s3ApiRequestSOAP = s3ApiRequestSOAP;
+exports.s3ApiRequestSOAPAllItems = s3ApiRequestSOAPAllItems;
+const aws4_1 = require("aws4");
+const get_1 = __importDefault(require("lodash/get"));
+const n8n_workflow_1 = require("n8n-workflow");
+const url_1 = require("url");
+const xml2js_1 = require("xml2js");
+function queryToString(params) {
+    return Object.keys(params)
+        .map((key) => key + '=' + params[key])
+        .join('&');
+}
+async function s3ApiRequest(bucket, method, path, body, query = {}, headers, option = {}, region) {
+    const credentials = await this.getCredentials('s3');
+    if (!credentials.endpoint.startsWith('http')) {
+        throw new n8n_workflow_1.NodeOperationError(this.getNode(), 'HTTP(S) Scheme is required in endpoint definition');
+    }
+    const endpoint = new url_1.URL(credentials.endpoint);
+    if (bucket) {
+        if (credentials.forcePathStyle) {
+            path = `/${bucket}${path}`;
+        }
+        else {
+            endpoint.host = `${bucket}.${endpoint.host}`;
+        }
+    }
+    endpoint.pathname = `${endpoint.pathname === '/' ? '' : endpoint.pathname}${path}`;
+    // Sign AWS API request with the user credentials
+    const signOpts = {
+        headers: headers || {},
+        region: region || credentials.region,
+        host: endpoint.host,
+        method,
+        path: `${endpoint.pathname}?${queryToString(query).replace(/\+/g, '%2B')}`,
+        service: 's3',
+        body,
+    };
+    const securityHeaders = {
+        accessKeyId: `${credentials.accessKeyId}`.trim(),
+        secretAccessKey: `${credentials.secretAccessKey}`.trim(),
+        sessionToken: credentials.temporaryCredentials
+            ? `${credentials.sessionToken}`.trim()
+            : undefined,
+    };
+    (0, aws4_1.sign)(signOpts, securityHeaders);
+    const options = {
+        headers: signOpts.headers,
+        method,
+        qs: query,
+        uri: endpoint.toString(),
+        body: signOpts.body,
+        rejectUnauthorized: !credentials.ignoreSSLIssues,
+    };
+    if (Object.keys(option).length !== 0) {
+        Object.assign(options, option);
+    }
+    try {
+        return await this.helpers.request(options);
+    }
+    catch (error) {
+        throw new n8n_workflow_1.NodeApiError(this.getNode(), error);
+    }
+}
+async function s3ApiRequestREST(bucket, method, path, body, query = {}, headers, options = {}, region) {
+    const response = await s3ApiRequest.call(this, bucket, method, path, body, query, headers, options, region);
+    try {
+        return JSON.parse(response);
+    }
+    catch (error) {
+        return response;
+    }
+}
+async function s3ApiRequestSOAP(bucket, method, path, body, query = {}, headers, option = {}, region) {
+    const response = await s3ApiRequest.call(this, bucket, method, path, body, query, headers, option, region);
+    try {
+        return await new Promise((resolve, reject) => {
+            (0, xml2js_1.parseString)(response, { explicitArray: false }, (err, data) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(data);
+            });
+        });
+    }
+    catch (error) {
+        return error;
+    }
+}
+async function s3ApiRequestSOAPAllItems(propertyName, service, method, path, body, query = {}, headers = {}, option = {}, region) {
+    const returnData = [];
+    let responseData;
+    do {
+        responseData = await s3ApiRequestSOAP.call(this, service, method, path, body, query, headers, option, region);
+        //https://forums.aws.amazon.com/thread.jspa?threadID=55746
+        if ((0, get_1.default)(responseData, [propertyName.split('.')[0], 'NextContinuationToken'])) {
+            query['continuation-token'] = (0, get_1.default)(responseData, [
+                propertyName.split('.')[0],
+                'NextContinuationToken',
+            ]);
+        }
+        if ((0, get_1.default)(responseData, propertyName)) {
+            if (Array.isArray((0, get_1.default)(responseData, propertyName))) {
+                returnData.push.apply(returnData, (0, get_1.default)(responseData, propertyName));
+            }
+            else {
+                returnData.push((0, get_1.default)(responseData, propertyName));
+            }
+        }
+        const limit = query.limit;
+        if (limit && limit <= returnData.length) {
+            return returnData;
+        }
+    } while ((0, get_1.default)(responseData, [propertyName.split('.')[0], 'IsTruncated']) !== undefined &&
+        (0, get_1.default)(responseData, [propertyName.split('.')[0], 'IsTruncated']) !== 'false');
+    return returnData;
+}
+//# sourceMappingURL=GenericFunctions.js.map
